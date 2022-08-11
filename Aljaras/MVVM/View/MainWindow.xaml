@@ -21,9 +21,25 @@
     <Window.DataContext>
         <viewModel:MainViewModel />
     </Window.DataContext>
-    <DockPanel Margin="0" Background="#1E1E1E">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
 
-        <!--#region *** TitleBar ***-->
+            <BeginStoryboard>
+                <Storyboard BeginTime="0:0:1">
+                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="g"
+                                                   Storyboard.TargetProperty="Visibility">
+                        <DiscreteObjectKeyFrame Value="{x:Static Visibility.Visible}" />
+                    </ObjectAnimationUsingKeyFrames>
+                </Storyboard>
+
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <DockPanel Margin="0"
+               Background="#252525">
+
+        <!--#region  TitleBar -->
         <Border
             Height="40"
             Background="#252525"
@@ -84,8 +100,57 @@
 
             </Grid>
         </Border>
-        <!--#endregion *** TitleBar ***-->
+        <!--#endregion  TitleBar -->
 
+        <!--#region MonitoringBar -->
+        <Border x:Name="g" HorizontalAlignment="Center"
+                Visibility="Visible"
+                Background="#252525"
+                DockPanel.Dock="Bottom"
+                Height="20">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Foreground="White"
+                           VerticalAlignment="Center">
+                    <Path Width="15"
+                          Margin="0,0,0,-2"
+                          Data="{StaticResource SystemTime}"
+                          Fill="White"
+                          Stretch="Uniform" />
+                    <Run Text="{Binding Global.AppLang.SystemTime}" />
+                    <Run Text="{Binding Global.SystemTime}" />
+                </TextBlock>
+                <Border BorderBrush="LightGray"
+                        BorderThickness="1,0,0,0"
+                        Margin="10,3" />
+                <TextBlock Foreground="White"
+                           VerticalAlignment="Center">
+                    <Path Grid.Row="1"
+                          Width="15"
+                          Margin="0,0,0,-2"
+                          Data="{StaticResource AlarmBell}"
+                          Fill="White"
+                          Stretch="Uniform" />
+                    <Run Text="{Binding Global.AppLang.NextAlarm}" />
+                    <Run Text="{Binding Global.CurrentAlarm}" />
+                </TextBlock>
+                <Border BorderBrush="LightGray"
+                        BorderThickness="1,0,0,0"
+                        Margin="10,3" />
+                <TextBlock Foreground="White"
+                           VerticalAlignment="Center">
+                    <Path Grid.Row="2"
+                          Height="15"
+                          Data="{StaticResource TimeLeft}"
+                          Fill="White"
+                          Margin="0,0,0,-2"
+                          Stretch="Uniform" />
+                    <Run Text="{Binding Global.AppLang.TimeLeft}" />
+                    <Run Text="{Binding Global.ShowTimeLeft}" />
+                </TextBlock>
+            </StackPanel>
+        </Border>
+        <!--#endregion *** MonitoringBar ***-->
+        
         <!--#region *** Main Menu ***-->
         <Border
             Width="48"
@@ -142,10 +207,10 @@
             </StackPanel>
         </Border>
         <!--#endregion *** Main Menu ***-->
-
+      
         <!--#region *** Render Views ***-->
         <ContentPresenter Content="{Binding CurrentView}" />
         <!--#endregion *** Render Views ***-->
-
+        
     </DockPanel>
 </Window>

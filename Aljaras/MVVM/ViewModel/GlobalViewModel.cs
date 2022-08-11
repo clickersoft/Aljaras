@@ -38,7 +38,7 @@ namespace Aljaras.MVVM.ViewModel
         private AppLanguage appLang = new();
 
         [ObservableProperty]
-        private string monitoringTime = "";
+        private string systemTime = "";
 
         [ObservableProperty]
         private string alertStartTime = "";
@@ -92,9 +92,14 @@ namespace Aljaras.MVVM.ViewModel
         #region Functions
         public static GlobalViewModel Instance { get; set; } = new GlobalViewModel();
 
-        /**/partial void OnGetUserSettingsChanged(UserSettings value)
+        partial void OnGetUserSettingsChanged(UserSettings value)
         {
             AudioPlayer.Repeat = GetUserSettings.RepeatEmergency;
+        }
+
+        partial void OnAppLangChanged(AppLanguage value)
+        {
+            CurrentAlarm = AppLang.NoMoreAlarms;
         }
 
         public GlobalViewModel()
@@ -106,7 +111,7 @@ namespace Aljaras.MVVM.ViewModel
             {
                 while (true)
                 {
-                    Application.Current.Dispatcher.Invoke(() => MonitoringTime = DateTime.Now.ToLongTimeString());
+                    Application.Current.Dispatcher.Invoke(() => SystemTime = DateTime.Now.ToLongTimeString());
                     if (AlarmList != null && AlarmList.Count > 0)
                     {
                         Alarm _alr = AlarmList.FirstOrDefault(x => TrimMilliseconds(x.FullTime) == TrimMilliseconds(DateTime.Now));
@@ -178,15 +183,11 @@ namespace Aljaras.MVVM.ViewModel
                 else
                 {
                     foreach (Alarm _alarm in AlarmList)
-                    {
-                        //MessageBox.Show(_alarm.FullTime.ToString());
                         _alarm.FullTime = ChangeDateOnly(_alarm.FullTime).AddDays(1);
-                        //MessageBox.Show(_alarm.FullTime.ToString());
-                    }
                     NextAlarm();
                 }
             }
-            else CurrentAlarm = "No more alarms...";
+            else CurrentAlarm = AppLang.NoMoreAlarms;
             dispatcherTimer.Tick += dispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 40);
             dispatcherTimer.Start();
@@ -223,10 +224,14 @@ namespace Aljaras.MVVM.ViewModel
                                 AlarmList.Add(_item);
                             }
                             AlarmList = AlarmList.OrderBy(x => x.FullTime).ToList();
-                            IsNOAlarmMessageVisible = "Hidden";
+                            
                         } 
                     }
-                    return;
+                    if (AlarmList != null && AlarmList.Count > 0)
+                    {
+                        IsNOAlarmMessageVisible = "Hidden";
+                        return;
+                    }
                 }
             }
             IsNOAlarmMessageVisible = "Visible";

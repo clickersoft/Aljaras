@@ -11,15 +11,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Windows.Controls.Primitives;
 
 namespace Aljaras.MVVM.ViewModel
 {
     internal partial class AlarmViewModel : ObservableRecipient
     {
         public GlobalViewModel Global { get; } = GlobalViewModel.Instance;
-
-        #region Variables
-        #endregion
 
         #region Observable Properties
         [ObservableProperty]
@@ -44,9 +43,6 @@ namespace Aljaras.MVVM.ViewModel
         private bool enableScheduleTitleTB = false;
 
         [ObservableProperty]
-        private bool enableCheckBox = false;
-
-        [ObservableProperty]
         private long playPauseAlarmButton;
 
         [ObservableProperty]
@@ -66,7 +62,6 @@ namespace Aljaras.MVVM.ViewModel
         {
             CurrentSchedule = new Schedule();
             EnableScheduleTitleTB = true;
-            EnableCheckBox = true;
         }
 
         [RelayCommand]
@@ -125,12 +120,6 @@ namespace Aljaras.MVVM.ViewModel
             CallGlobal();
         }
 
-        private void CallGlobal()
-        {
-            GlobalViewModel.Instance.LoadMonitoringAlarmCollectionData();
-            GlobalViewModel.Instance.NextAlarm();
-        }
-
         [RelayCommand]
         private void SelectAudioFile()
         {
@@ -179,21 +168,18 @@ namespace Aljaras.MVVM.ViewModel
             }
             LoadScheduleCollectionData();
             EnableScheduleTitleTB = false;
-            EnableCheckBox = false;
             CurrentSchedule = new();
             CallGlobal();
         }
 
         [RelayCommand]
-        private void EditSchedule()
+        private void EditSchedule(Schedule obj)
         {
-            if (CurrentSchedule != null && CurrentSchedule.ScheduleId > 0)
-            {
+            CurrentSchedule = obj;
                 EnableScheduleTitleTB = true;
-                EnableCheckBox = true;
-            }
-            else MessageBox.Show("Select Schedule To Edit");
         }
+  
+
 
         [RelayCommand]
         private void DeleteAlarm()
@@ -216,41 +202,51 @@ namespace Aljaras.MVVM.ViewModel
         }
 
         [RelayCommand]
-        private void DeleteSchedule()
+        private void DeleteSchedule(Schedule obj)
         {
-            if (CurrentSchedule != null && CurrentSchedule.ScheduleId > 0)
-            {
-                List<Alarm> ScheduleAlarmList = new();
+            MessageBoxResult messageBoxResult = MessageBox.Show(Global.AppLang.DeleteScheduleNotification, Global.AppLang.Delete +"\"" + obj.ScheduleTitle+"\"", MessageBoxButton.YesNo,MessageBoxImage.Warning);
+            if (messageBoxResult != MessageBoxResult.Yes)
+                return;
                 using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
                 {
-                    // Get a collection (or create, if doesn't exist)
-                    var col = db.GetCollection<Alarm>("Alarms");
+                    var aLarmCol = db.GetCollection<Alarm>("Alarms");
+                    List<Alarm> _aResult = aLarmCol.Find(x => x.ScheduleId.ToString().Contains(obj.ScheduleId.ToString())).ToList();
+                    if (_aResult != null && _aResult.Count > 0)
+                    foreach (var _item in _aResult)
+                            aLarmCol.Delete(_item.AlarmId);
 
-                    var results = col.Find(x => x.ScheduleId.ToString().Contains(CurrentSchedule.ScheduleId.ToString()));
-                    List<Alarm> list = new();
-                    list = results.ToList();
-                    foreach (var _item in list)
-                        col.Delete(_item.AlarmId);
-                }
-
-                // Open database (or create if doesn't exist)
-                using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
-                {
-                    // Get a collection (or create, if doesn't exist)
-                    var col = db.GetCollection<Schedule>("Schedules");
-                    var results = col.Find(x => x.ScheduleId.ToString().Contains(CurrentSchedule.ScheduleId.ToString()));
-                    var rs = results.FirstOrDefault();
-                    col.Delete(rs.ScheduleId);
+                    var scheduleCol = db.GetCollection<Schedule>("Schedules");
+                    Schedule _sResults = scheduleCol.Find(x => x.ScheduleId.ToString().Contains(obj.ScheduleId.ToString())).FirstOrDefault();
+                    if (_sResults != null)
+                        scheduleCol.Delete(_sResults.ScheduleId);
                     MessageBox.Show("Done");
                 }
                 LoadScheduleCollectionData();
                 AlarmList = new();
                 IsNOAlarmMessageVisible = "Visible";
-            }
-            else MessageBox.Show("Select Schedule To Delete");
             CurrentSchedule = new();
             CallGlobal();
         }
+
+        [RelayCommand]
+        private void De_ActivateSchedule(Schedule obj)
+        {
+            using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
+            {
+                var scheduleCol = db.GetCollection<Schedule>("Schedules");
+                Schedule _sResults = scheduleCol.Find(x => x.ScheduleId.ToString().Contains(obj.ScheduleId.ToString())).FirstOrDefault();
+                _sResults.IsScheduleActive = obj.IsScheduleActive;
+                if (_sResults != null)
+                    scheduleCol.Update(_sResults);
+                MessageBox.Show("Done");
+            }
+            CallGlobal();
+        }
+
+
+
+
+
         #endregion
 
         #region Functions
@@ -264,29 +260,27 @@ namespace Aljaras.MVVM.ViewModel
         {
             if (CurrentSchedule != null && CurrentSchedule.ScheduleId > 0)
                 LoadAlarmCollectionData(CurrentSchedule.ScheduleId);
+            EnableScheduleTitleTB = false;
         }
 
-        
-
+        private static void CallGlobal()
+        {
+            GlobalViewModel.Instance.LoadMonitoringAlarmCollectionData();
+            GlobalViewModel.Instance.NextAlarm();
+        }
 
         private void LoadScheduleCollectionData()
         {
-            ScheduleList = new List<Schedule>();
             using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
             {
                 var col = db.GetCollection<Schedule>("Schedules");
-                List<Schedule> list = new List<Schedule>();
                 ScheduleList = col.Query().ToList();
             }
-            if (ScheduleList != null & ScheduleList?.Count > 0)
-            {
+            if (ScheduleList != null && ScheduleList.Count > 0)
                 IsNOScheduleMessageVisible = "Hidden";
-                //CurrentSchedule = new Schedule();
-            }
             else
             {
                 IsNOScheduleMessageVisible = "Visible";
-                EnableCheckBox = true;
                 EnableScheduleTitleTB = true;
             }
         }
@@ -294,15 +288,10 @@ namespace Aljaras.MVVM.ViewModel
         private void LoadAlarmCollectionData(long _SId)
         {
             AlarmList = new();
-
             using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
             {
-                // Get a collection (or create, if doesn't exist)
                 var col = db.GetCollection<Alarm>("Alarms");
-
-                var results = col.Find(x => x.ScheduleId.ToString().Contains(CurrentSchedule.ScheduleId.ToString()));
-                List<Alarm> list = new();
-                AlarmList = results.ToList().OrderBy(x => x.FullTime).ToList();
+                AlarmList = col.Find(x => x.ScheduleId.ToString().Contains(CurrentSchedule.ScheduleId.ToString())).ToList().OrderBy(x => x.FullTime).ToList();;
             }
             if (AlarmList != null && AlarmList.Count > 0)
                 IsNOAlarmMessageVisible = "Hidden";

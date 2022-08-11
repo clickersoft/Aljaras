@@ -141,6 +141,12 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private string _enableRepeat = "Enable Repeat";
-        
+
+        [ObservableProperty]
+        private string _noMoreAlarms = "No more alarms...";
+
+        [ObservableProperty]
+        private string _deleteScheduleNotification = "Are you sure?";
+
     }
 }

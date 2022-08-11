@@ -45,4 +45,6 @@
 	<SelectFile>اختيار ملف</SelectFile>
 	<RepeatEmergency>تكرار انذار الطواريء</RepeatEmergency>
 	<EnableRepeat>تفعيل التكرار</EnableRepeat>
+	<NoMoreAlarms>لا يوجد تنبيهات...</NoMoreAlarms>
+	<DeleteScheduleNotification>هل انت متاكد؟</DeleteScheduleNotification>
 </AppLanguage>

@@ -8,8 +8,8 @@ namespace Aljaras.Core
 {
     internal partial class AudioFilePlayer : ObservableRecipient
     {
-        public GlobalViewModel Global { get; } = GlobalViewModel.Instance;
 
+        #region Observable Properties
         [ObservableProperty]
         private BlockAlignReductionStream? stream = null;
 
@@ -24,7 +24,10 @@ namespace Aljaras.Core
 
         [ObservableProperty]
         private string tmpAudio = "";
+        #endregion
 
+        #region Functions
+        public GlobalViewModel Global { get; } = GlobalViewModel.Instance;
 
         public async Task PlayPauseAudioFile(string fileLocation, bool emergency)
         {
@@ -69,11 +72,12 @@ namespace Aljaras.Core
             Output.Init(stream);
             Output.Play();
         }
+
         public void DisposeWave()
         {
             if (output != null)
             {
-                if (output.PlaybackState == NAudio.Wave.PlaybackState.Playing) output.Stop();
+                if (output.PlaybackState == PlaybackState.Playing) output.Stop();
                 output.Dispose();
                 output = null;
             }
@@ -83,5 +87,7 @@ namespace Aljaras.Core
                 stream = null;
             }
         }
+        #endregion
+
     }
 }

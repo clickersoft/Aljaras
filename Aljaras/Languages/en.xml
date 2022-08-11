@@ -45,4 +45,6 @@
 	<SelectFile>Select File</SelectFile>
 	<RepeatEmergency>Repeat Emergency</RepeatEmergency>
 	<EnableRepeat>Enable Repeat</EnableRepeat>
+	<NoMoreAlarms>No more alarms...</NoMoreAlarms>
+	<DeleteScheduleNotification>Are you sure?</DeleteScheduleNotification>
 </AppLanguage>

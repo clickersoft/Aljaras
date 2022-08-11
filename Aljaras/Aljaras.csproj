@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>SchoolBell.ico</ApplicationIcon>
@@ -13,9 +13,19 @@
     <Copyright>Mustafa Al-Klieb </Copyright>
     <PackageIcon></PackageIcon>
     <IncrementVersionOnBuild>1.yyyy.Mdd.Hmm</IncrementVersionOnBuild>
-    <Version>1.2022.809.2203</Version>
+    <Version>1.2022.811.217</Version>
   </PropertyGroup>
 
+	<Target Name="RemoveDuplicateAnalyzers" BeforeTargets="CoreCompile">
+		<!-- Work around https://github.com/dotnet/wpf/issues/6792 -->
+
+		<ItemGroup>
+			<FilteredAnalyzer Include="@(Analyzer-&gt;Distinct())" />
+			<Analyzer Remove="@(Analyzer)" />
+			<Analyzer Include="@(FilteredAnalyzer)" />
+		</ItemGroup>
+	</Target>
+	
   <ItemGroup>
     <Content Include="SchoolBell.ico" />
   </ItemGroup>
@@ -24,6 +34,12 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
     <PackageReference Include="LiteDB" Version="5.0.12" />
     <PackageReference Include="NAudio" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CommunityToolkit.Mvvm">
+      <HintPath>bin\Debug\net6.0-windows\CommunityToolkit.Mvvm.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -381,6 +397,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Themes\ToolTip.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Themes\Path.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

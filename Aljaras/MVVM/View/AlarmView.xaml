@@ -20,74 +20,102 @@
         </Grid.ColumnDefinitions>
         <!--#region *** Schedule List ***-->
         <GroupBox
-            Padding="5,5,5,0"
-            FontSize="15"
+            FontSize="15" 
             Header="{Binding Global.AppLang.ScheduleList}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />
-                    <RowDefinition Height="50" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Border>
-                    <Grid Grid.Row="2" VerticalAlignment="Center">
+                    <Grid VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
+                            <ColumnDefinition  />
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <CheckBox
-                            Height="20"
-                            Foreground="#252525"
-                            IsChecked="{Binding CurrentSchedule.IsScheduleActive}"
-                            IsEnabled="{Binding EnableCheckBox}"
-                            Style="{DynamicResource SliderCheckBox}" />
                         <Label
-                            Grid.Column="1"
                             VerticalAlignment="Center"
                             Content="{Binding Global.AppLang.Title}"
                             FontFamily="Consolas" />
                         <TextBox
-                            Uid="{Binding CurrentSchedule.ScheduleId}"
-                            Grid.Column="2"
+                            Grid.Column="1"
                             Height="25"
-                            Padding="5,0,5,0"
                             Background="Transparent"
                             BorderBrush="gray"
-                            BorderThickness="0,0,0,1"
+                            BorderThickness="0,0,0,1" IsEnabled="{Binding EnableScheduleTitleTB}"
                             FontFamily="Consolas"
-                            IsEnabled="{Binding EnableScheduleTitleTB}"
                             Text="{Binding CurrentSchedule.ScheduleTitle}" />
+                        <StackPanel Grid.Column="2"
+                                    Orientation="Horizontal">
+                            <Button HorizontalAlignment="Center"
+                                    extensions:Extensions.Icon="{StaticResource NewPathData}"
+                                    Background="Purple"
+                                    Command="{Binding EnableAddNewScheduleCommand}"
+                                    Style="{DynamicResource ListRoundButtons}"
+                                    ToolTip="{Binding Global.AppLang.New}" />
+                            <Border BorderBrush="LightGray"
+                                    BorderThickness="1,0,0,0"
+                                    Margin="3" />
+                            <Button 
+                                    extensions:Extensions.Icon="{StaticResource SavePathData}"
+                                    Background="#FF597ED8"
+                                    Command="{Binding SaveScheduleCommand}"
+                                    Foreground="#FF597ED8"
+                                    Style="{DynamicResource ListRoundButtons}"
+                                    ToolTip="{Binding Global.AppLang.Save}" />
+                        </StackPanel>
                     </Grid>
-                </Border>
-                <ListView
-                    Grid.Row="2"
+                <ListView x:Name="ScheduleListView"
+                    Grid.Row="1" 
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     Background="Azure"
-                    BorderBrush="LightGray"
-                    BorderThickness="1"
+                    BorderBrush="#F1F1F1"
+                          BorderThickness="1"
                     ItemsSource="{Binding ScheduleList}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    SelectedItem="{Binding CurrentSchedule}"
+                          SelectedItem="{Binding CurrentSchedule}"
                     SelectionMode="Single">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                <Path
-                                    Width="25"
-                                    Margin="5,2"
-                                    Data="{StaticResource OldBellPathData}"
-                                    Fill="Green"
-                                    Stretch="Uniform" />
-                                <CheckBox
-                                    Uid="{Binding ScheduleId}"
+                                <Grid Height="30" Width="{Binding ActualWidth, ElementName=ScheduleListView}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <CheckBox 
                                     Height="20"
-                                    Content="{Binding ScheduleTitle}"
                                     Foreground="#252525"
-                                    IsChecked="{Binding IsScheduleActive}"
-                                    IsEnabled="False"
+                                          Command="{Binding ElementName=ScheduleListView, Path=DataContext.De_ActivateScheduleCommand}"
+                                          CommandParameter="{Binding}"
+                                          IsChecked="{Binding IsScheduleActive}"
                                     Style="{DynamicResource SliderCheckBox}" />
-                            </StackPanel>
+                                <TextBlock Grid.Column="1" Text="{Binding ScheduleTitle}" VerticalAlignment="Center" />
+                                <StackPanel Grid.Column="2"
+                                            Margin="0,0,15,0"
+                                            Orientation="Horizontal">
+                                    <Button HorizontalAlignment="Center"
+                                            extensions:Extensions.Icon="{StaticResource EditPathData}"
+                                            Background="Teal"
+                                            Command="{Binding ElementName=ScheduleListView, Path=DataContext.EditScheduleCommand}"
+                                            CommandParameter="{Binding}"
+                                            Style="{DynamicResource ListRoundButtons}"
+                                            ToolTip="{Binding Global.AppLang.Edit}" />
+                                    <Border BorderBrush="LightGray"
+                                            BorderThickness="1,0,0,0"
+                                            Margin="3" />
+                                    <Button  VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             extensions:Extensions.Icon="{StaticResource DeletePathData}"
+                                             Background="#FFDC3636"
+                                             Command="{Binding ElementName=ScheduleListView, Path=DataContext.DeleteScheduleCommand}"
+                                             CommandParameter="{Binding}"
+                                             Style="{DynamicResource ListRoundButtons}"
+                                             ToolTip="{Binding Global.AppLang.Delete}">
+                                    </Button>
+                                    
+                                </StackPanel>
+                            </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -102,52 +130,6 @@
                     TextAlignment="Center"
                     TextWrapping="Wrap"
                     Visibility="{Binding IsNOScheduleMessageVisible}" />
-                <Border Grid.Row="1">
-                    <Grid VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Button
-                            HorizontalAlignment="Center"
-                            extensions:Extensions.Icon="{StaticResource NewPathData}"
-                            Background="Purple"
-                            Command="{Binding EnableAddNewScheduleCommand}"
-                            Content="{Binding Global.AppLang.New}"
-                            Foreground="Purple"
-                            Style="{DynamicResource RoundButtons}" />
-                        <Button
-                            Grid.Column="1"
-                            HorizontalAlignment="Center"
-                            extensions:Extensions.Icon="{StaticResource EditPathData}"
-                            Background="Teal"
-                            Command="{Binding EditScheduleCommand}"
-                            Content="{Binding Global.AppLang.Edit}"
-                            Foreground="Teal"
-                            Style="{DynamicResource RoundButtons}" />
-                        <Button
-                            Grid.Column="2"
-                            extensions:Extensions.Icon="{StaticResource SavePathData}"
-                            Background="#FF597ED8"
-                            Command="{Binding SaveScheduleCommand}"
-                            Content="{Binding Global.AppLang.Save}"
-                            Foreground="#FF597ED8"
-                            Style="{DynamicResource RoundButtons}" />
-                        <Button
-                            Grid.Column="3"
-                            HorizontalAlignment="Center"
-                            extensions:Extensions.Icon="{StaticResource DeletePathData}"
-                            Background="#FFDC3636"
-                            Command="{Binding DeleteScheduleCommand}"
-                            Content="{Binding Global.AppLang.Delete}"
-                            Foreground="#FFDC3636"
-                            Style="{DynamicResource RoundButtons}" />
-                    </Grid>
-                </Border>
-
-
             </Grid>
         </GroupBox>
         <!--#endregion Schedule List-->
@@ -256,9 +238,9 @@
                             extensions:Extensions.Icon="{StaticResource SavePathData}"
                             Background="#FF597ED8"
                             Command="{Binding SaveAlarmCommand}"
-                            Content="{Binding Global.AppLang.Save}"
                             Foreground="#FF597ED8"
-                            Style="{DynamicResource RoundButtons}" />
+                            Style="{DynamicResource RoundButtons}"
+                            ToolTip="{Binding Global.AppLang.Save}" />
                     </Grid>
 
 
@@ -328,9 +310,9 @@
                                 extensions:Extensions.Icon="{StaticResource TimeNowPathData}"
                                 Background="SteelBlue"
                                 Command="{Binding TimeNowCommand}"
-                                Content="{Binding Global.AppLang.TimeNow}"
                                 Foreground="SteelBlue"
-                                Style="{DynamicResource RoundButtons}" />
+                                Style="{DynamicResource RoundButtons}"
+                                ToolTip="{Binding Global.AppLang.TimeNow}" />
 
                         </Grid>
                     </GroupBox>
@@ -410,7 +392,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="60" />
                     </Grid.ColumnDefinitions>
                     <ListView
                         x:Name="AlarmListView"
@@ -469,19 +451,18 @@
                             extensions:Extensions.Icon="M16,0L19.8,12.200003 32,12.200003 22.1,19.700004 25.9,31.900007 16,24.400005 6.0999994,31.900007 9.9000001,19.700004 0,12.200003 12.2,12.200003z"
                             Background="Purple"
                             Command="{Binding NewAlarmCommand}"
-                            Content="{Binding Global.AppLang.New}"
                             Foreground="Purple"
-                            Style="{DynamicResource RoundButtons}" />
+                            Style="{DynamicResource RoundButtons}"
+                            ToolTip="{Binding Global.AppLang.New}" />
                         <Button
                             Grid.Column="3"
-                            Margin="0,0,0,5"
                             HorizontalAlignment="Center"
                             extensions:Extensions.Icon="M17.330995,13.858006L17.330995,29.193001 20.696996,29.193001 20.696996,13.858006z M7.7929944,13.858006L7.7929944,29.193001 11.158995,29.193001 11.158995,13.858006z M2.1839937,11.055007L26.118997,11.055007 26.118997,32 2.1839937,32z M8.1370134,0L20.169955,0 20.169955,3.9250412 28.303,3.9250412 28.303,8.1660004 0,8.1660004 0,3.9250412 8.1370134,3.9250412z"
                             Background="#FFDC3636"
                             Command="{Binding DeleteAlarmCommand}"
-                            Content="{Binding Global.AppLang.Delete}"
                             Foreground="#FFDC3636"
-                            Style="{DynamicResource RoundButtons}" />
+                            Style="{DynamicResource RoundButtons}"
+                            ToolTip="{Binding Global.AppLang.Delete}" />
                     </StackPanel>
 
 

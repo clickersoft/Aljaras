@@ -82,9 +82,6 @@ namespace Aljaras.MVVM.ViewModel
                 GetVersion = "not configured";
             }
 
-          
-
-
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Languages\\en.xml"))
             {
                 AppLanguage overview = new AppLanguage();
@@ -99,9 +96,6 @@ namespace Aljaras.MVVM.ViewModel
                 writer.Serialize(file, overview);
                 file.Close();
             }
-            
-
-
         }
         #endregion
 
