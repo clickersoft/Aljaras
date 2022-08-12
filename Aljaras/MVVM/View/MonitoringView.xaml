@@ -56,7 +56,7 @@
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
                                     FontSize="16"
-                                    Foreground="DarkMagenta">
+                                    Foreground="SeaGreen">
                                     <Run Text="⏰" />
                                     <Run FlowDirection="LeftToRight" Text="{Binding FullTime, StringFormat=t}" />
                                 </TextBlock>
@@ -100,21 +100,20 @@
                 </Grid.RowDefinitions>
                 <Path
                     Width="20"
-                      Data="{StaticResource SystemTime}"
-                      Fill="Green"
+                    Data="{StaticResource SystemTime}"
+                    Fill="Black"
                     Stretch="Uniform" />
                 <TextBlock
                     Grid.Column="1"
                     VerticalAlignment="Center"
                     FontSize="16"
-                    Foreground="Green"
                     Text="{Binding Global.AppLang.SystemTime}" />
                 <TextBlock
                     Grid.Column="2"
                     VerticalAlignment="Center"
-                    FontSize="16">
-                    <Run FlowDirection="LeftToRight"
-                         Text="{Binding Global.SystemTime}" />
+                    FontSize="16"
+                    Foreground="Green">
+                    <Run FlowDirection="LeftToRight" Text="{Binding Global.SystemTime}" />
                 </TextBlock>
 
 
@@ -122,46 +121,43 @@
                 <Path
                     Grid.Row="1"
                     Width="20"
-                      Data="{StaticResource AlarmBell}"
-                    Fill="Blue"
+                    Data="{StaticResource AlarmBell}"
+                    Fill="Black"
                     Stretch="Uniform" />
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="1"
                     VerticalAlignment="Center"
                     FontSize="16"
-                    Foreground="Blue"
                     Text="{Binding Global.AppLang.NextAlarm}" />
                 <TextBlock
                     Grid.Row="1"
                     Grid.Column="2"
                     VerticalAlignment="Center"
                     FontSize="16"
-                    Text="{Binding Global.CurrentAlarm}" />
+                    Foreground="Blue">
+                    <Run FlowDirection="LeftToRight" Text="{Binding Global.CurrentAlarm}" />
+                </TextBlock>
                 <Path
                     Grid.Row="2"
                     Height="20"
                     Data="{StaticResource TimeLeft}"
-                    Fill="Red"
+                    Fill="Black"
                     Stretch="Uniform" />
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="1"
                     VerticalAlignment="Center"
                     FontSize="16"
-                    Foreground="Red"
                     Text="{Binding Global.AppLang.TimeLeft}" />
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="2"
                     VerticalAlignment="Center"
                     FontSize="16"
-                    Text="{Binding Global.ShowTimeLeft}" />
-                <Button Grid.Row="3"
-                        Width="100"
-                        Height="100"
-                        Content="Test"
-                        Command="{Binding Global.TestCommand}"/>
+                    Foreground="OrangeRed">
+                    <Run FlowDirection="LeftToRight" Text="{Binding Global.ShowTimeLeft}" />
+                </TextBlock>
                 <Button
                     Grid.Row="4"
                     Grid.ColumnSpan="4"

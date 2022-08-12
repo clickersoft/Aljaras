@@ -46,5 +46,9 @@
 	<RepeatEmergency>تكرار انذار الطواريء</RepeatEmergency>
 	<EnableRepeat>تفعيل التكرار</EnableRepeat>
 	<NoMoreAlarms>لا يوجد تنبيهات...</NoMoreAlarms>
-	<DeleteScheduleNotification>هل انت متاكد؟</DeleteScheduleNotification>
+	<DeleteNotification>هل انت متاكد؟</DeleteNotification>
+	<Database>قاعدة البيانات</Database>
+	<DatabaseOperations>عمليات على قاعدة البيانات</DatabaseOperations>
+	<Import>استيراد</Import>
+	<Export>تصدير</Export>
 </AppLanguage>

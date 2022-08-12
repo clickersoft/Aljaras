@@ -1,18 +1,12 @@
-﻿using Aljaras.Core;
-using Aljaras.MVVM.Model;
+﻿using Aljaras.MVVM.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiteDB;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Windows.Controls.Primitives;
 
 namespace Aljaras.MVVM.ViewModel
 {
@@ -51,10 +45,27 @@ namespace Aljaras.MVVM.ViewModel
 
         #region RelayCommands
         [RelayCommand]
-        private void ReloadAlarm()
+        private void CloneSchedule(Schedule obj)
         {
-            if (CurrentSchedule != null && CurrentSchedule.ScheduleId > 0)
-                LoadAlarmCollectionData(CurrentSchedule.ScheduleId);
+            using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
+            {
+                var scheduleCol = db.GetCollection<Schedule>("Schedules");
+                var aLarmCol = db.GetCollection<Alarm>("Alarms");
+                List<Alarm> _aResult = aLarmCol.Find(x => x.ScheduleId.ToString().Contains(obj.ScheduleId.ToString())).ToList();
+                obj.ScheduleId = DateTime.Now.Ticks;
+                obj.ScheduleTitle = obj.ScheduleTitle + "Clone";
+                if (_aResult != null && _aResult.Count > 0)
+                    foreach (var _item in _aResult)
+                    {
+                        _item.AlarmId = DateTime.Now.Ticks;
+                        _item.ScheduleId = obj.ScheduleId;
+                    }
+
+                scheduleCol.Insert(obj);
+                aLarmCol.Insert(_aResult);
+            }
+            LoadScheduleCollectionData();
+            CallGlobal();
         }
 
         [RelayCommand]
@@ -65,13 +76,12 @@ namespace Aljaras.MVVM.ViewModel
         }
 
         [RelayCommand]
-        private void NewAlarm(){CurrentAlarm = new Alarm();}
+        private void NewAlarm(){CurrentAlarm = new();}
         
         [RelayCommand]
         private void TimeNow()
         {
             DateTime _dt = DateTime.Now;
-           
             CurrentAlarm.Hour = _dt.ToString("hh"); 
             CurrentAlarm.Minute = _dt.ToString("mm");
             CurrentAlarm.DayTime = _dt.ToString("tt");
@@ -84,14 +94,12 @@ namespace Aljaras.MVVM.ViewModel
             {
                 if (CurrentAlarm != null && !string.IsNullOrEmpty(CurrentAlarm.AlarmTitle) && !string.IsNullOrWhiteSpace(CurrentAlarm.AlarmTitle))
                 { 
-
                     var fileLocation = new string[] { CurrentAlarm.AudioFileLocation, AppDomain.CurrentDomain.BaseDirectory + "Audio\\School.mp3" }.FirstOrDefault(s => !string.IsNullOrEmpty(s) && File.Exists(s)) ?? "";
                     if (string.IsNullOrEmpty(fileLocation))
                     {
                         MessageBox.Show("Not a correct audio file type or location.");
                         return;
                     }
-                    // Open database (or create if doesn't exist)
                     using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
                     {
                         CurrentAlarm.FullTime = DateTime.Parse(CurrentAlarm.Hour + ":" + CurrentAlarm.Minute + " " + CurrentAlarm.DayTime);
@@ -107,7 +115,6 @@ namespace Aljaras.MVVM.ViewModel
                             col.Insert(CurrentAlarm);
                         }
                     }
-                    MessageBox.Show("Done");
                     LoadAlarmCollectionData(CurrentSchedule.ScheduleId);
                 }else MessageBox.Show("invalid title value.");
             }
@@ -123,7 +130,6 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void SelectAudioFile()
         {
-            
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
             string path = AppDomain.CurrentDomain.BaseDirectory + "Audio"; // this is the path that you are checking.
             if (Directory.Exists(path))
@@ -147,8 +153,6 @@ namespace Aljaras.MVVM.ViewModel
         {
             if (CurrentSchedule != null && !string.IsNullOrEmpty(CurrentSchedule.ScheduleTitle) && !string.IsNullOrWhiteSpace(CurrentSchedule.ScheduleTitle))
             {
-                // Open database (or create if doesn't exist)
-                // LiteDatabase(@"Filename=Aljaras.jrsdb;Password='mustafa';connection=shared");
                 using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
                 {
                     Schedule _sch = CurrentSchedule;
@@ -179,23 +183,14 @@ namespace Aljaras.MVVM.ViewModel
                 EnableScheduleTitleTB = true;
         }
   
-
-
         [RelayCommand]
-        private void DeleteAlarm()
+        private void DeleteAlarm(Alarm obj)
         {
-            if (CurrentAlarm != null && CurrentAlarm.AlarmId > 0)
+            using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
             {
-                // Open database (or create if doesn't exist)
-                using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
-                {
-                    var col = db.GetCollection<Alarm>("Alarms");
-                    col.Delete(CurrentAlarm.AlarmId);
-                    MessageBox.Show("Done");
-                    //((MainWindow)System.Windows.Application.Current.MainWindow).RefreshPage();
-                }
+                var col = db.GetCollection<Alarm>("Alarms");
+                col.Delete(obj.AlarmId);
             }
-            else MessageBox.Show("Select alarm to delete");
             LoadAlarmCollectionData(CurrentSchedule.ScheduleId);
             CurrentAlarm = new();
             CallGlobal();
@@ -204,7 +199,7 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void DeleteSchedule(Schedule obj)
         {
-            MessageBoxResult messageBoxResult = MessageBox.Show(Global.AppLang.DeleteScheduleNotification, Global.AppLang.Delete +"\"" + obj.ScheduleTitle+"\"", MessageBoxButton.YesNo,MessageBoxImage.Warning);
+            MessageBoxResult messageBoxResult = MessageBox.Show(Global.AppLang.DeleteNotification, Global.AppLang.Delete +"\"" + obj.ScheduleTitle+"\"", MessageBoxButton.YesNo,MessageBoxImage.Warning);
             if (messageBoxResult != MessageBoxResult.Yes)
                 return;
                 using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
@@ -219,7 +214,6 @@ namespace Aljaras.MVVM.ViewModel
                     Schedule _sResults = scheduleCol.Find(x => x.ScheduleId.ToString().Contains(obj.ScheduleId.ToString())).FirstOrDefault();
                     if (_sResults != null)
                         scheduleCol.Delete(_sResults.ScheduleId);
-                    MessageBox.Show("Done");
                 }
                 LoadScheduleCollectionData();
                 AlarmList = new();
@@ -238,15 +232,23 @@ namespace Aljaras.MVVM.ViewModel
                 _sResults.IsScheduleActive = obj.IsScheduleActive;
                 if (_sResults != null)
                     scheduleCol.Update(_sResults);
-                MessageBox.Show("Done");
             }
             CallGlobal();
         }
 
-
-
-
-
+        [RelayCommand]
+        private void De_ActivateAlarm(Alarm obj)
+        {
+            using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
+            {
+                var alarmCol = db.GetCollection<Alarm>("Alarms");
+                Alarm _aResults = alarmCol.Find(x => x.AlarmId.ToString().Contains(obj.AlarmId.ToString())).FirstOrDefault();
+                _aResults.IsAlarmActive = obj.IsAlarmActive;
+                if (_aResults != null)
+                    alarmCol.Update(_aResults);
+            }
+            CallGlobal();
+        }
         #endregion
 
         #region Functions
@@ -261,6 +263,8 @@ namespace Aljaras.MVVM.ViewModel
             if (CurrentSchedule != null && CurrentSchedule.ScheduleId > 0)
                 LoadAlarmCollectionData(CurrentSchedule.ScheduleId);
             EnableScheduleTitleTB = false;
+            if (CurrentAlarm == null)
+                CurrentAlarm = new();
         }
 
         private static void CallGlobal()
@@ -298,6 +302,5 @@ namespace Aljaras.MVVM.ViewModel
             else IsNOAlarmMessageVisible = "Visible";
         }
         #endregion
-
     }
 }

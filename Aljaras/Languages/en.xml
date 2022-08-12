@@ -32,7 +32,7 @@
 	<Minute>Minute</Minute>
 	<Daytime>Daytime</Daytime>
 	<Time>Time</Time>
-	<AudioFile>AudioFile</AudioFile>
+	<AudioFile>Audio File</AudioFile>
 	<Language>Language</Language>
 	<Guide>Guide</Guide>
 	<MonitoringNOAlarmMessage>There are no upcoming alarm click the alarm icon ⏰ in the menu to get started.</MonitoringNOAlarmMessage>
@@ -46,5 +46,9 @@
 	<RepeatEmergency>Repeat Emergency</RepeatEmergency>
 	<EnableRepeat>Enable Repeat</EnableRepeat>
 	<NoMoreAlarms>No more alarms...</NoMoreAlarms>
-	<DeleteScheduleNotification>Are you sure?</DeleteScheduleNotification>
+	<DeleteNotification>Are you sure?</DeleteNotification>
+	<Database>Database</Database>
+	<DatabaseOperations>Database Operations</DatabaseOperations>
+	<Import>Import</Import>
+	<Export>Export</Export>
 </AppLanguage>

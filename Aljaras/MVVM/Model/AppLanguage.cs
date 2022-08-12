@@ -146,7 +146,18 @@ namespace Aljaras.MVVM.Model
         private string _noMoreAlarms = "No more alarms...";
 
         [ObservableProperty]
-        private string _deleteScheduleNotification = "Are you sure?";
+        private string _deleteNotification = "Are you sure?";
 
+        [ObservableProperty]
+        private string _database = "Database";
+
+        [ObservableProperty]
+        private string _databaseOperations = "Database Operations";
+
+        [ObservableProperty]
+        private string _import = "Import";
+
+        [ObservableProperty]
+        private string _export = "Export";
     }
 }

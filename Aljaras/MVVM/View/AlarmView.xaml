@@ -13,113 +13,131 @@
     <UserControl.DataContext>
         <viewmodel:AlarmViewModel />
     </UserControl.DataContext>
-    <Grid Margin="10">
+    <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="1.6*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <!--#region *** Schedule List ***-->
-        <GroupBox
-            FontSize="15" 
-            Header="{Binding Global.AppLang.ScheduleList}">
+        <GroupBox FontSize="15" Header="{Binding Global.AppLang.ScheduleList}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                    <Grid VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition  />
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Label
-                            VerticalAlignment="Center"
-                            Content="{Binding Global.AppLang.Title}"
-                            FontFamily="Consolas" />
-                        <TextBox
-                            Grid.Column="1"
-                            Height="25"
-                            Background="Transparent"
-                            BorderBrush="gray"
-                            BorderThickness="0,0,0,1" IsEnabled="{Binding EnableScheduleTitleTB}"
-                            FontFamily="Consolas"
-                            Text="{Binding CurrentSchedule.ScheduleTitle}" />
-                        <StackPanel Grid.Column="2"
-                                    Orientation="Horizontal">
-                            <Button HorizontalAlignment="Center"
-                                    extensions:Extensions.Icon="{StaticResource NewPathData}"
-                                    Background="Purple"
-                                    Command="{Binding EnableAddNewScheduleCommand}"
-                                    Style="{DynamicResource ListRoundButtons}"
-                                    ToolTip="{Binding Global.AppLang.New}" />
-                            <Border BorderBrush="LightGray"
-                                    BorderThickness="1,0,0,0"
-                                    Margin="3" />
-                            <Button 
-                                    extensions:Extensions.Icon="{StaticResource SavePathData}"
-                                    Background="#FF597ED8"
-                                    Command="{Binding SaveScheduleCommand}"
-                                    Foreground="#FF597ED8"
-                                    Style="{DynamicResource ListRoundButtons}"
-                                    ToolTip="{Binding Global.AppLang.Save}" />
-                        </StackPanel>
-                    </Grid>
-                <ListView x:Name="ScheduleListView"
-                    Grid.Row="1" 
+                <Grid VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        VerticalAlignment="Center"
+                        Content="{Binding Global.AppLang.Title}"
+                        FontFamily="Consolas" />
+                    <TextBox
+                        Grid.Column="1"
+                        Height="25"
+                        VerticalContentAlignment="Center"
+                        Background="Transparent"
+                        BorderBrush="gray"
+                        BorderThickness="0,0,0,1"
+                        FontFamily="Consolas"
+                        IsEnabled="{Binding EnableScheduleTitleTB}"
+                        Text="{Binding CurrentSchedule.ScheduleTitle}" />
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <Button
+                            HorizontalAlignment="Center"
+                            extensions:Extensions.Icon="{StaticResource NewPathData}"
+                            Background="Purple"
+                            Command="{Binding EnableAddNewScheduleCommand}"
+                            Style="{DynamicResource ListRoundButtons}"
+                            ToolTip="{Binding Global.AppLang.New}" />
+                        <Border
+                            Margin="3"
+                            BorderBrush="LightGray"
+                            BorderThickness="1,0,0,0" />
+                        <Button
+                            extensions:Extensions.Icon="{StaticResource SavePathData}"
+                            Background="#FF597ED8"
+                            Command="{Binding SaveScheduleCommand}"
+                            Foreground="#FF597ED8"
+                            Style="{DynamicResource ListRoundButtons}"
+                            ToolTip="{Binding Global.AppLang.Save}" />
+                    </StackPanel>
+                </Grid>
+                <ListView
+                    x:Name="ScheduleListView"
+                    Grid.Row="1"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
-                    Background="Azure"
-                    BorderBrush="#F1F1F1"
-                          BorderThickness="1"
+                    Background="Transparent"
+                    BorderThickness="0"
                     ItemsSource="{Binding ScheduleList}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          SelectedItem="{Binding CurrentSchedule}"
+                    SelectedItem="{Binding CurrentSchedule}"
                     SelectionMode="Single">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                                <Grid Height="30" Width="{Binding ActualWidth, ElementName=ScheduleListView}">
+                            <Grid Width="{Binding ActualWidth, ElementName=ScheduleListView}" Height="30">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <CheckBox 
+                                <CheckBox
                                     Height="20"
+                                    Command="{Binding ElementName=ScheduleListView, Path=DataContext.De_ActivateScheduleCommand}"
+                                    CommandParameter="{Binding}"
                                     Foreground="#252525"
-                                          Command="{Binding ElementName=ScheduleListView, Path=DataContext.De_ActivateScheduleCommand}"
-                                          CommandParameter="{Binding}"
-                                          IsChecked="{Binding IsScheduleActive}"
+                                    IsChecked="{Binding IsScheduleActive}"
                                     Style="{DynamicResource SliderCheckBox}" />
-                                <TextBlock Grid.Column="1" Text="{Binding ScheduleTitle}" VerticalAlignment="Center" />
-                                <StackPanel Grid.Column="2"
-                                            Margin="0,0,15,0"
-                                            Orientation="Horizontal">
-                                    <Button HorizontalAlignment="Center"
-                                            extensions:Extensions.Icon="{StaticResource EditPathData}"
-                                            Background="Teal"
-                                            Command="{Binding ElementName=ScheduleListView, Path=DataContext.EditScheduleCommand}"
-                                            CommandParameter="{Binding}"
-                                            Style="{DynamicResource ListRoundButtons}"
-                                            ToolTip="{Binding Global.AppLang.Edit}" />
-                                    <Border BorderBrush="LightGray"
-                                            BorderThickness="1,0,0,0"
-                                            Margin="3" />
-                                    <Button  VerticalAlignment="Center"
-                                             HorizontalAlignment="Center"
-                                             extensions:Extensions.Icon="{StaticResource DeletePathData}"
-                                             Background="#FFDC3636"
-                                             Command="{Binding ElementName=ScheduleListView, Path=DataContext.DeleteScheduleCommand}"
-                                             CommandParameter="{Binding}"
-                                             Style="{DynamicResource ListRoundButtons}"
-                                             ToolTip="{Binding Global.AppLang.Delete}">
-                                    </Button>
-                                    
+                                <TextBlock
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding ScheduleTitle}" />
+                                <StackPanel
+                                    Grid.Column="2"
+                                    Margin="0,0,30,0"
+                                    Orientation="Horizontal">
+                                    <Button
+                                        HorizontalAlignment="Center"
+                                        extensions:Extensions.Icon="{StaticResource EditPathData}"
+                                        Background="Teal"
+                                        Command="{Binding ElementName=ScheduleListView, Path=DataContext.EditScheduleCommand}"
+                                        CommandParameter="{Binding}"
+                                        Style="{DynamicResource ListRoundButtons}"
+                                        ToolTip="{Binding Global.AppLang.Edit}" />
+                                    <Border
+                                        Margin="3"
+                                        BorderBrush="LightGray"
+                                        BorderThickness="1,0,0,0" />
+                                    <Button
+                                        HorizontalAlignment="Center"
+                                        extensions:Extensions.Icon="M15.844,11.559021L15.844,15.695984C15.844,15.695984,15.764998,18.413025,12.761999,18.177002L9.253997,18.194031 9.253997,29.643982C9.253997,29.908997,9.4619972,30.117004,9.7219984,30.117004L22.904995,30.117004C23.163998,30.117004,23.371998,29.90802,23.371998,29.643982L23.374996,29.643982 23.374996,12.026978C23.374996,11.768982,23.166996,11.559021,22.906994,11.559021z M10.267996,2.28302L10.267996,7.3029785C10.267996,7.3029785,10.176001,10.598999,6.5360023,10.315002L2.2779993,10.333008 2.2779993,24.223022C2.2779995,24.536987,2.5360028,24.79303,2.8560022,24.79303L7.368003,24.79303 7.368003,17.700012 13.235998,11.47998 13.251997,11.47998 14.971998,9.6740112 19.405996,9.6740112 19.405996,2.8499756C19.405996,2.5369873,19.151999,2.28302,18.835997,2.28302z M9.2209999,0L18.837996,0C20.415999,0,21.695997,1.2789917,21.695997,2.8530273L21.695997,9.677002 22.902996,9.677002 22.905995,9.6749878C24.202999,9.6749878,25.258999,10.728027,25.258999,12.028015L25.258999,29.643982C25.258999,30.945984,24.202999,32,22.905995,32L9.7229978,32C8.4230033,32,7.3690025,30.944031,7.3690025,29.643982L7.3690025,27.078003 2.8570017,27.078003C1.2770001,27.078003,-1.3611906E-07,25.798035,1.4210855E-14,24.221985L1.4210855E-14,9.7319946 7.1129981,2.1940308 7.140998,2.1940308z"
+                                        Background="Purple"
+                                        Command="{Binding ElementName=ScheduleListView, Path=DataContext.CloneScheduleCommand}"
+                                        CommandParameter="{Binding}"
+                                        Style="{DynamicResource ListRoundButtons}"
+                                        ToolTip="{Binding Global.AppLang.Edit}" />
+                                    <Border
+                                        Margin="3"
+                                        BorderBrush="LightGray"
+                                        BorderThickness="1,0,0,0" />
+                                    <Button
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        extensions:Extensions.Icon="{StaticResource DeletePathData}"
+                                        Background="#FFDC3636"
+                                        Command="{Binding ElementName=ScheduleListView, Path=DataContext.DeleteScheduleCommand}"
+                                        CommandParameter="{Binding}"
+                                        Style="{DynamicResource ListRoundButtons}"
+                                        ToolTip="{Binding Global.AppLang.Delete}" />
+
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-
                 <TextBlock
                     Grid.Row="2"
                     Margin="10"
@@ -136,13 +154,12 @@
 
 
         <!--#region *** Alerts Form ***-->
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Margin="5,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <GroupBox
-                Margin="5"
                 Padding="5,5,5,0"
                 FontSize="15"
                 Header="{Binding Global.AppLang.AlertInformation}">
@@ -156,76 +173,57 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-
-
                     <GroupBox Grid.RowSpan="3" Header="{Binding Global.AppLang.Days}">
                         <StackPanel Orientation="Vertical">
                             <CheckBox
                                 Margin="0,3"
                                 Content="{Binding Global.AppLang.Fri}"
                                 IsChecked="{Binding CurrentAlarm.Fri}"
-                                IsEnabled="True"
                                 Style="{DynamicResource SliderCheckBox}" />
                             <CheckBox
                                 Margin="0,3"
                                 Content="{Binding Global.AppLang.Sat}"
                                 IsChecked="{Binding CurrentAlarm.Sat}"
-                                IsEnabled="True"
                                 Style="{DynamicResource SliderCheckBox}" />
                             <CheckBox
                                 Margin="0,3"
                                 Content="{Binding Global.AppLang.Sun}"
                                 IsChecked="{Binding CurrentAlarm.Sun}"
-                                IsEnabled="True"
                                 Style="{DynamicResource SliderCheckBox}" />
                             <CheckBox
                                 Margin="0,3"
                                 Content="{Binding Global.AppLang.Mon}"
                                 IsChecked="{Binding CurrentAlarm.Mon}"
-                                IsEnabled="True"
                                 Style="{DynamicResource SliderCheckBox}" />
                             <CheckBox
                                 Margin="0,3"
                                 Content="{Binding Global.AppLang.Tue}"
                                 IsChecked="{Binding CurrentAlarm.Tue}"
-                                IsEnabled="True"
                                 Style="{DynamicResource SliderCheckBox}" />
                             <CheckBox
                                 Margin="0,3"
                                 Content="{Binding Global.AppLang.Wed}"
                                 IsChecked="{Binding CurrentAlarm.Wed}"
-                                IsEnabled="True"
                                 Style="{DynamicResource SliderCheckBox}" />
                             <CheckBox
-                                Margin="0,3"
                                 Content="{Binding Global.AppLang.Thu}"
                                 IsChecked="{Binding CurrentAlarm.Thu}"
-                                IsEnabled="True"
                                 Style="{DynamicResource SliderCheckBox}" />
                         </StackPanel>
                     </GroupBox>
                     <Grid Grid.Column="1" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
-                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <CheckBox
-                            Width="40"
-                            Height="20"
-                            Margin="10,0,0,0"
-                            Foreground="#252525"
-                            IsChecked="{Binding CurrentAlarm.IsAlarmActive}"
-                            Style="{DynamicResource SliderCheckBox}" />
                         <Label
-                            Grid.Column="1"
                             VerticalAlignment="Center"
                             Content="{Binding Global.AppLang.Title}"
                             FontFamily="Consolas" />
                         <TextBox
                             Uid="{Binding CurrentAlarm.ScheduleId}"
-                            Grid.Column="2"
+                            Grid.Column="1"
                             Height="25"
                             Padding="5,0,5,0"
                             Background="Transparent"
@@ -233,14 +231,26 @@
                             BorderThickness="0,0,0,1"
                             FontFamily="Consolas"
                             Text="{Binding CurrentAlarm.AlarmTitle}" />
-                        <Button
-                            Grid.Column="3"
-                            extensions:Extensions.Icon="{StaticResource SavePathData}"
-                            Background="#FF597ED8"
-                            Command="{Binding SaveAlarmCommand}"
-                            Foreground="#FF597ED8"
-                            Style="{DynamicResource RoundButtons}"
-                            ToolTip="{Binding Global.AppLang.Save}" />
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <Button
+                                HorizontalAlignment="Center"
+                                extensions:Extensions.Icon="{StaticResource NewPathData}"
+                                Background="Purple"
+                                Command="{Binding NewAlarmCommand}"
+                                Style="{DynamicResource ListRoundButtons}"
+                                ToolTip="{Binding Global.AppLang.New}" />
+                            <Border
+                                Margin="3"
+                                BorderBrush="LightGray"
+                                BorderThickness="1,0,0,0" />
+                            <Button
+                                extensions:Extensions.Icon="{StaticResource SavePathData}"
+                                Background="#FF597ED8"
+                                Command="{Binding SaveAlarmCommand}"
+                                Foreground="#FF597ED8"
+                                Style="{DynamicResource ListRoundButtons}"
+                                ToolTip="{Binding Global.AppLang.Save}" />
+                        </StackPanel>
                     </Grid>
 
 
@@ -248,7 +258,7 @@
                     <GroupBox
                         Grid.Row="1"
                         Grid.Column="1"
-                        Margin="10,0,0,0"
+                        Margin="10,-10,0,0"
                         Header="{Binding Global.AppLang.Time}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -261,6 +271,10 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
+                            <Border
+                                Grid.ColumnSpan="4"
+                                Background="#F1F1F1"
+                                CornerRadius="10" />
                             <Label HorizontalAlignment="Center" Content="{Binding Global.AppLang.Hour}" />
                             <Label
                                 Grid.Column="1"
@@ -305,7 +319,6 @@
                             <Button
                                 Grid.RowSpan="2"
                                 Grid.Column="3"
-                                Width="80"
                                 HorizontalAlignment="Center"
                                 extensions:Extensions.Icon="{StaticResource TimeNowPathData}"
                                 Background="SteelBlue"
@@ -323,63 +336,41 @@
                         Header="{Binding Global.AppLang.AudioFile}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="auto" />
+                                <ColumnDefinition />
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
+                            <Button
+                                HorizontalAlignment="Center"
+                                Panel.ZIndex="10"
+                                extensions:Extensions.Icon="{StaticResource AudiFilePathData}"
+                                Background="CornflowerBlue"
+                                Command="{Binding SelectAudioFileCommand}"
+                                Style="{DynamicResource RoundButtons}" />
                             <TextBox
-                                Name="AudioFileName"
+                                Grid.ColumnSpan="3"
                                 Height="30"
+                                Margin="15,0,85,0"
+                                Padding="20,0,0,0"
                                 VerticalContentAlignment="Center"
+                                Background="White"
                                 BorderBrush="CornflowerBlue"
-                                BorderThickness="0,0,0,1"
-                                FontSize="14"
                                 FontWeight="Bold"
-                                Foreground="CornflowerBlue"
                                 IsManipulationEnabled="False"
                                 Text="{Binding CurrentAlarm.AudioFileLocation}"
                                 TextWrapping="Wrap"
                                 VerticalScrollBarVisibility="Auto" />
                             <Button
-                                Grid.Column="1"
-                                Margin="1,0"
-                                Background="Transparent"
-                                BorderBrush="LightGray"
-                                BorderThickness="0"
-                                Command="{Binding SelectAudioFileCommand}">
-                                <Path
-                                    Height="40"
-                                    Margin="3"
-                                    Data="{StaticResource AudiFilePathData}"
-                                    Fill="CornflowerBlue"
-                                    Stretch="Uniform" />
-                            </Button>
-                            <Button
-                                Name="PlayPauseButton"
                                 Grid.Column="2"
-                                Background="Transparent"
-                                BorderBrush="LightGray"
-                                BorderThickness="1,0,0,0"
-                                Command="{Binding PlayPauseAudioFileCommand}">
-                                <Grid Height="40" Margin="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Path
-                                        Data="{StaticResource PlayStopPathData}"
-                                        Fill="MediumVioletRed"
-                                        Stretch="Uniform" />
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Margin="5,0,0,0"
-                                        VerticalAlignment="Center"
-                                        FontWeight="Bold"
-                                        Foreground="MediumVioletRed"
-                                        Text="{Binding Global.AppLang.PlayStop}" />
-                                </Grid>
-
-                            </Button>
+                                Height="50"
+                                HorizontalAlignment="Center"
+                                extensions:Extensions.Icon="{StaticResource PlayStopPathData}"
+                                Background="MediumVioletRed"
+                                Command="{Binding PlayPauseAudioFileCommand}"
+                                Content="{Binding Global.AppLang.PlayStop}"
+                                FontWeight="Bold"
+                                Foreground="MediumVioletRed"
+                                Style="{DynamicResource RoundButtons}" />
                         </Grid>
                     </GroupBox>
                 </Grid>
@@ -387,19 +378,15 @@
 
             <GroupBox
                 Grid.Row="1"
-                Margin="5"
+                Margin="0,5,0,0"
+                FontSize="14"
                 Header="{Binding Global.AppLang.AlarmList}">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="60" />
-                    </Grid.ColumnDefinitions>
                     <ListView
                         x:Name="AlarmListView"
                         d:ItemsSource="{d:SampleData ItemCount=5}"
-                        Background="AliceBlue"
-                        BorderBrush="LightGray"
-                        BorderThickness="1"
+                        Background="Transparent"
+                        BorderThickness="0"
                         ItemsSource="{Binding AlarmList}"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                         SelectedItem="{Binding CurrentAlarm}"
@@ -408,19 +395,25 @@
                             <DataTemplate>
                                 <Grid Width="{Binding ActualWidth, ElementName=AlarmListView}">
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
-                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <CheckBox
                                         Uid="{Binding AlarmId}"
                                         Height="20"
-                                        Content="{Binding AlarmTitle}"
+                                        Command="{Binding ElementName=AlarmListView, Path=DataContext.De_ActivateAlarmCommand}"
+                                        CommandParameter="{Binding}"
                                         Foreground="#252525"
                                         IsChecked="{Binding IsAlarmActive}"
-                                        IsEnabled="False"
                                         Style="{DynamicResource SliderCheckBox}" />
                                     <TextBlock
                                         Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding AlarmTitle}" />
+                                    <TextBlock
+                                        Grid.Column="2"
                                         Margin="20,0"
                                         VerticalAlignment="Center"
                                         FontSize="16"
@@ -428,6 +421,19 @@
                                         <Run Text="⏰" />
                                         <Run FlowDirection="LeftToRight" Text="{Binding FullTime, StringFormat=t}" />
                                     </TextBlock>
+
+                                    <Button
+                                        Grid.Column="3"
+                                        Margin="0,0,30,0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        extensions:Extensions.Icon="{StaticResource DeletePathData}"
+                                        Background="#FFDC3636"
+                                        Command="{Binding ElementName=AlarmListView, Path=DataContext.DeleteAlarmCommand}"
+                                        CommandParameter="{Binding}"
+                                        Style="{DynamicResource ListRoundButtons}"
+                                        ToolTip="{Binding Global.AppLang.Delete}" />
+
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -441,31 +447,6 @@
                         TextAlignment="Center"
                         TextWrapping="Wrap"
                         Visibility="{Binding IsNOAlarmMessageVisible}" />
-                    <StackPanel
-                        Grid.Column="1"
-                        VerticalAlignment="Center"
-                        Orientation="Vertical">
-                        <Button
-                            Margin="0,0,0,5"
-                            HorizontalAlignment="Center"
-                            extensions:Extensions.Icon="M16,0L19.8,12.200003 32,12.200003 22.1,19.700004 25.9,31.900007 16,24.400005 6.0999994,31.900007 9.9000001,19.700004 0,12.200003 12.2,12.200003z"
-                            Background="Purple"
-                            Command="{Binding NewAlarmCommand}"
-                            Foreground="Purple"
-                            Style="{DynamicResource RoundButtons}"
-                            ToolTip="{Binding Global.AppLang.New}" />
-                        <Button
-                            Grid.Column="3"
-                            HorizontalAlignment="Center"
-                            extensions:Extensions.Icon="M17.330995,13.858006L17.330995,29.193001 20.696996,29.193001 20.696996,13.858006z M7.7929944,13.858006L7.7929944,29.193001 11.158995,29.193001 11.158995,13.858006z M2.1839937,11.055007L26.118997,11.055007 26.118997,32 2.1839937,32z M8.1370134,0L20.169955,0 20.169955,3.9250412 28.303,3.9250412 28.303,8.1660004 0,8.1660004 0,3.9250412 8.1370134,3.9250412z"
-                            Background="#FFDC3636"
-                            Command="{Binding DeleteAlarmCommand}"
-                            Foreground="#FFDC3636"
-                            Style="{DynamicResource RoundButtons}"
-                            ToolTip="{Binding Global.AppLang.Delete}" />
-                    </StackPanel>
-
-
                 </Grid>
 
             </GroupBox>

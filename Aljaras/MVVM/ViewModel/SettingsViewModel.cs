@@ -7,6 +7,11 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows;
 using LiteDB;
 using System.Linq;
+using System.Windows.Forms;
+using Microsoft.Win32;
+using MessageBox = System.Windows.MessageBox;
+using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace Aljaras.MVVM.ViewModel
 {
@@ -15,13 +20,58 @@ namespace Aljaras.MVVM.ViewModel
 
         public GlobalViewModel Global { get; } = GlobalViewModel.Instance;
 
+        #region Observable Properties
         [ObservableProperty]
         private List<string> _lang = new();
 
         [ObservableProperty]
         private UserSettings userSet = new();
+        #endregion
 
         #region RelayCommands
+        [RelayCommand]
+        private void ImportDataBase()
+        {
+            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            openFileDialog.Filter = "Aljaras DataBase (*.jrsdb;*.jrsbck)|*.jrsdb;*.jrsbck;";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string fileExists = AppDomain.CurrentDomain.BaseDirectory + "Aljaras.jrsdb";
+                if (File.Exists(fileExists))
+                    File.Delete(fileExists);
+                File.Copy(openFileDialog.FileName, Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Aljaras.jrsdb"));
+            }
+            Global.LoadMonitoringAlarmCollectionData();
+        }
+
+        [RelayCommand]
+        private void ExportDataBase()
+        {
+            using (var fbd = new FolderBrowserDialog())
+            {
+                DialogResult result = fbd.ShowDialog();
+                string fileToCopy = AppDomain.CurrentDomain.BaseDirectory + "Aljaras.jrsdb";
+                if (File.Exists(fileToCopy))
+                {
+                    string _desFile = Path.Combine(fbd.SelectedPath, Path.GetFileNameWithoutExtension(fileToCopy) + ".jrsbck");
+                    File.Copy(fileToCopy, MakeUnique(_desFile).ToString());
+                }
+                else MessageBox.Show("There is no DataBase To Clone");
+            }
+        }
+
+        [RelayCommand]
+        private void DeleteDataBase()
+        {
+            MessageBoxResult messageBoxResult = MessageBox.Show(Global.AppLang.DeleteNotification, Global.AppLang.Delete+" " + Global.AppLang.Database, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (messageBoxResult != MessageBoxResult.Yes)
+                return;
+            string fileExists = AppDomain.CurrentDomain.BaseDirectory + "Aljaras.jrsdb";
+            if (File.Exists(fileExists))
+                File.Delete(fileExists);
+            Global.LoadMonitoringAlarmCollectionData();
+        }
+
         [RelayCommand]
         private void SaveSettings()
         {
@@ -32,10 +82,11 @@ namespace Aljaras.MVVM.ViewModel
                 if (results != null)
                     col.Update(UserSet);
                 else col.Insert(UserSet);
-                MessageBox.Show("Done");
             }
             Global.GetUserSettings = UserSet;
             Global.SetAppLang();
+            Global.LoadMonitoringAlarmCollectionData();
+            Global.NextAlarm();
         }
 
         [RelayCommand]
@@ -68,8 +119,7 @@ namespace Aljaras.MVVM.ViewModel
         }
         #endregion
 
-
-
+        #region Functions
         public SettingsViewModel()
         {
             if (Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "Languages"))
@@ -87,8 +137,21 @@ namespace Aljaras.MVVM.ViewModel
             }
         }
 
+        public FileInfo MakeUnique(string path)
+        {
+            string dir = Path.GetDirectoryName(path);
+            string fileName = Path.GetFileNameWithoutExtension(path);
+            string fileExt = Path.GetExtension(path);
 
+            for (int i = 1; ; ++i)
+            {
+                if (!File.Exists(path))
+                    return new FileInfo(path);
 
+                path = Path.Combine(dir, fileName + " " + i + fileExt);
+            }
+        }
+        #endregion
 
     }
 }
