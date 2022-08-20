@@ -1,4 +1,5 @@
-﻿using Aljaras.MVVM.Model;
+﻿using Aljaras.Core;
+using Aljaras.MVVM.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiteDB;
@@ -69,9 +70,8 @@ namespace Aljaras.MVVM.ViewModel
             CallGlobal();
             Global.NotificationMessage = new()
             {
-                ActiveMessage = ((MessageVisibility)2).ToString(),
-                BackgroundColor = ((MessageBackground)7).ToString(),
-                Text = Global.AppLang.Done
+                BackgroundColor = MessageBackground.MediumSeaGreen.ToString(),
+                MessageText = Global.AppLang.Done
             };
             GlobalViewModel.Instance.NotificationList.Add(Global.NotificationMessage);
         }
@@ -91,9 +91,8 @@ namespace Aljaras.MVVM.ViewModel
             CallGlobal();
             Global.NotificationMessage = new()
             {
-                ActiveMessage = ((MessageVisibility)2).ToString(),
-                BackgroundColor = ((MessageBackground)7).ToString(),
-                Text = Global.AppLang.Done
+                BackgroundColor = MessageBackground.SeaGreen.ToString(),
+                MessageText = Global.AppLang.Done
             };
             GlobalViewModel.Instance.NotificationList.Add(Global.NotificationMessage);
         }
@@ -128,9 +127,8 @@ namespace Aljaras.MVVM.ViewModel
                     {
                         Global.NotificationMessage = new()
                         {
-                            ActiveMessage = ((MessageVisibility)2).ToString(),
-                            BackgroundColor = ((MessageBackground)2).ToString(),
-                            Text = Global.AppLang.NotCorrectAudio
+                            BackgroundColor = MessageBackground.IndianRed.ToString(),
+                            MessageText = Global.AppLang.NotCorrectAudio
                         };
                         GlobalViewModel.Instance.NotificationList.Add(Global.NotificationMessage);
                         return;
@@ -156,9 +154,8 @@ namespace Aljaras.MVVM.ViewModel
                 {
                 Global.NotificationMessage = new()
                     {
-                        ActiveMessage = ((MessageVisibility)2).ToString(),
-                        BackgroundColor = ((MessageBackground)2).ToString(),
-                        Text = Global.AppLang.InvalidTitle
+                        BackgroundColor = MessageBackground.IndianRed.ToString(),
+                        MessageText = Global.AppLang.InvalidTitle
                     };
                     GlobalViewModel.Instance.NotificationList.Add(Global.NotificationMessage);
                 }
@@ -167,9 +164,8 @@ namespace Aljaras.MVVM.ViewModel
             {
                 Global.NotificationMessage = new()
                 {
-                    ActiveMessage = ((MessageVisibility)2).ToString(),
-                    BackgroundColor = ((MessageBackground)2).ToString(),
-                    Text = Global.AppLang.SelectSchedule
+                    BackgroundColor = MessageBackground.IndianRed.ToString(),
+                    MessageText = Global.AppLang.SelectSchedule
                 };
                 GlobalViewModel.Instance.NotificationList.Add(Global.NotificationMessage);
                 return;
@@ -218,9 +214,8 @@ namespace Aljaras.MVVM.ViewModel
                 }
                 Global.NotificationMessage = new()
                 {
-                    ActiveMessage = ((MessageVisibility)2).ToString(),
-                    BackgroundColor = ((MessageBackground)7).ToString(),
-                    Text = Global.AppLang.Done
+                    BackgroundColor = MessageBackground.MediumSeaGreen.ToString(),
+                    MessageText = Global.AppLang.Done
                 };
                 GlobalViewModel.Instance.NotificationList.Add(Global.NotificationMessage);
             }
@@ -228,9 +223,8 @@ namespace Aljaras.MVVM.ViewModel
             {
                 Global.NotificationMessage = new()
                 {
-                    ActiveMessage = ((MessageVisibility)2).ToString(),
-                    BackgroundColor = ((MessageBackground)2).ToString(),
-                    Text = Global.AppLang.InvalidTitle
+                    BackgroundColor = MessageBackground.IndianRed.ToString(),
+                    MessageText = Global.AppLang.InvalidTitle
                 };
                 GlobalViewModel.Instance.NotificationList.Add(Global.NotificationMessage);
             }
@@ -255,9 +249,8 @@ namespace Aljaras.MVVM.ViewModel
                 col.Delete(obj.AlarmId);
                 Global.NotificationMessage = new()
                 {
-                    ActiveMessage = ((MessageVisibility)2).ToString(),
-                    BackgroundColor = ((MessageBackground)2).ToString(),
-                    Text = Global.AppLang.Done
+                    BackgroundColor = MessageBackground.IndianRed.ToString(),
+                    MessageText = Global.AppLang.Done
                 };
                 GlobalViewModel.Instance.NotificationList.Add(Global.NotificationMessage);
             }
@@ -287,9 +280,8 @@ namespace Aljaras.MVVM.ViewModel
                 }
             Global.NotificationMessage = new()
             {
-                ActiveMessage = ((MessageVisibility)2).ToString(),
-                BackgroundColor = ((MessageBackground)2).ToString(),
-                Text = Global.AppLang.Done
+                BackgroundColor = MessageBackground.IndianRed.ToString(),
+                MessageText = Global.AppLang.Done
             };
             GlobalViewModel.Instance.NotificationList.Add(Global.NotificationMessage);
             LoadScheduleCollectionData();
@@ -312,9 +304,8 @@ namespace Aljaras.MVVM.ViewModel
             }
             Global.NotificationMessage = new()
             {
-                ActiveMessage = ((MessageVisibility)2).ToString(),
-                BackgroundColor = ((MessageBackground)2).ToString(),
-                Text = Global.AppLang.Done
+                BackgroundColor = MessageBackground.IndianRed.ToString(),
+                MessageText = Global.AppLang.Done
             };
             GlobalViewModel.Instance.NotificationList.Add(Global.NotificationMessage);
             CallGlobal();
@@ -333,9 +324,8 @@ namespace Aljaras.MVVM.ViewModel
             }
             Global.NotificationMessage = new()
             {
-                ActiveMessage = ((MessageVisibility)2).ToString(),
-                BackgroundColor = ((MessageBackground)2).ToString(),
-                Text = Global.AppLang.Done
+                BackgroundColor = MessageBackground.IndianRed.ToString(),
+                MessageText = Global.AppLang.Done
             };
             GlobalViewModel.Instance.NotificationList.Add(Global.NotificationMessage);
             CallGlobal();

@@ -3,14 +3,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:extensions="clr-namespace:Aljaras.Core"
-    xmlns:local="clr-namespace:Aljaras.MVVM.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    Background="White"
+    Background="{StaticResource WhiteBrush}"
     mc:Ignorable="d">
-    <Grid Margin="10" Background="White">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
@@ -24,17 +22,17 @@
             <Border
                 Grid.Column="1"
                 Margin="10,0"
-                BorderBrush="LightGray"
+                BorderBrush="{StaticResource LightGrayBrush}"
                 BorderThickness="0,0,0,1" />
             <Grid>
                 <Ellipse
                     Width="25"
                     Height="25"
-                    Stroke="LightGray" />
+                    Stroke="{StaticResource LightGrayBrush}" />
                 <Path
                     Width="15"
-                    Data="M7.1553551,9.2878087C7.3293663,9.2878087,7.4753629,9.3398097,7.4753629,9.3398097L14.466343,11.415788C16.212379,12.17978,17.688333,11.63377,17.688333,11.63377L26.22137,9.434809C26.767393,9.2578109,27.084409,9.7768129,27.084409,9.7768129L27.084409,14.8007C27.191404,15.456692 26.318355,15.675682 26.318355,15.675682 21.513353,17.804669 15.452367,17.422657 15.452367,17.422657 12.612336,17.477648 7.4753629,15.675682 7.4753629,15.675682 6.6583448,15.403714 6.6023141,14.8007 6.6023141,14.8007L6.6023141,9.7768129C6.6633497,9.3768275,6.9313556,9.2888158,7.1553551,9.2878087z M3.0523199,7.654846C3.3613413,7.6538695,3.5423108,8.2468446,3.5423106,8.2468446L4.4103547,21.470579C2.9353152,23.819533 0.89331905,21.525572 0.89331923,21.525572 0.89331905,21.525572 1.9603377,9.284818 2.5573238,8.1378377 2.7453123,7.7798436 2.9123047,7.6558531 3.0523199,7.654846z M17.25535,0L31.589361,3.8499292C32.248361,4.0969337,31.916389,4.5049151,31.916389,4.5049151L17.25535,8.7658466C16.846353,9.011844,15.886328,8.7658466,15.886328,8.7658466L0.26532705,4.5609139C-0.33165886,4.3439077,0.26532714,4.2329171,0.26532705,4.2329171z"
-                    Fill="LightGray"
+                    Data="{StaticResource GraduationPathData}"
+                    Fill="{StaticResource LightGrayBrush}"
                     Stretch="Uniform" />
             </Grid>
             <TextBlock
@@ -42,25 +40,16 @@
                 Margin="10,0"
                 VerticalAlignment="Bottom"
                 FontSize="16"
-                Foreground="#202020"
+                Foreground="{StaticResource DarkBackgroundBrush}"
                 Text="About Me" />
             <StackPanel Orientation="Horizontal" />
         </Grid>
-
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
             <Image
-                Grid.RowSpan="2"
-                Grid.Column="0"
-                Width="Auto"
                 MinWidth="200"
                 Margin="5"
                 HorizontalAlignment="Center"
@@ -69,8 +58,9 @@
                 Source="/mustafa.jpg" />
             <RichTextBox
                 Grid.Column="1"
-                Margin="20"
+                Margin="10"
                 BorderThickness="0"
+                IsReadOnly="True"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
                 ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <FlowDocument>
@@ -83,10 +73,10 @@
                     <Paragraph>
                         <Bold>Experience</Bold>
                     </Paragraph>
-                    <List MarkerOffset="1" MarkerStyle="Disc">
+                    <List MarkerOffset="10" MarkerStyle="Disc">
                         <ListItem>
                             <Paragraph>
-                                <Run Text="Palestinian Ministry of Education - Teacher ~ 2019" />
+                                <Run Text="Palestinian Ministry of Education - Teacher ~ 2019 +" />
                             </Paragraph>
                         </ListItem>
                         <ListItem>
@@ -104,52 +94,75 @@
                                 <Run Text="Palestine  Ahliya  University - Diploma Instructor ~ 2013" />
                             </Paragraph>
                         </ListItem>
+                    </List>
+                    <Paragraph>
+                        <Bold>Contact</Bold>
+                    </Paragraph>
+                    <List MarkerOffset="10" MarkerStyle="Disc">
                         <ListItem>
                             <Paragraph>
-                                <Run Text=" " />
-                                <Hyperlink NavigateUri="http://stackoverflow.com/" ToolTip="Why type when I can copy-paste?">
-                                    <Run Text="Text inside the Hyperlink" />
+                                <Path
+                                    Width="20"
+                                    Data="{StaticResource GmailPathData}"
+                                    Fill="{StaticResource IndianRedBrush}"
+                                    Stretch="Uniform" />
+                                <Run Text="Gmail:" />
+                                <Hyperlink>
+                                    <Run Text="g.musmiwhb@gmail.com" />
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem>
+                            <Paragraph>
+                                <Path
+                                    Width="20"
+                                    Data="{StaticResource FacebookPathData}"
+                                    Fill="{StaticResource SteelBlueBrush}"
+                                    Stretch="Uniform" />
+                                <Run Text="Facebook:" />
+                                <Hyperlink>
+                                    <Run Text="https://www.facebook.com/mustafa.alklieb.9/" />
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem>
+                            <Paragraph>
+                                <Path
+                                    Width="20"
+                                    Data="{StaticResource WhatsAppPathData}"
+                                    Fill="{StaticResource ForestGreenBrush}"
+                                    Stretch="Uniform" />
+                                <Run Text="WhatsApp:" />
+                                <Hyperlink>
+                                    <Run Text="+972597454045" />
                                 </Hyperlink>
                             </Paragraph>
                         </ListItem>
                     </List>
+                    <Paragraph>
+                        <Bold Foreground="{StaticResource IndianRedBrush}">Notice:</Bold>
+                        Audio library from Abu Yousef Software &quot;aljaras 2010&quot;<Hyperlink>
+                            <Run Text="https://aljaras2010.blogspot.com/" />
+                        </Hyperlink>
+                    </Paragraph>
+                    <Paragraph FlowDirection="RightToLeft" TextAlignment="Justify">
+                        أقدم إليكم برنامج الجرس المدرسي لتنظيم الحصص المدرسية وفقاً لبرنامج الفصل الدراسي الخاص بالمدرسة ويركز البرنامج على السهولة والمرونة في الاستخدام ومُقدم بدون أي رسوم مالية فقط أطلب منكم الدعاء لي ولوالدي بالمغفرة والرحمة وجزاكم الله خيراً.
+                        ملاحظة: تم الحصول على اصوات التنبيهات العربية من مطور البرمجيات سيد درويش - موقع المطور (aljaras2010.blogspot.com) - كإضافة للبرنامج فاذا امتلكت مكتبة اصوات اخرى تستطيع استخدامها بسهولة.
+                        بيئة العمل:  Windows 7+, .net 7
+                    </Paragraph>
                 </FlowDocument>
             </RichTextBox>
-            <StackPanel
-                Grid.Row="1"
-                Margin="30,0,0,0"
-                Background="White"
-                Orientation="Horizontal">
-                <Button
-                    Grid.Column="2"
-                    VerticalAlignment="Center"
-                        extensions:Extensions.Carrier="M1.6459961,0L30.005003,0C30.913999,0,31.650999,0.81900024,31.650999,1.8289948L31.650999,30.170998C31.650999,31.181999,30.913999,32,30.005003,32L21.817991,32 21.817991,18.851997 25.751982,18.851997 25.751982,14.581001 21.817991,14.581001 21.817991,13.150002C21.817991,12.110001,22.645994,11.266998,23.670988,11.266998L25.751982,11.266998 25.751982,6.9980011 21.246977,6.9980011C18.509979,6.9980011,16.291992,9.2490005,16.291992,12.027L16.291992,14.581001 12.742003,14.581001 12.742003,18.851997 16.291992,18.851997 16.291992,32 1.6459961,32C0.73699956,32,7.5509888E-08,31.181999,0,30.170998L0,1.8289948C7.5509888E-08,0.81900024,0.73699956,0,1.6459961,0z"
-                    Background="SteelBlue"
-                    Content="Facebook"
-                    Foreground="SteelBlue"
-                    IsEnabled="{Binding Global.RecordButtonEnabled}"
-                    Style="{DynamicResource ListRoundButtons}" />
-                <Button
-                    Grid.Column="2"
-                    Margin="30,0,0,0"
-                    VerticalAlignment="Center"
-                        extensions:Extensions.Carrier="M13.536011,10.258006L4.9530029,15.900001 4.9530029,19.538 27.415039,19.538 27.415039,15.69799 18.407043,10.430995 16.08905,12.047998 16.079041,12.042993z M4.9730225,4.2369974L4.9530029,15.254997 13.041016,9.9119976z M27.415039,4.1139963L18.877014,10.085002 27.415039,15.017998z M6.3060303,0.17300416L13.598022,6.1740082 15.972046,8.1229971 16.447021,7.7519949 25.975037,0.20700074z M0,0L6.092041,0 26.230042,0 32,0 32,19.745001 0,19.745001z"
-                    Background="IndianRed"
-                    Content="Gmail"
-                    Foreground="IndianRed"
-                    IsEnabled="{Binding Global.RecordButtonEnabled}"
-                    Style="{DynamicResource ListRoundButtons}" />
-            </StackPanel>
             <Border
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
                 Margin="10,0"
-                BorderBrush="LightGray"
+                BorderBrush="{StaticResource LightGrayBrush}"
                 BorderThickness="0,0,0,1" />
         </Grid>
         <ListBox
             Name="listBox2"
             Grid.Row="2"
+            Background="Transparent"
             BorderThickness="0">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -158,7 +171,7 @@
             </ListBox.ItemsPanel>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="Padding" Value="30,0,30,0" />
+                    <Setter Property="Padding" Value="30,0" />
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBoxItem>
@@ -166,10 +179,10 @@
                     <Path
                         Width="25"
                         Height="25"
-                        Data="M3.5200032,11.424011L3.5200032,20.384033 7.5839979,16.097046z M23.583993,9.6010132L15.902996,16 23.583993,21.985046z M23.902993,0L31.679999,3.5210571 31.679999,28.897034 24.863,32 23.583993,32 11.615003,19.937012 10.335996,19.937012 2.5599965,26.241028 0,24 0,7.9050293 3.6150044,6.4970093 11.424009,12.161011z"
-                        Fill="DarkViolet"
-                        Stretch="Fill" />
-                    <TextBlock HorizontalAlignment="Center" Foreground="DarkViolet">
+                        Data="{StaticResource VisualStudioPathData}"
+                        Fill="{StaticResource DarkVioletBrush}"
+                        Stretch="Uniform" />
+                    <TextBlock HorizontalAlignment="Center" Foreground="{StaticResource DarkVioletBrush}">
                         <Run Text="Visual Studio" />
                     </TextBlock>
                 </StackPanel>
@@ -179,11 +192,11 @@
                     <Path
                         Width="25"
                         Height="25"
-                        Data="M24.082001,7.656003L23.343002,11.352002 26.123993,11.352002 26.850998,7.656003z M22.817001,0L25.623001,0 24.632996,4.8879972 27.401993,4.8879972 28.367004,0 31.272995,0 30.270996,4.8879972 32,4.8879972 32,7.656003 29.707001,7.656003 28.955002,11.352002 32,11.352002 32,14.108 28.391998,14.108 27.401993,18.996 24.608002,18.996 25.572998,14.108 22.791,14.108 21.800995,18.996 18.970001,18.996 19.960007,14.108 18.255997,14.108 18.255997,11.352002 20.511002,11.352002 21.263,7.656003 18.255997,7.656003 18.255997,4.8879972 21.826004,4.8879972z M8.595993,0C10.843002,-1.5830892E-08 12.667999,0.66399773 14.070999,1.9930005 14.906998,2.7779963 15.533005,3.9049955 15.951004,5.3759961L12.279007,6.252995C12.061996,5.3009992 11.608994,4.5490003 10.919998,3.9979978 10.231003,3.4449964 9.3930054,3.1700022 8.4069977,3.1700025 7.0460052,3.1700022 5.9420013,3.6590009 5.0939941,4.6359983 4.2460022,5.6129956 3.8220062,7.1969958 3.8220062,9.3859987 3.8220062,11.706998 4.2400055,13.360998 5.076004,14.345999 5.9100037,15.331999 6.9960022,15.825003 8.3329926,15.825003 9.3179932,15.825003 10.166,15.511999 10.876007,14.885 11.585999,14.258001 12.095993,13.273001 12.404999,11.927999L16.001007,13.067999C15.449997,15.073004 14.531998,16.562002 13.25,17.535002 11.968002,18.509001 10.341995,18.996 8.3699951,18.996 5.9309998,18.996 3.9259949,18.161001 2.3560028,16.496 0.78599548,14.829 0,12.550001 0,9.6610003 0,6.6040011 0.78999329,4.2280011 2.3690033,2.5369992 3.9470062,0.84699638 6.0220032,-1.5830892E-08 8.595993,0z"
-                        Fill="OrangeRed"
+                        Data="{StaticResource CSharpPathData}"
+                        Fill="{StaticResource OrangeRedBrush}"
                         Stretch="Uniform" />
-                    <TextBlock HorizontalAlignment="Center" Foreground="OrangeRed">
-                        <Run Text="C Sharp" />
+                    <TextBlock HorizontalAlignment="Center" Foreground="{StaticResource OrangeRedBrush}">
+                        <Run Text="CSharp" />
                     </TextBlock>
                 </StackPanel>
             </ListBoxItem>
@@ -193,13 +206,13 @@
                         <Path
                             Width="25"
                             Height="25"
-                            Data="m27.04863,87.660851c13.144978,4.078949 30.480076,6.325912 48.813126,6.325912c7.223,0 14.335999,-0.348991 21.142998,-1.03598c4.121002,-0.415993 7.124001,-4.09494 6.708,-8.215881c-0.417,-4.120941 -4.097,-7.127907 -8.215996,-6.707916c-6.306999,0.637001 -12.913002,0.959999 -19.635002,0.959999c-37.42915,0 -56.7861,-9.301872 -58.389095,-13.110817l0,-17.539902c2.707991,1.293007 5.871981,2.53001 9.574966,3.680012c13.144981,4.07896 30.48008,6.325958 48.813129,6.325958s35.667946,-2.246998 48.812759,-6.325958c20.311943,-6.304031 24.574944,-15.238094 24.574944,-21.623135s-4.263992,-15.319056 -24.574944,-21.623079c-13.144814,-4.079015 -30.47876,-6.326024 -48.812759,-6.326024s-35.667149,2.247993 -48.812126,6.327016c-20.310949,6.303024 -24.574952,15.238054 -24.574952,21.623079l0,106.897125c0,11.567001 13.36399,18.14299 24.574952,21.621994c13.145977,4.078995 30.480076,6.326004 48.813126,6.326004c7.215996,0 14.326996,-0.348999 21.136002,-1.035004c4.120995,-0.414993 7.125,-4.093994 6.709,-8.214996c-0.415001,-4.121002 -4.088005,-7.134995 -8.215004,-6.709c-6.309998,0.636993 -12.914001,0.959 -19.629997,0.959c-37.427151,0 -56.785101,-9.300995 -58.389095,-13.110001l0,-15.7649c3.196987,1.546974 6.581978,2.797966 9.789967,3.793938c13.144981,4.078964 30.48008,6.325958 48.813126,6.325958c6.867004,0 13.649002,-0.315002 20.159004,-0.938004c4.123001,-0.394989 7.145996,-4.056969 6.751999,-8.179909c-0.395004,-4.123947 -4.074997,-7.148895 -8.18,-6.7519c-6.037003,0.576988 -12.340004,0.86998 -18.731003,0.86998c-37.438145,0 -56.796099,-9.306854 -58.390091,-13.112801c-0.012001,-0.551994 -0.088001,-1.085983 -0.213001,-1.602989l0,-17.796738c3.134991,1.498985 6.43898,2.715965 9.57597,3.688957zm6.76598,-65.246752c11.471012,-3.205006 26.403111,-4.970018 42.048145,-4.970018c15.643997,0 30.575996,1.765013 42.046852,4.970018c11.363846,3.175018 15.44986,6.673029 16.250854,7.979036c-0.800995,1.307001 -4.887009,4.805027 -16.250854,7.979046c-11.470856,3.205025 -26.402855,4.970036 -42.046852,4.970036c-15.645035,0 -30.577133,-1.765011 -42.048145,-4.970036c-11.363966,-3.175018 -15.449955,-6.673044 -16.25095,-7.979046c0.800995,-1.306007 4.886984,-4.804018 16.25095,-7.979036z"
-                            Fill="#859ca6"
+                            Data="{StaticResource LiteDBPathData}"
+                            Fill="{StaticResource MediumGrayBrush}"
                             Stretch="Uniform" />
                         <TextBlock
                             Margin="-6,0,0,-4"
                             VerticalAlignment="Bottom"
-                            Foreground="#859ca6">
+                            Foreground="{StaticResource MediumGrayBrush}">
                             <Run FontSize="20" Text="Lite" />
                             <Run
                                 FontSize="20"
@@ -207,8 +220,7 @@
                                 Text="DB" />
                         </TextBlock>
                     </StackPanel>
-
-                    <TextBlock HorizontalAlignment="Center" Foreground="#859ca6">
+                    <TextBlock HorizontalAlignment="Center" Foreground="{StaticResource MediumGrayBrush}">
                         <Run Text="LiteDB" />
                     </TextBlock>
                 </StackPanel>
@@ -219,9 +231,9 @@
                         HorizontalAlignment="Center"
                         FontSize="20"
                         FontWeight="Bold">
-                        <Run Foreground="DodgerBlue" Text="XAML" />
+                        <Run Foreground="{StaticResource DodgerBlueBrush}" Text="XAML" />
                     </TextBlock>
-                    <TextBlock HorizontalAlignment="Center" Foreground="DodgerBlue">
+                    <TextBlock HorizontalAlignment="Center" Foreground="{StaticResource DodgerBlueBrush}">
                         <Run Text="WPF-XAML" />
                     </TextBlock>
                 </StackPanel>
@@ -235,11 +247,11 @@
                             <Path
                                 Margin="-3,-3,0,0"
                                 Data="M 64,6.875 C 50.736931,6.8749995 38.641338,11.015795 29.71875,17.96875 20.796162,24.921705 15.000001,34.870138 15,45.9375 l 0,4 C 6.141206,54.425978 -2.65625e-7,66.200002 0,80 c 3.5e-7,17.663999 10.049452,32 23,32 l 0,-66.0625 c 1e-6,-8.28809 4.289844,-15.915956 11.65625,-21.65625 C 42.022656,18.540956 52.424603,14.875 64,14.875 c 11.575394,0 21.977345,3.665955 29.34375,9.40625 C 100.71016,30.021545 105,37.649411 105,45.9375 L 105,112 c 12.95055,0 23,-14.336001 23,-32 0,-13.799998 -6.14121,-25.574022 -15,-30.0625 l 0,-4 C 113,34.870138 107.20384,24.921705 98.28125,17.96875 89.358662,11.015795 77.263067,6.8750003 64,6.875 z M 26,49 l 0,63 c 2,0 4,-1 5,-3 l 0,-58 c -1,-1 -3,-2 -5,-2 z m 76,0 c -2,0 -4,1 -5,2 l 0,58 c 1,2 3,3 5,3 l 0,-63 z"
-                                Fill="SteelBlue" />
+                                Fill="{StaticResource SteelBlueBrush}" />
                             <Path Data="M 60,4.875 C 46.736931,4.8749995 34.641338,9.015795 25.71875,15.96875 16.796162,22.921705 9.000001,32.870138 9,43.9375 l 0,2 C 0.141206,50.425978 -9.0000003,62.200002 -9,76 c 4e-7,17.663999 12.049452,28 25,28 l 0,-48 c 18.212543,-76.721252 3,-2.538386 3,-4 0,-12 7.610919,-26.021289 14,-31 7.366406,-5.740294 15.424603,-9 27,-9 11.575394,0 21.977345,2.540955 29.34375,8.28125 C 96.71016,26.021545 101,33.649411 101,41.9375 L 101,110 c 1.1221,0 1.93982,-2.7782 3,-3 11.1757,-2.33812 19,-14.8665 19,-31 0,-13.799998 -4.14121,-21.511522 -13,-26 l -1,-8.0625 C 109,30.870138 103.20384,20.921705 94.28125,13.96875 85.358662,7.015795 73.263067,4.8750003 60,4.875 z M 25,45 23,107 c 2,0 7,-1 8,-3 l 0,-57 c -1,-1 -4,-2 -6,-2 z m 74,0 c -2,0 -4,1 -5,2 l 0,58 c 1,2 3,4 5,4 l 0,-64 z" Fill="SteelBlue" />
                         </Canvas>
                     </Viewbox>
-                    <TextBlock HorizontalAlignment="Center" Foreground="OrangeRed">
+                    <TextBlock HorizontalAlignment="Center" Foreground="{StaticResource OrangeRedBrush}">
                         <Run Text="Audacity" />
                     </TextBlock>
                 </StackPanel>
@@ -248,10 +260,10 @@
                 <StackPanel>
                     <Path
                         Height="25"
-                        Data="M 225.54688,312.53629 L 239.01172,293.30582 L 226.10938,275.20035 L 238.16797,275.20035 L 244.77734,285.46598 L 251.73828,275.20035 L 263.33984,275.20035 L 250.68359,292.88395 L 264.5,312.53629 L 252.37109,312.53629 L 244.77734,300.96988 L 237.11328,312.53629 L 225.54688,312.53629 z M 269.63281,275.20035 L 278.73828,275.20035 L 278.73828,280.29801 C 281.99608,276.33711 285.87498,274.35664 290.375,274.3566 C 292.7656,274.35664 294.83981,274.84883 296.59766,275.83317 C 298.35544,276.81758 299.79684,278.30586 300.92188,280.29801 C 302.56246,278.30586 304.33199,276.81758 306.23047,275.83317 C 308.12886,274.84883 310.15621,274.35664 312.3125,274.3566 C 315.05464,274.35664 317.37495,274.91328 319.27344,276.02652 C 321.17182,277.13984 322.58979,278.77461 323.52734,280.93082 C 324.20697,282.5246 324.54682,285.10272 324.54688,288.6652 L 324.54688,312.53629 L 314.66797,312.53629 L 314.66797,291.19645 C 314.66792,287.49335 314.32808,285.10272 313.64844,284.02457 C 312.73433,282.61835 311.32808,281.91523 309.42969,281.9152 C 308.04683,281.91523 306.74605,282.3371 305.52734,283.18082 C 304.30855,284.0246 303.42965,285.26093 302.89062,286.88981 C 302.35153,288.51874 302.08199,291.091 302.08203,294.6066 L 302.08203,312.53629 L 292.20312,312.53629 L 292.20312,292.07535 C 292.2031,288.44256 292.02732,286.09882 291.67578,285.0441 C 291.32419,283.98944 290.77927,283.20429 290.04102,282.68863 C 289.30271,282.17304 288.30076,281.91523 287.03516,281.9152 C 285.5117,281.91523 284.14061,282.32538 282.92188,283.14567 C 281.70311,283.96601 280.83006,285.1496 280.30273,286.69645 C 279.77538,288.24335 279.5117,290.80975 279.51172,294.39567 L 279.51172,312.53629 L 269.63281,312.53629 L 269.63281,275.20035 z M 334.35547,312.53629 L 334.35547,260.99723 L 344.23438,260.99723 L 344.23438,312.53629 L 334.35547,312.53629 z"
-                        Fill="Tomato"
+                        Data="{StaticResource XMLPathData}"
+                        Fill="{StaticResource TomatoBrush}"
                         Stretch="Uniform" />
-                    <TextBlock HorizontalAlignment="Center" Foreground="Tomato">
+                    <TextBlock HorizontalAlignment="Center" Foreground="{StaticResource TomatoBrush}">
                         <Run Text="XML" />
                     </TextBlock>
                 </StackPanel>
@@ -265,27 +277,34 @@
                                 Canvas.Top="0"
                                 Width="64"
                                 Height="64"
-                                Fill="#5c2d91" />
+                                Fill="{StaticResource DarkVioletBrush}" />
                             <Path
                                 Data="M9.82,9A32,32,0,1,0,55,54.18Z"
-                                Fill="#1A0FFF"
+                                Fill="{StaticResource DarkVioletBrush}"
                                 Opacity="0.1" />
-                            <Path Data="M7.4,37.25a1.35,1.35,0,0,1-1-.42,1.38,1.38,0,0,1-.41-1,1.4,1.4,0,0,1,.41-1,1.34,1.34,0,0,1,1-.43,1.37,1.37,0,0,1,1,.43,1.39,1.39,0,0,1,.42,1,1.37,1.37,0,0,1-.42,1A1.38,1.38,0,0,1,7.4,37.25Z" Fill="#fff" />
-                            <Path Data="M27.27,37H24.65L15.28,22.46a6,6,0,0,1-.58-1.14h-.08a18.72,18.72,0,0,1,.1,2.5V37H12.59V18.77h2.77l9.12,14.28q.57.89.74,1.22h.05a19.28,19.28,0,0,1-.13-2.68V18.77h2.13Z" Fill="#fff" />
-                            <Path Data="M41.69,37H32V18.77h9.24V20.7H34.18v6.06h6.58v1.92H34.18V35h7.52Z" Fill="#fff" />
-                            <Path Data="M56,20.7H50.7V37H48.57V20.7H43.33V18.77H56Z" Fill="#fff" />
-                            <Path Data="M26.12,49.4a4.93,4.93,0,0,1-2.32.49,3.74,3.74,0,0,1-2.87-1.15,4.26,4.26,0,0,1-1.08-3,4.46,4.46,0,0,1,1.21-3.26,4.12,4.12,0,0,1,3.08-1.24,4.93,4.93,0,0,1,2,.35v1a4,4,0,0,0-2-.5,3.06,3.06,0,0,0-2.35,1,3.64,3.64,0,0,0-.9,2.58,3.47,3.47,0,0,0,.84,2.45,2.86,2.86,0,0,0,2.21.91,4.14,4.14,0,0,0,2.19-.56Z" Fill="#f2f2f2" />
-                            <Path Data="M30.21,49.89A2.78,2.78,0,0,1,28.08,49a3.11,3.11,0,0,1-.79-2.23,3.24,3.24,0,0,1,.83-2.36,3,3,0,0,1,2.23-.85,2.69,2.69,0,0,1,2.09.83,3.28,3.28,0,0,1,.75,2.29,3.22,3.22,0,0,1-.81,2.3A2.84,2.84,0,0,1,30.21,49.89Zm.07-5.47a1.83,1.83,0,0,0-1.46.63,2.59,2.59,0,0,0-.54,1.74,2.45,2.45,0,0,0,.54,1.68,1.85,1.85,0,0,0,1.46.62,1.76,1.76,0,0,0,1.43-.6,2.62,2.62,0,0,0,.5-1.72,2.66,2.66,0,0,0-.5-1.73A1.75,1.75,0,0,0,30.28,44.42Z" Fill="#f2f2f2" />
-                            <Path Data="M37.86,44.72a1.18,1.18,0,0,0-.73-.19,1.23,1.23,0,0,0-1,.58,2.68,2.68,0,0,0-.41,1.58v3.06h-1v-6h1V45h0a2.1,2.1,0,0,1,.63-1,1.43,1.43,0,0,1,.94-.35,1.57,1.57,0,0,1,.57.08Z" Fill="#f2f2f2" />
-                            <Path Data="M43.72,47H39.49A2.24,2.24,0,0,0,40,48.54a1.86,1.86,0,0,0,1.42.54,3,3,0,0,0,1.86-.67v.9a3.48,3.48,0,0,1-2.09.57,2.54,2.54,0,0,1-2-.82,3.35,3.35,0,0,1-.73-2.3,3.28,3.28,0,0,1,.79-2.28,2.55,2.55,0,0,1,2-.88,2.26,2.26,0,0,1,1.82.76,3.18,3.18,0,0,1,.64,2.12Zm-1-.81a2,2,0,0,0-.4-1.29,1.37,1.37,0,0,0-1.1-.46,1.55,1.55,0,0,0-1.15.49,2.21,2.21,0,0,0-.59,1.27Z" Fill="#f2f2f2" />
+                            <Path Data="M7.4,37.25a1.35,1.35,0,0,1-1-.42,1.38,1.38,0,0,1-.41-1,1.4,1.4,0,0,1,.41-1,1.34,1.34,0,0,1,1-.43,1.37,1.37,0,0,1,1,.43,1.39,1.39,0,0,1,.42,1,1.37,1.37,0,0,1-.42,1A1.38,1.38,0,0,1,7.4,37.25Z" Fill="{StaticResource WhiteBrush}" />
+                            <Path Data="M27.27,37H24.65L15.28,22.46a6,6,0,0,1-.58-1.14h-.08a18.72,18.72,0,0,1,.1,2.5V37H12.59V18.77h2.77l9.12,14.28q.57.89.74,1.22h.05a19.28,19.28,0,0,1-.13-2.68V18.77h2.13Z" Fill="{StaticResource WhiteBrush}" />
+                            <Path Data="M41.69,37H32V18.77h9.24V20.7H34.18v6.06h6.58v1.92H34.18V35h7.52Z" Fill="{StaticResource WhiteBrush}" />
+                            <Path Data="M56,20.7H50.7V37H48.57V20.7H43.33V18.77H56Z" Fill="{StaticResource WhiteBrush}" />
+                            <Path Data="M26.12,49.4a4.93,4.93,0,0,1-2.32.49,3.74,3.74,0,0,1-2.87-1.15,4.26,4.26,0,0,1-1.08-3,4.46,4.46,0,0,1,1.21-3.26,4.12,4.12,0,0,1,3.08-1.24,4.93,4.93,0,0,1,2,.35v1a4,4,0,0,0-2-.5,3.06,3.06,0,0,0-2.35,1,3.64,3.64,0,0,0-.9,2.58,3.47,3.47,0,0,0,.84,2.45,2.86,2.86,0,0,0,2.21.91,4.14,4.14,0,0,0,2.19-.56Z" Fill="{StaticResource WhiteBrush}" />
+                            <Path Data="M30.21,49.89A2.78,2.78,0,0,1,28.08,49a3.11,3.11,0,0,1-.79-2.23,3.24,3.24,0,0,1,.83-2.36,3,3,0,0,1,2.23-.85,2.69,2.69,0,0,1,2.09.83,3.28,3.28,0,0,1,.75,2.29,3.22,3.22,0,0,1-.81,2.3A2.84,2.84,0,0,1,30.21,49.89Zm.07-5.47a1.83,1.83,0,0,0-1.46.63,2.59,2.59,0,0,0-.54,1.74,2.45,2.45,0,0,0,.54,1.68,1.85,1.85,0,0,0,1.46.62,1.76,1.76,0,0,0,1.43-.6,2.62,2.62,0,0,0,.5-1.72,2.66,2.66,0,0,0-.5-1.73A1.75,1.75,0,0,0,30.28,44.42Z" Fill="{StaticResource WhiteBrush}" />
+                            <Path Data="M37.86,44.72a1.18,1.18,0,0,0-.73-.19,1.23,1.23,0,0,0-1,.58,2.68,2.68,0,0,0-.41,1.58v3.06h-1v-6h1V45h0a2.1,2.1,0,0,1,.63-1,1.43,1.43,0,0,1,.94-.35,1.57,1.57,0,0,1,.57.08Z" Fill="{StaticResource WhiteBrush}" />
+                            <Path Data="M43.72,47H39.49A2.24,2.24,0,0,0,40,48.54a1.86,1.86,0,0,0,1.42.54,3,3,0,0,0,1.86-.67v.9a3.48,3.48,0,0,1-2.09.57,2.54,2.54,0,0,1-2-.82,3.35,3.35,0,0,1-.73-2.3,3.28,3.28,0,0,1,.79-2.28,2.55,2.55,0,0,1,2-.88,2.26,2.26,0,0,1,1.82.76,3.18,3.18,0,0,1,.64,2.12Zm-1-.81a2,2,0,0,0-.4-1.29,1.37,1.37,0,0,0-1.1-.46,1.55,1.55,0,0,0-1.15.49,2.21,2.21,0,0,0-.59,1.27Z" Fill="{StaticResource WhiteBrush}" />
                         </Canvas>
                     </Viewbox>
-
-                    <TextBlock HorizontalAlignment="Center" Foreground="#5c2d91">
+                    <TextBlock HorizontalAlignment="Center" Foreground="{StaticResource DarkVioletBrush}">
                         <Run Text=".NET" />
                     </TextBlock>
                 </StackPanel>
             </ListBoxItem>
         </ListBox>
+        <TextBlock
+            Grid.Row="1"
+            Margin="20,0,0,-5"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Background="{StaticResource WhiteBrush}"
+            Foreground="{StaticResource IndianRedBrush}"
+            Text="Technologies used in this app" />
     </Grid>
 </UserControl>

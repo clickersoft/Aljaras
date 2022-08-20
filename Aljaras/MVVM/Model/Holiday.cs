@@ -1,10 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Aljaras.Core;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Aljaras.MVVM.Model
 {
@@ -44,19 +40,8 @@ namespace Aljaras.MVVM.Model
         private string reminderAudioFileLocation = "";
 
         [ObservableProperty]
-        private string reminderVisibility = ((ReminderVisibility)1).ToString();
+        private string reminderVisibility = GetVisibility.Hidden.ToString();
 
-        partial void OnIsReminderActiveChanged(bool value)
-        {
-            ReminderVisibility = IsReminderActive ? ((ReminderVisibility)2).ToString() : ((ReminderVisibility)1).ToString();
-        }
-
-    }
-
-    public enum ReminderVisibility
-    {
-        Collapsed,
-        Hidden,
-        Visible
+        partial void OnIsReminderActiveChanged(bool value) { ReminderVisibility = IsReminderActive ? GetVisibility.Visible.ToString() : GetVisibility.Hidden.ToString();}
     }
 }

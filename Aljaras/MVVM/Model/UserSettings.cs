@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using LiteDB;
 using System;
 
 namespace Aljaras.MVVM.Model

@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using NAudio.Wave;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace Aljaras.Core
 {

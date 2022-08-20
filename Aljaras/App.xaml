@@ -12,9 +12,8 @@
                 <ResourceDictionary Source="/Themes/SliderCheckBox.xaml" />
                 <ResourceDictionary Source="/Themes/Buttons.xaml" />
                 <ResourceDictionary Source="/Themes/Path.xaml" />
-                <ResourceDictionary Source="/Themes/ToolTip.xaml" />
                 <ResourceDictionary Source="/Themes/GroupBox.xaml" />
-                <ResourceDictionary Source="/Themes/ListBox.xaml" />
+                <ResourceDictionary Source="/Themes/Colors.xaml" />
                 <!--#endregion-->
             </ResourceDictionary.MergedDictionaries>
             <!--#region Views-->

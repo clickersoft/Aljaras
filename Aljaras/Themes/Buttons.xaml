@@ -3,8 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:extensions="clr-namespace:Aljaras.Core"
     xmlns:local="clr-namespace:Aljaras">
-
-
     <Style TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template">
@@ -25,7 +23,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
     <Style x:Key="CopyrightButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="White" />
@@ -44,7 +41,7 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#F1F1F1" />
-                <Setter Property="Foreground" Value="#252525" />
+                <Setter Property="Foreground" Value="{DynamicResource DarkBackgroundBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -69,7 +66,7 @@
                             <Path
                                 Height="20"
                                 Margin="{TemplateBinding Padding}"
-                                  Data="{Binding Path=(extensions:Extensions.Carrier), RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                Data="{Binding Path=(extensions:Extensions.Carrier), RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                 Fill="{TemplateBinding Foreground}"
                                 Stretch="Uniform" />
                             <ContentPresenter Margin="4" VerticalAlignment="Center" />
@@ -143,7 +140,7 @@
                         <Path
                             x:Name="Path"
                             Height="15"
-                              Data="{Binding Path=(extensions:Extensions.Carrier), RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            Data="{Binding Path=(extensions:Extensions.Carrier), RelativeSource={RelativeSource Mode=TemplatedParent}}"
                             Fill="White"
                             Stretch="Uniform" />
                         <ContentPresenter
@@ -158,24 +155,19 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="ellipse" Property="Fill" Value="#252525" />
+                            <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource DarkBackgroundBrush}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="true">
-                            <Setter TargetName="ellipse" Property="Fill" Value="#252525" />
+                            <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource DarkBackgroundBrush}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="ellipse" Property="Fill" Value="#252525" />
+                            <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource DarkBackgroundBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-
-
-
-
-
     <Style x:Key="ListRoundButtons" TargetType="{x:Type Button}">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FontSize" Value="14" />
@@ -199,7 +191,7 @@
                         <Path
                             x:Name="Path"
                             Height="15"
-                              Data="{Binding Path=(extensions:Extensions.Carrier), RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            Data="{Binding Path=(extensions:Extensions.Carrier), RelativeSource={RelativeSource Mode=TemplatedParent}}"
                             Fill="{Binding Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}"
                             Stretch="Uniform" />
                         <ContentPresenter
@@ -227,10 +219,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
-
-
-
-
 </ResourceDictionary>

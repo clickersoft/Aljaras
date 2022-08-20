@@ -22,11 +22,11 @@
                 <Path
                     Height="100"
                     Data="{StaticResource PcAppPathData}"
-                    Fill="IndianRed"
+                    Fill="{StaticResource IndianRedBrush}"
                     Stretch="Uniform" />
                 <TextBlock
                     FontSize="35"
-                    Foreground="IndianRed"
+                    Foreground="{StaticResource IndianRedBrush}"
                     Text="{Binding Global.AppLang.About}"
                     TextAlignment="Center" />
             </StackPanel>
@@ -36,11 +36,11 @@
                 <Path
                     Height="100"
                     Data="{StaticResource BookPathData}"
-                    Fill="IndianRed"
+                    Fill="{StaticResource IndianRedBrush}"
                     Stretch="Uniform" />
                 <TextBlock
                     FontSize="35"
-                    Foreground="IndianRed"
+                    Foreground="{StaticResource IndianRedBrush}"
                     Text="{Binding Global.AppLang.Guide}"
                     TextAlignment="Center" />
             </StackPanel>

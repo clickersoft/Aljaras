@@ -1,10 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aljaras.MVVM.Model
 {
@@ -216,9 +210,5 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private string _itemsCount = "Items Count";
-
-
-
-
     }
 }

@@ -57,7 +57,7 @@
                                 <TextBlock
                                     Uid="{Binding AlarmId}"
                                     FontSize="14"
-                                    Foreground="#252525"
+                                    Foreground="{DynamicResource DarkBackgroundBrush}"
                                     Text="{Binding AlarmTitle}" />
                                 <TextBlock
                                     Grid.Column="1"
@@ -113,7 +113,7 @@
                             <TextBlock
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
-                                Foreground="#252525"
+                                Foreground="{DynamicResource DarkBackgroundBrush}"
                                 Text="{Binding ProductName}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
@@ -134,7 +134,7 @@
                             <TextBlock
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
-                                Foreground="#252525"
+                                Foreground="{DynamicResource DarkBackgroundBrush}"
                                 Text="{Binding ProductName}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
@@ -290,7 +290,8 @@
             Header="{Binding Global.AppLang.Holidays}"
             Style="{StaticResource GroupBoxListView}">
             <Grid>
-                <ListView x:Name="HolidayListView"
+                <ListView
+                    x:Name="HolidayListView"
                     Grid.Row="2"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     Background="Transparent"
@@ -336,8 +337,6 @@
                     Visibility="{Binding Global.IsNOHolidayMessageVisible}" />
             </Grid>
         </GroupBox>
-
-
         <StackPanel
             Grid.RowSpan="5"
             Grid.ColumnSpan="5"
@@ -350,7 +349,8 @@
                 Background="red"
                 Command="{Binding Global.PushToastCommand}"
                 Content="test"
-                Style="{x:Null}" />
+                Style="{x:Null}"
+                Visibility="Hidden" />
         </StackPanel>
     </Grid>
 </UserControl>

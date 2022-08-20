@@ -175,9 +175,8 @@ namespace Aljaras.MVVM.ViewModel
         {
             NotificationMessage = new()
             {
-                ActiveMessage = ((MessageVisibility)2).ToString(),
                 BackgroundColor = ((MessageBackground)startRandom.Next(16)).ToString(),
-                Text = new string(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 10)
+                MessageText = new string(Enumerable.Repeat("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 10)
                 .Select(s => s[startRandom.Next(s.Length)]).ToArray())
             };
             NotificationList.Add(NotificationMessage);
@@ -363,17 +362,9 @@ namespace Aljaras.MVVM.ViewModel
                                 FullTime = item.FullTime,
                                 AudioFileLocation = item.ReminderAudioFileLocation
                             };
-                            AlarmList.Add(_alr);
-                            NotificationMessage = new()
-                            {
-                                ActiveMessage = ((MessageVisibility)2).ToString(),
-                                BackgroundColor = ((MessageBackground)startRandom.Next(16)).ToString(),
-                                Text = item.HolidayTitle + item.HolidayDate
-                            };
-                            NotificationList.Add(NotificationMessage);
+                            AlarmList.Add(_alr);                            
                         }
                 }
-
                 if (HolidayList != null && HolidayList.Count > 0)
                     IsNOHolidayMessageVisible = "Hidden";
 
@@ -392,20 +383,15 @@ namespace Aljaras.MVVM.ViewModel
                             {
                                 _item.FullTime = ChangeDateOnly(_item.FullTime);
                                 AlarmList.Add(_item);
-
-
                             }
                             AlarmList = AlarmList.OrderBy(x => x.FullTime).ToList();
-                            
                         } 
                     }
-                    
                     if (AlarmList != null && AlarmList.Count > 0)
                     {
                         IsNOAlarmMessageVisible = "Hidden";
                         return;
                     }
-                    
                 }
             }
             IsNOAlarmMessageVisible = "Visible";

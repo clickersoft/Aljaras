@@ -57,9 +57,6 @@
     <None Update="Aljaras.jrsdb">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Update="aljaras.rtf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Audio\Attention.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -429,10 +426,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Themes\ToolTip.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Themes\Path.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

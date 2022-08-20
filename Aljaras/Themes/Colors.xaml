@@ -1,0 +1,47 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--#region Colors-->
+    <Color x:Key="DarkBackgroundColor">#202020</Color>
+    <Color x:Key="VeryLightGrayColor">#F1F1F1</Color>
+    <Color x:Key="LightGrayColor">LightGray</Color>
+    <Color x:Key="WhiteColor">White</Color>
+    <Color x:Key="IndianRedColor">IndianRed</Color>
+    <Color x:Key="SteelBlueColor">SteelBlue</Color>
+    <Color x:Key="ForestGreenColor">ForestGreen</Color>
+    <Color x:Key="DarkVioletColor">DarkViolet</Color>
+    <Color x:Key="OrangeRedColor">OrangeRed</Color>
+    <Color x:Key="MediumGrayColor">#859ca6</Color>
+    <Color x:Key="DodgerBlueColor">DodgerBlue</Color>
+    <Color x:Key="TomatoColor">Tomato</Color>
+    <Color x:Key="GrayColor">Gray</Color>
+    <Color x:Key="PurpleColor">Purple</Color>
+    <Color x:Key="WhiteSmokeColor">WhiteSmoke</Color>
+    <Color x:Key="SeaGreenColor">SeaGreen</Color>
+    <Color x:Key="MediumRedColor">#FFDC3636</Color>
+    <Color x:Key="CornflowerBlueColor">CornflowerBlue</Color>
+    <Color x:Key="MediumVioletRedColor">MediumVioletRed</Color>
+    <!--#endregion Colors-->
+
+    <!--#region ColorsDynamicResource-->
+    <SolidColorBrush x:Key="DarkBackgroundBrush" Color="{StaticResource DarkBackgroundColor}" />
+    <SolidColorBrush x:Key="VeryLightGrayBrush" Color="{StaticResource VeryLightGrayColor}" />
+    <SolidColorBrush x:Key="LightGrayBrush" Color="{StaticResource LightGrayColor}" />
+    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource WhiteColor}" />
+    <SolidColorBrush x:Key="IndianRedBrush" Color="{StaticResource IndianRedColor}" />
+    <SolidColorBrush x:Key="SteelBlueBrush" Color="{StaticResource SteelBlueColor}" />
+    <SolidColorBrush x:Key="ForestGreenBrush" Color="{StaticResource ForestGreenColor}" />
+    <SolidColorBrush x:Key="DarkVioletBrush" Color="{StaticResource DarkVioletColor}" />
+    <SolidColorBrush x:Key="OrangeRedBrush" Color="{StaticResource OrangeRedColor}" />
+    <SolidColorBrush x:Key="MediumGrayBrush" Color="{StaticResource MediumGrayColor}" />
+    <SolidColorBrush x:Key="DodgerBlueBrush" Color="{StaticResource DodgerBlueColor}" />
+    <SolidColorBrush x:Key="TomatoBrush" Color="{StaticResource TomatoColor}" />
+    <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource GrayColor}" />
+    <SolidColorBrush x:Key="PurpleBrush" Color="{StaticResource PurpleColor}" />
+    <SolidColorBrush x:Key="WhiteSmokeBrush" Color="{StaticResource WhiteSmokeColor}" />
+    <SolidColorBrush x:Key="SeaGreenBrush" Color="{StaticResource SeaGreenColor}" />
+    <SolidColorBrush x:Key="MediumRedBrush" Color="{StaticResource MediumRedColor}" />
+    <SolidColorBrush x:Key="CornflowerBlueBrush" Color="{StaticResource CornflowerBlueColor}" />
+    <SolidColorBrush x:Key="MediumVioletRedBrush" Color="{StaticResource MediumVioletRedColor}" />
+    <!--#endregion ColorsDynamicResource-->
+
+</ResourceDictionary>

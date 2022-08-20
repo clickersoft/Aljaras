@@ -4,7 +4,6 @@ namespace Aljaras.Core
 {
     public static class Extensions
     {
-        
         public static readonly DependencyProperty CarrierProperty = DependencyProperty.RegisterAttached("Carrier", typeof(object), typeof(Extensions), new PropertyMetadata(default(string)));
         public static void SetCarrier(UIElement element, object value)
         {
@@ -23,10 +22,6 @@ namespace Aljaras.Core
         public static object GetCarrier2(UIElement element)
         {
             return (object)element.GetValue(Carrier2Property);
-        }/**/
-
-
-
-
+        }
     }
 }

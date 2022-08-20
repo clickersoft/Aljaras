@@ -67,7 +67,7 @@
                         Height="20"
                         Margin="10,0,0,0"
                         Content="{Binding Global.AppLang.EnableReminder}"
-                        Foreground="#252525"
+                        Foreground="{DynamicResource DarkBackgroundBrush}"
                         IsChecked="{Binding CurrentHoliday.IsReminderActive}"
                         Style="{DynamicResource SliderCheckBox}" />
                 </Grid>
@@ -152,7 +152,7 @@
                         Command="{Binding TimeNowCommand}"
                         Foreground="SteelBlue"
                         Style="{DynamicResource RoundButtons}"
-                        ToolTip="{Binding Global.AppLang.TimeNow}" />
+                         />
                 </Grid>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
@@ -211,8 +211,7 @@
                             Content="{Binding Global.AppLang.New}"
                             FontSize="12"
                             Foreground="Purple"
-                            Style="{DynamicResource ListRoundButtons}"
-                            ToolTip="{Binding Global.AppLang.New}" />
+                            Style="{DynamicResource ListRoundButtons}" />
                         <Button
                             extensions:Extensions.Carrier="{StaticResource SavePathData}"
                             Background="#FF597ED8"
@@ -220,8 +219,7 @@
                             Content="{Binding Global.AppLang.Save}"
                             FontSize="12"
                             Foreground="#FF597ED8"
-                            Style="{DynamicResource ListRoundButtons}"
-                            ToolTip="{Binding Global.AppLang.Save}" />
+                            Style="{DynamicResource ListRoundButtons}" />
                     </StackPanel>
                 </Grid>
             </Grid>
@@ -257,7 +255,7 @@
                         <Path
                             Height="8"
                             Data="M8.6620483,17.699996L32,17.699996 32,21.116015 8.6620483,21.116015z M2.6040039,16.805007C4.0390015,16.805007 5.2059937,17.97502 5.2059937,19.410996 5.2059937,20.851001 4.0390015,22.006 2.6040039,22.006 1.1640015,22.006 0,20.851001 0,19.410996 0,17.97502 1.1640015,16.805007 2.6040039,16.805007z M8.6620483,8.984993L32,8.984993 32,12.401011 8.6620483,12.401011z M2.6040039,8.0849981C4.0390015,8.0849981 5.2059937,9.2500076 5.2059937,10.690011 5.2059937,12.130015 4.0390015,13.290997 2.6040039,13.290997 1.1640015,13.290997 0,12.130015 0,10.690011 0,9.2500076 1.1640015,8.0849981 2.6040039,8.0849981z M8.6620483,0.82498215L32,0.82498215 32,4.2410006 8.6620483,4.2410006z M2.6040039,0C4.0390015,1.6889317E-08 5.2059937,1.1600046 5.2059937,2.6049824 5.2059937,4.0409884 4.0390015,5.2059979 2.6040039,5.2059979 1.1640015,5.2059979 0,4.0409884 0,2.6049824 0,1.1600046 1.1640015,1.6889317E-08 2.6040039,0z"
-                            Fill="#252525"
+                            Fill="{DynamicResource DarkBackgroundBrush}"
                             Stretch="Uniform" />
                         <Run Text="{Binding Global.AppLang.List}" />
                     </TextBlock>
@@ -338,7 +336,7 @@
                                     Height="20"
                                     Command="{Binding ElementName=HolidayListView, Path=DataContext.De_ActivateHolidayCommand}"
                                     CommandParameter="{Binding}"
-                                    Foreground="#252525"
+                                    Foreground="{DynamicResource DarkBackgroundBrush}"
                                     IsChecked="{Binding IsHolidayActive}"
                                     Style="{DynamicResource SliderCheckBox}" />
                                 <TextBlock
@@ -364,8 +362,7 @@
                                         Background="Purple"
                                         Command="{Binding ElementName=HolidayListView, Path=DataContext.CloneHolidayCommand}"
                                         CommandParameter="{Binding}"
-                                        Style="{DynamicResource ListRoundButtons}"
-                                        ToolTip="{Binding Global.AppLang.Edit}" />
+                                        Style="{DynamicResource ListRoundButtons}" />
                                     <Border
                                         Margin="3"
                                         BorderBrush="LightGray"
@@ -377,8 +374,7 @@
                                         Background="#FFDC3636"
                                         Command="{Binding ElementName=HolidayListView, Path=DataContext.DeleteHolidayCommand}"
                                         CommandParameter="{Binding}"
-                                        Style="{DynamicResource ListRoundButtons}"
-                                        ToolTip="{Binding Global.AppLang.Delete}" />
+                                        Style="{DynamicResource ListRoundButtons}" />
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
