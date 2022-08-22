@@ -137,7 +137,7 @@ namespace Aljaras.MVVM.Model
         private string _enableRepeat = "Enable Repeat";
 
         [ObservableProperty]
-        private string _noMoreAlarms = "No more alarms...";
+        private string _noMoreAlarms = "No more alarms";
 
         [ObservableProperty]
         private string _deleteNotification = "Are you sure?";
@@ -210,5 +210,14 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private string _itemsCount = "Items Count";
+        
+        [ObservableProperty]
+        private string _generalSettings = "General Settings";
+        
+        [ObservableProperty]
+        private string _startWithWindows = "Start With Windows";
+        
+        [ObservableProperty]
+        private string _shutdownOnClose = "Shutdown On Close";
     }
 }

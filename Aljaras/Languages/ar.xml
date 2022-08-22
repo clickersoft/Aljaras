@@ -45,7 +45,7 @@
 	<SelectFile>اختيار ملف</SelectFile>
 	<RepeatEmergency>تكرار انذار الطواريء</RepeatEmergency>
 	<EnableRepeat>تفعيل التكرار</EnableRepeat>
-	<NoMoreAlarms>لا يوجد تنبيهات...</NoMoreAlarms>
+	<NoMoreAlarms>لا يوجد تنبيهات</NoMoreAlarms>
 	<DeleteNotification>هل انت متاكد؟</DeleteNotification>
 	<Database>قاعدة البيانات</Database>
 	<DatabaseOperations>عمليات على قاعدة البيانات</DatabaseOperations>
@@ -70,4 +70,7 @@
 	<Start>ابدأ</Start>
 	<Stop>ايقاف</Stop>
 	<ItemsCount>عدد العناصر</ItemsCount>
+	<GeneralSettings>اعدادات عامة</GeneralSettings>
+	<StartWithWindows>ابدأ مع نظام التشغيل</StartWithWindows>
+	<ShutdownOnClose>ايقاف البرنامج عند الضغط على اغلاق</ShutdownOnClose>
 </AppLanguage>

@@ -45,7 +45,7 @@
 	<SelectFile>Select File</SelectFile>
 	<RepeatEmergency>Repeat Emergency</RepeatEmergency>
 	<EnableRepeat>Enable Repeat</EnableRepeat>
-	<NoMoreAlarms>No more alarms...</NoMoreAlarms>
+	<NoMoreAlarms>No more alarms</NoMoreAlarms>
 	<DeleteNotification>Are you sure?</DeleteNotification>
 	<Database>Database</Database>
 	<DatabaseOperations>Database Operations</DatabaseOperations>
@@ -70,4 +70,7 @@
 	<Start>Start</Start>
 	<Stop>Stop</Stop>
 	<ItemsCount>Items Count</ItemsCount>
+	<GeneralSettings>General Settings</GeneralSettings>
+	<StartWithWindows>Start With Windows</StartWithWindows>
+	<ShutdownOnClose>Shutdown On Close</ShutdownOnClose>
 </AppLanguage>

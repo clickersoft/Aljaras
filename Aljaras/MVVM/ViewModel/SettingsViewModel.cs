@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
@@ -101,8 +102,43 @@ namespace Aljaras.MVVM.ViewModel
         {
             using (var db = new LiteDatabase(@"Filename=Aljaras.jrsdb;connection=shared"))
             {
+                if (UserSet.IsKeyRegistered)
+                {
+                    try
+                    {
+                        Microsoft.Win32.RegistryKey? key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                        Assembly curAssembly = Assembly.GetExecutingAssembly();
+                        key?.SetValue(curAssembly.GetName().Name, Path.ChangeExtension(curAssembly.Location, ".exe"));
+                    }
+                    catch
+                    {
+                        Global.NotificationMessage = new()
+                        {
+                            BackgroundColor = MessageBackground.IndianRed.ToString(),
+                            MessageText = "Setting up registry key Failed"
+                        };
+                        UserSet.IsKeyRegistered = false;
+                    }
+
+                } else {
+                    try
+                    {
+                        Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                        Assembly curAssembly = Assembly.GetExecutingAssembly();
+                        key.DeleteValue(curAssembly.GetName().Name);
+                    }
+                    catch
+                    {
+                        Global.NotificationMessage = new()
+                        {
+                            BackgroundColor = MessageBackground.IndianRed.ToString(),
+                            MessageText = "Delete registry key Failed"
+                        };
+                        UserSet.IsKeyRegistered = true;
+                    }
+                }
                 var col = db.GetCollection<UserSettings>("UserSettings");
-                var results = col.Find(x => x.Id == 1).FirstOrDefault();
+                UserSettings? results = col.Find(x => x.Id == 1).FirstOrDefault();
                 if (results != null)
                     col.Update(UserSet);
                 else col.Insert(UserSet);

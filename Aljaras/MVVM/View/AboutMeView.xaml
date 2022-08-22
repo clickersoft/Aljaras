@@ -68,7 +68,7 @@
                         Hello I'm Mustafa AlKlieb
                     </Paragraph>
                     <Paragraph TextAlignment="Justify">
-                        I am a developer with some commercial experience. Ability to think through a problem coupled with the confidence to make ideas heard. A proven ability to maintain and enhance company software with the aim of improving operational functionality in line with business requirement.
+                        I am a developer with some commercial experience. Ability to think through a problem coupled with the confidence to make ideas. A proven ability to maintain and enhance company software with the aim of improving operational functionality in line with business requirement.
                     </Paragraph>
                     <Paragraph>
                         <Bold>Experience</Bold>
@@ -147,9 +147,15 @@
                     </Paragraph>
                     <Paragraph FlowDirection="RightToLeft" TextAlignment="Justify">
                         أقدم إليكم برنامج الجرس المدرسي لتنظيم الحصص المدرسية وفقاً لبرنامج الفصل الدراسي الخاص بالمدرسة ويركز البرنامج على السهولة والمرونة في الاستخدام ومُقدم بدون أي رسوم مالية فقط أطلب منكم الدعاء لي ولوالدي بالمغفرة والرحمة وجزاكم الله خيراً.
+                    </Paragraph>
+                    <Paragraph FlowDirection="RightToLeft" TextAlignment="Justify">
                         ملاحظة: تم الحصول على اصوات التنبيهات العربية من مطور البرمجيات سيد درويش - موقع المطور (aljaras2010.blogspot.com) - كإضافة للبرنامج فاذا امتلكت مكتبة اصوات اخرى تستطيع استخدامها بسهولة.
                         بيئة العمل:  Windows 7+, .net 7
                     </Paragraph>
+                    <Paragraph FlowDirection="RightToLeft" TextAlignment="Justify">
+                        بيئة العمل:  Windows 7+, .net 7
+                    </Paragraph>
+                    <Paragraph />
                 </FlowDocument>
             </RichTextBox>
             <Border
@@ -160,7 +166,7 @@
                 BorderThickness="0,0,0,1" />
         </Grid>
         <ListBox
-            Name="listBox2"
+            Name="listBox2" HorizontalContentAlignment="Center" HorizontalAlignment="Center"
             Grid.Row="2"
             Background="Transparent"
             BorderThickness="0">

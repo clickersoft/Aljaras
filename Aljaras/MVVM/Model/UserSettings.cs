@@ -16,5 +16,11 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private bool repeatEmergency = true;
+
+        [ObservableProperty]
+        private bool isKeyRegistered = false;
+
+        [ObservableProperty]
+        private bool isShutdownOnClose = false;
     }
 }

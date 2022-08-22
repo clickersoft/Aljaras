@@ -35,9 +35,9 @@ namespace Aljaras
             {
                 _notifyIcon.Text = GlobalViewModel.Instance.AppLang.Apptitle;
             }
-            _notifyIcon.DoubleClick += NotifyIconClick;
+            _notifyIcon.DoubleClick += NotifyIconDoubleClick;
             _notifyIcon.ContextMenuStrip = new Forms.ContextMenuStrip();
-            _notifyIcon.ContextMenuStrip.Items.Add("Open", null, OnOpenClicked);
+            _notifyIcon.ContextMenuStrip.Items.Add("Open", null, NotifyIconDoubleClick);
             _notifyIcon.ContextMenuStrip.Items.Add("Exit", null, OnExitClicked);
             _notifyIcon.Visible = true;
             base.OnStartup(e);
@@ -48,14 +48,9 @@ namespace Aljaras
             Shutdown();
         }
 
-        private void OnOpenClicked(object sender, EventArgs e)
+        private void NotifyIconDoubleClick(object sender, EventArgs e)
         {
-            MainWindow.WindowState = WindowState.Normal;
-            MainWindow.Activate();
-        }
-
-        private void NotifyIconClick(object sender, EventArgs e)
-        {
+            MainWindow.Show();
             MainWindow.WindowState = WindowState.Normal;
             MainWindow.Activate();
         }

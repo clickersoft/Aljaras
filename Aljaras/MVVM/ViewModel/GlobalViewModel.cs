@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -242,7 +243,26 @@ namespace Aljaras.MVVM.ViewModel
                 UserSettings? results = col.Find(x => x.Id == 1).FirstOrDefault();
                 if (results != null)
                     GetUserSettings = results;
-                else col.Insert(GetUserSettings);
+                else 
+                {
+                    try
+                    {
+                        Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                        Assembly curAssembly = Assembly.GetExecutingAssembly();
+                        key.SetValue(curAssembly.GetName().Name, Path.ChangeExtension(curAssembly.Location, ".exe"));
+                        GetUserSettings.IsKeyRegistered = true;
+                        col.Insert(GetUserSettings);
+                    }
+                    catch
+                    {
+                        col.Insert(GetUserSettings);
+                        Instance.NotificationMessage = new()
+                        {
+                            BackgroundColor = MessageBackground.IndianRed.ToString(),
+                            MessageText = "Setting up registry key Failed"
+                        };
+                    }
+                } 
             }
             if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Languages\\" + GetUserSettings.CurrentLang + ".xml"))
             {
@@ -251,6 +271,10 @@ namespace Aljaras.MVVM.ViewModel
                 StreamReader file = new(AppDomain.CurrentDomain.BaseDirectory + "Languages\\" + GetUserSettings.CurrentLang + ".xml");
                 AppLang = (AppLanguage)reader.Deserialize(file)!;
                 file.Close();
+            }
+            if (!GetUserSettings.IsKeyRegistered)
+            {
+               
             }
         }
 

@@ -50,15 +50,20 @@ namespace Aljaras.MVVM.ViewModel
         static void MoveWindow(){Application.Current.MainWindow.DragMove();}
 
         [RelayCommand]
-        static void ShutdownWindow(){Application.Current.Shutdown();}
+        static void ShutdownWindow()
+        {
+            if (GlobalViewModel.Instance.GetUserSettings.IsShutdownOnClose)
+                Application.Current.Shutdown();
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            Application.Current.MainWindow.Hide();
+        }
 
         [RelayCommand]
         static void MaximizeWindow()
         {
             if (Application.Current.MainWindow.WindowState == WindowState.Maximized)
                 Application.Current.MainWindow.WindowState = WindowState.Normal;
-            else
-                Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            else Application.Current.MainWindow.WindowState = WindowState.Maximized;
         }
 
         [RelayCommand]
