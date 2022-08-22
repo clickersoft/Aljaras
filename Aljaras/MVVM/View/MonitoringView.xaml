@@ -99,8 +99,8 @@
                 <ComboBox
                     Grid.Column="1"
                     VerticalAlignment="Center"
-                    ItemsSource="{Binding Global.MicDevicesList}"
-                    SelectedIndex="0"
+                    ItemsSource="{Binding Global.MicDevicesList, Mode=TwoWay}"
+                    SelectedIndex="{Binding Global.IndexOfMicDevice, Mode=TwoWay}"
                     SelectedItem="{Binding Global.SelectedMicDevice}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -121,7 +121,7 @@
                     Grid.Column="1"
                     VerticalAlignment="Center"
                     ItemsSource="{Binding Global.SpeakerDevicesList}"
-                    SelectedIndex="0"
+                    SelectedIndex="{Binding Global.IndexOfSpeakerDevice}"
                     SelectedItem="{Binding Global.SelectedSpeakerDevice}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -168,6 +168,16 @@
                         Foreground="{StaticResource SteelBlueBrush}"
                         IsEnabled="{Binding Global.StopButtonEnabled}"
                         Style="{DynamicResource ListRoundButtons}" />
+                    <Button
+                        Grid.Column="2"
+                        Margin="0,0,30,0"
+                        VerticalAlignment="Center"
+                        extensions:Extensions.Carrier="{StaticResource ReloadPathData}"
+                        Background="{StaticResource MediumVioletRedBrush}"
+                        Command="{Binding Global.ReloadDevicesCommand}"
+                        Content="Reload"
+                        Foreground="{StaticResource MediumVioletRedBrush}"
+                        Style="{DynamicResource ListRoundButtons}" />
                     <Path
                         Height="10"
                         Margin="0,0,-25,0"
@@ -195,7 +205,7 @@
             Padding="3"
             FontSize="14"
             Header="{Binding Global.AppLang.Monitoring}">
-            <Grid>
+            <Grid Height="100">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="35" />
                     <ColumnDefinition />
@@ -203,7 +213,8 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition />
-                    <RowDefinition Height="30" />
+                    <RowDefinition />
+                    <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Path
@@ -242,16 +253,35 @@
                 <Path
                     Grid.Row="2"
                     Height="15"
-                    Data="{StaticResource TimeLeftPathData}"
+                    Data="{StaticResource DocumentPathData}"
                     Fill="{StaticResource DarkBackgroundBrush}"
                     Stretch="Uniform" />
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="1"
                     VerticalAlignment="Center"
-                    Text="{Binding Global.AppLang.TimeLeft}" />
+                    Text="Alarm Title:" />
                 <TextBlock
                     Grid.Row="2"
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Foreground="{StaticResource DarkVioletBrush}">
+                    <Run FlowDirection="LeftToRight" Text="{Binding Global.CurrentAlarmTitle}" />
+                </TextBlock>
+                <Path
+                    Grid.Row="3"
+                    Height="15"
+                    Data="{StaticResource TimeLeftPathData}"
+                    Fill="{StaticResource DarkBackgroundBrush}"
+                    Stretch="Uniform" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Text="{Binding Global.AppLang.TimeLeft}" />
+                <TextBlock
+                    Grid.Row="3"
                     Grid.Column="2"
                     VerticalAlignment="Center"
                     FontSize="14"

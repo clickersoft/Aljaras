@@ -219,5 +219,8 @@ namespace Aljaras.MVVM.Model
         
         [ObservableProperty]
         private string _shutdownOnClose = "Shutdown On Close";
+
+        [ObservableProperty]
+        private string _alreadyRunning = "App is already running! if you don't see app window, its in the Tray near system clock.";
     }
 }

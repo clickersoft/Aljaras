@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using Forms = System.Windows.Forms;
 
@@ -10,6 +11,7 @@ namespace Aljaras
     public partial class App : Application
     {
         private readonly Forms.NotifyIcon _notifyIcon;
+        private static Mutex _mutex = null;
 
         public App()
         {
@@ -18,6 +20,18 @@ namespace Aljaras
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            const string appName = "0C41354D-1236-4842-97F2-0EC4E8ACE4BD";
+            bool createdNew;
+
+            _mutex = new Mutex(true, appName, out createdNew);
+
+            if (!createdNew)
+            {
+                MessageBox.Show(GlobalViewModel.Instance.AppLang.AlreadyRunning);
+                //app is already running! Exiting the application
+                Current.Shutdown();
+            }
+
             if (File.Exists("SchoolBell.ico"))
                 _notifyIcon.Icon = new Icon("SchoolBell.ico");
             else

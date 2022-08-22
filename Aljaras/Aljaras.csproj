@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>SchoolBell.ico</ApplicationIcon>
@@ -13,7 +13,7 @@
     <Copyright>Mustafa Al-Klieb </Copyright>
     <PackageIcon></PackageIcon>
     <IncrementVersionOnBuild>1.yyyy.Mdd.Hmm</IncrementVersionOnBuild>
-    <Version>1.2022.822.318</Version>
+    <Version>1.2022.823.125</Version>
   </PropertyGroup>
 
 	<Target Name="RemoveDuplicateAnalyzers" BeforeTargets="CoreCompile">
@@ -52,7 +52,7 @@
 
   <ItemGroup>
     <None Update="Aljaras.jrsdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Audio\Attention.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

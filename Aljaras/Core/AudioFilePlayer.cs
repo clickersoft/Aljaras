@@ -1,6 +1,7 @@
 ﻿using Aljaras.MVVM.ViewModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using NAudio.Wave;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Aljaras.Core
@@ -30,6 +31,15 @@ namespace Aljaras.Core
 
         public async Task PlayPauseAudioFile(string fileLocation, bool emergency)
         {
+            if(!File.Exists(fileLocation))
+            {
+                GlobalViewModel.Instance.NotificationMessage = new()
+                {
+                    BackgroundColor = MessageBackground.IndianRed.ToString(),
+                    MessageText = GlobalViewModel.Instance.AppLang.NotCorrectAudio
+                };
+                return;
+            }
             if (TmpAudio != fileLocation || emergency) 
                 DisposeWave();
                     TmpAudio = fileLocation;

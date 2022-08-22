@@ -73,4 +73,5 @@
 	<GeneralSettings>اعدادات عامة</GeneralSettings>
 	<StartWithWindows>ابدأ مع نظام التشغيل</StartWithWindows>
 	<ShutdownOnClose>ايقاف البرنامج عند الضغط على اغلاق</ShutdownOnClose>
+	<AlreadyRunning>لا يمكن تشغيل عدة نوافذ للتطبيق! اذا كنت لا ترى النافذة ستجدها بجوار ساعة النظام </AlreadyRunning>
 </AppLanguage>

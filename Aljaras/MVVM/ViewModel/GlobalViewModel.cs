@@ -19,6 +19,7 @@ namespace Aljaras.MVVM.ViewModel
 {
     internal partial class GlobalViewModel : ObservableRecipient
     {
+
         #region Variables
         public delegate void TimerEvent(string sampleParam);
         public event TimerEvent? TimerEvt;
@@ -62,6 +63,9 @@ namespace Aljaras.MVVM.ViewModel
         private string currentAlarm = "";
 
         [ObservableProperty]
+        private string currentAlarmTitle = "";
+
+        [ObservableProperty]
         int defaultHour = 0;
 
         [ObservableProperty]
@@ -101,16 +105,22 @@ namespace Aljaras.MVVM.ViewModel
         private bool stopButtonEnabled = false;
 
         [ObservableProperty]
-        private List<WaveInCapabilities> micDevicesList = new();
+        private ObservableCollection<WaveInCapabilities> micDevicesList = new();
 
         [ObservableProperty]
         private WaveInCapabilities selectedMicDevice = new();
 
         [ObservableProperty]
-        private List<WaveOutCapabilities> speakerDevicesList = new();
+        private int indexOfMicDevice = 0;
+
+        [ObservableProperty]
+        private ObservableCollection<WaveOutCapabilities> speakerDevicesList = new();
 
         [ObservableProperty]
         private WaveOutCapabilities selectedSpeakerDevice = new();
+
+        [ObservableProperty]
+        private int indexOfSpeakerDevice = 0;
 
         [ObservableProperty]
         private string recordingActionVisibility = GetVisibility.Hidden.ToString();
@@ -137,7 +147,7 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void StartRecording()
         {
-            if (AudioPlayer.IsEmergency) return;
+            if (AudioPlayer.IsEmergency || MicDevicesList == null || SpeakerDevicesList == null || !MicDevicesList.Any() || !SpeakerDevicesList.Any()) return;
             RecordingActionVisibility = GetVisibility.Visible.ToString();
             if(File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Audio\\Attention.mp3"))
                 _ = AudioPlayer.PlayPauseAudioFile(AppDomain.CurrentDomain.BaseDirectory + "Audio\\Attention.mp3", false);
@@ -183,6 +193,9 @@ namespace Aljaras.MVVM.ViewModel
             } else EmergencyActionVisibility = GetVisibility.Hidden.ToString();
             _ = AudioPlayer.PlayPauseAudioFile(GetUserSettings.EmergencyAudioFileLocation, AudioPlayer.IsEmergency);
         }
+
+        [RelayCommand]
+        private void ReloadDevices() { LoadDevices(); }
         #endregion
 
         #region Functions
@@ -192,10 +205,18 @@ namespace Aljaras.MVVM.ViewModel
 
         partial void OnGetUserSettingsChanged(UserSettings value) { AudioPlayer.Repeat = GetUserSettings.RepeatEmergency;}
 
-        partial void OnAppLangChanged(AppLanguage value) { CurrentAlarm = AppLang.NoMoreAlarms; }
+        partial void OnAppLangChanged(AppLanguage value) 
+        { 
+            CurrentAlarm = AppLang.NoMoreAlarms;
+            CurrentAlarmTitle = AppLang.NoMoreAlarms;
+        }
 
         private void LoadDevices()
         {
+            MicDevicesList = new();
+            SpeakerDevicesList = new();
+            MicDevicesList.Clear();
+            SpeakerDevicesList.Clear();
             for (int deviceId = 0; deviceId < WaveIn.DeviceCount; deviceId++)
             {
                 var deviceInfo = WaveIn.GetCapabilities(deviceId);
@@ -206,6 +227,17 @@ namespace Aljaras.MVVM.ViewModel
                 var deviceInfo = WaveOut.GetCapabilities(deviceId);
                 SpeakerDevicesList.Add(deviceInfo);
             }
+            if (MicDevicesList != null && MicDevicesList.Any())
+            {
+                SelectedMicDevice = MicDevicesList.FirstOrDefault();
+                IndexOfMicDevice = MicDevicesList.IndexOf(SelectedMicDevice);
+            }
+            if (SpeakerDevicesList != null && SpeakerDevicesList.Any())
+            {
+                SelectedSpeakerDevice = SpeakerDevicesList.FirstOrDefault();
+                IndexOfSpeakerDevice = SpeakerDevicesList.IndexOf(SelectedSpeakerDevice);
+            }
+
         }
 
         private GlobalViewModel()
@@ -307,6 +339,7 @@ namespace Aljaras.MVVM.ViewModel
                     DefaultHour = _Nextalarm.FullTime.Hour;
                     DefaultMin = _Nextalarm.FullTime.Minute;
                     CurrentAlarm = _Nextalarm.FullTime.ToString("hh:mm tt");
+                    CurrentAlarmTitle = _Nextalarm.AlarmTitle;
                     TimeLeft = _Nextalarm.FullTime.Subtract(DateTime.Now);
                 }
                 else
@@ -316,7 +349,11 @@ namespace Aljaras.MVVM.ViewModel
                     NextAlarm();
                 }
             }
-            else CurrentAlarm = AppLang.NoMoreAlarms;
+            else 
+            { 
+                CurrentAlarm = AppLang.NoMoreAlarms;
+                CurrentAlarmTitle = AppLang.NoMoreAlarms;
+            }
             dispatcherTimer.Tick += DispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 40);
             dispatcherTimer.Start();
