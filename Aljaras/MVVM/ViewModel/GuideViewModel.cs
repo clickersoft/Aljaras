@@ -1,17 +1,10 @@
 ﻿using Aljaras.Core;
-using Aljaras.MVVM.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Security.Policy;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace Aljaras.MVVM.ViewModel
 {
@@ -23,23 +16,31 @@ namespace Aljaras.MVVM.ViewModel
         private List<string> guideList = new();
 
         [ObservableProperty]
+        private string currentImage = "";
+
+        [ObservableProperty]
+        private int imageIndex = 0;
+
+        [ObservableProperty]
         private string nOGuideImagesVisible = GetVisibility.Visible.ToString();
 
         #region RelayCommands
         [RelayCommand]
-        private void RunAboutFile() 
+        private void GoNext() 
         {
-            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "aljaras.rtf"))
-             RunFileThroughCmd(AppDomain.CurrentDomain.BaseDirectory + "aljaras.rtf");
-            else MessageBox.Show("File Not Found");
+            ImageIndex++;
+            if (ImageIndex > GuideList.Count()-1)
+                ImageIndex = 0;
+            CurrentImage = GuideList[ImageIndex];
         }
 
         [RelayCommand]
-        private void RunTutorialFile() 
+        private void GoNBack() 
         {
-            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "tutorial.rtf"))
-                RunFileThroughCmd(AppDomain.CurrentDomain.BaseDirectory + "tutorial.rtf");
-            else MessageBox.Show("File Not Found");
+            ImageIndex--;
+            if (ImageIndex < 0)
+                ImageIndex = GuideList.Count()-1;
+            CurrentImage = GuideList[ImageIndex];
         }
         #endregion
 
@@ -47,7 +48,7 @@ namespace Aljaras.MVVM.ViewModel
         public GuideViewModel()
         {
             if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "Guide")) return;
-            DirectoryInfo GuideImagesDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "Guide");
+            DirectoryInfo GuideImagesDirectory = new(AppDomain.CurrentDomain.BaseDirectory + "Guide");
             foreach (FileInfo aFile in GuideImagesDirectory.GetFiles("*.png"))
             {
                 /*Uri uri = new Uri(aFile.FullName);
@@ -55,21 +56,10 @@ namespace Aljaras.MVVM.ViewModel
                 GuideList.Add(aFile.FullName);
             }
             if (GuideList.Any())
+            {
+                CurrentImage = GuideList[ImageIndex];
                 NOGuideImagesVisible = GetVisibility.Hidden.ToString();
-        }
-
-        private void RunFileThroughCmd(string FileLocation)
-        {
-            Process process = new();
-            ProcessStartInfo startInfo = new();
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.FileName = "cmd.exe";
-            startInfo.UseShellExecute = true;
-            startInfo.CreateNoWindow = true;
-            //It is important that the argument begins with /C, otherwise it won't work.
-            startInfo.Arguments = "/C" + FileLocation;
-            process.StartInfo = startInfo;
-            process.Start();
+            }
         }
         #endregion
 

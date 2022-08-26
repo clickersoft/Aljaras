@@ -175,9 +175,7 @@ namespace Aljaras.MVVM.ViewModel
                 {
                     try
                     {
-                        Microsoft.Win32.RegistryKey? key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                        Assembly curAssembly = Assembly.GetExecutingAssembly();
-                        key?.SetValue(curAssembly.GetName().Name, Path.ChangeExtension(curAssembly.Location, ".exe"));
+                        StartUpManager.AddApplicationToAllUserStartup();
                     }
                     catch
                     {
@@ -192,9 +190,7 @@ namespace Aljaras.MVVM.ViewModel
                 } else {
                     try
                     {
-                        Microsoft.Win32.RegistryKey? key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                        Assembly curAssembly = Assembly.GetExecutingAssembly();
-                        key?.DeleteValue(curAssembly.GetName().Name);
+                        StartUpManager.RemoveApplicationFromAllUserStartup();
                     }
                     catch
                     {

@@ -80,6 +80,13 @@ namespace Aljaras.MVVM.ViewModel
         }
 
         [RelayCommand]
+        private void PlayAlarmAudio(Alarm obj)
+        {
+            if (!Global.AudioOperations.IsEmergency)
+                _ = Global.AudioOperations.PlayPauseAudioFile(obj.AudioFileLocation, false);
+        }
+
+        [RelayCommand]
         private void CloneAlarm(Alarm obj)
         {
             using (App.db)

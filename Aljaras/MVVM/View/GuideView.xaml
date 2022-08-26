@@ -13,38 +13,61 @@
         <viewmodel:GuideViewModel />
     </UserControl.DataContext>
     <Grid x:Name="GuideGrid" Background="{StaticResource WhiteBrush}">
-        <ListBox
-            Background="{StaticResource WhiteBrush}"
-            BorderThickness="0"
-            ItemsSource="{Binding GuideList}"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Width" Value="{Binding ActualWidth, ElementName=GuideGrid}" />
-                    <Setter Property="Height" Value="{Binding ActualHeight, ElementName=GuideGrid}" />
-                    <Setter Property="HorizontalContentAlignment" Value="Center" />
-                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                    <Setter Property="IsSelected" Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <ContentPresenter />
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Image
-                        Margin="0,0,20,0"
-                        Source="{Binding}"
-                        Stretch="Uniform"
-                        UseLayoutRounding="True" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Image
+            Margin="30,0"
+            Source="{Binding CurrentImage}"
+            Stretch="Uniform"
+            UseLayoutRounding="True" />
+        <Button
+            Width="30"
+            Height="30"
+            Margin="10,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Command="{Binding GoNextCommand}"
+            Opacity="10">
+            <Button.Template>
+                <ControlTemplate>
+                    <Grid x:Name="Grid">
+                        <Path
+                            x:Name="Path"
+                            Data="M0,0L19.7,16 0,32 10.10003,16z"
+                            Fill="#202020"
+                            Stretch="Uniform" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Path" Property="Data" Value="M0,0L16.005,15.999001 0,32z" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button
+            Width="30"
+            Height="30"
+            Margin="10,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Command="{Binding GoNBackCommand}"
+            Opacity="10">
+            <Button.Template>
+                <ControlTemplate>
+                    <Grid x:Name="Grid">
+                        <Path
+                            x:Name="Path"
+                            Data="M19.700001,0L9.600031,16 19.700001,32 0,16z"
+                            Fill="#202020"
+                            Stretch="Uniform" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Path" Property="Data" Value="M16.008,0L16.008,32 0,15.998001z" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
         <TextBlock
             Grid.Row="2"
             Margin="10"
@@ -55,39 +78,5 @@
             TextAlignment="Center"
             TextWrapping="Wrap"
             Visibility="{Binding NOGuideImagesVisible}" />
-        <!-- <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
-        <Button Command="{Binding RunAboutFileCommand}">
-            <StackPanel>
-                <Path
-                    Height="100"
-                    Data="{StaticResource PcAppPathData}"
-                    Fill="{StaticResource IndianRedBrush}"
-                    Stretch="Uniform" />
-                <TextBlock
-                    FontSize="35"
-                    Foreground="{StaticResource IndianRedBrush}"
-                    Text="{Binding Global.AppLang.About}"
-                    TextAlignment="Center" />
-            </StackPanel>
-        </Button>
-        <Button Grid.Column="1" Command="{Binding RunTutorialFileCommand}">
-            <StackPanel>
-                <Path
-                    Height="100"
-                    Data="{StaticResource BookPathData}"
-                    Fill="{StaticResource IndianRedBrush}"
-                    Stretch="Uniform" />
-                <TextBlock
-                    FontSize="35"
-                    Foreground="{StaticResource IndianRedBrush}"
-                    Text="{Binding Global.AppLang.Guide}"
-                    TextAlignment="Center" />
-            </StackPanel>
-        </Button>
-        -->
     </Grid>
 </UserControl>
