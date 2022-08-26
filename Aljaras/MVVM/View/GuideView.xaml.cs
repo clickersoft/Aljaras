@@ -2,9 +2,9 @@
 
 namespace Aljaras.MVVM.View
 {
-    public partial class AboutView : UserControl
+    public partial class GuideView : UserControl
     {
-        public AboutView()
+        public GuideView()
         {
             InitializeComponent();
         }

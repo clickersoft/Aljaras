@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 
 namespace Aljaras.MVVM.ViewModel
 {
-    internal partial class AboutViewModel : ObservableRecipient
+    internal partial class GuideViewModel : ObservableRecipient
     {
         public GlobalViewModel Global { get; } = GlobalViewModel.Instance;
 
@@ -44,7 +44,7 @@ namespace Aljaras.MVVM.ViewModel
         #endregion
 
         #region Functions
-        public AboutViewModel()
+        public GuideViewModel()
         {
             if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "Guide")) return;
             DirectoryInfo GuideImagesDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + "Guide");

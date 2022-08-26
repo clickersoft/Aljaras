@@ -33,7 +33,7 @@ namespace Aljaras.MVVM.ViewModel
         public SettingsViewModel settingsVM = new();
 
         [ObservableProperty]
-        public AboutViewModel aboutVM = new();
+        public GuideViewModel guideVM = new();
 
         [ObservableProperty]
         public string getVersion = "";
@@ -84,7 +84,7 @@ namespace Aljaras.MVVM.ViewModel
         void ShowSettingsView(){CurrentView = SettingsVM;}
 
         [RelayCommand]
-        void ShowAboutView(){CurrentView = AboutVM;}
+        void ShowAboutView(){CurrentView = GuideVM; }
         #endregion
 
         #region Functions

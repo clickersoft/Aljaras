@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="Aljaras.MVVM.View.AboutView"
+    x:Class="Aljaras.MVVM.View.GuideView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,9 +10,9 @@
     Background="{StaticResource WhiteBrush}"
     mc:Ignorable="d">
     <UserControl.DataContext>
-        <viewmodel:AboutViewModel />
+        <viewmodel:GuideViewModel />
     </UserControl.DataContext>
-    <Grid x:Name="AboutGrid" Background="{StaticResource WhiteBrush}">
+    <Grid x:Name="GuideGrid" Background="{StaticResource WhiteBrush}">
         <ListBox
             Background="{StaticResource WhiteBrush}"
             BorderThickness="0"
@@ -21,8 +21,8 @@
             ScrollViewer.VerticalScrollBarVisibility="Auto">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="Width" Value="{Binding ActualWidth, ElementName=AboutGrid}" />
-                    <Setter Property="Height" Value="{Binding ActualHeight, ElementName=AboutGrid}" />
+                    <Setter Property="Width" Value="{Binding ActualWidth, ElementName=GuideGrid}" />
+                    <Setter Property="Height" Value="{Binding ActualHeight, ElementName=GuideGrid}" />
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
                     <Setter Property="IsSelected" Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}" />

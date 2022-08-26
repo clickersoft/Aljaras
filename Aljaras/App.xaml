@@ -29,8 +29,8 @@
             <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
                 <view:SettingsView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModel:AboutViewModel}">
-                <view:AboutView />
+            <DataTemplate DataType="{x:Type viewModel:GuideViewModel}">
+                <view:GuideView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModel:AboutMeViewModel}">
                 <view:AboutMeView />
