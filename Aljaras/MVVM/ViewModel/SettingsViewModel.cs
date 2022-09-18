@@ -3,7 +3,6 @@ using Aljaras.MVVM.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using LiteDB;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -131,31 +130,21 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void SaveSettings()
         {
+            if (!StartUpManager.IsUserAdministrator())
+            {
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show(Global.AppLang.RunasAdministratorMessage, Global.AppLang.RunasAdministrator,  MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (messageBoxResult == MessageBoxResult.Yes)
+                    StartUpManager.RelaunchAsAdministrator();
+                else return;
+            }
+
             using (App.db)
             {
-                if (UserSet.IsKeyRegistered)
-                {
-                    try
-                    {
-                        StartUpManager.AddApplicationToAllUserStartup();
-                    }
-                    catch
-                    {
-                        Global.NewNotificationMessage(MessageBackground.IndianRed, Global.AppLang.RegistryFailed);
-                        UserSet.IsKeyRegistered = false;
-                    }
-
-                } else {
-                    try
-                    {
-                        StartUpManager.RemoveApplicationFromAllUserStartup();
-                    }
-                    catch
-                    {
-                        Global.NewNotificationMessage(MessageBackground.IndianRed, Global.AppLang.DeleteRegistryFailed);
-                        UserSet.IsKeyRegistered = true;
-                    }
-                }
+                if (UserSet.SetRegistryKey)
+                    try { StartUpManager.AddApplicationToAllUsersStartup(); }
+                    catch { Global.NewNotificationMessage(MessageBackground.IndianRed, Global.AppLang.RegistryFailed); }
+                else try { StartUpManager.RemoveApplicationFromAllUsersStartup(); }
+                    catch { Global.NewNotificationMessage(MessageBackground.IndianRed, Global.AppLang.DeleteRegistryFailed); }
                 UserSet.EmergencyAudioFileLocation = Global.AudioOperations.MoveAudioFileToLibrary(UserSet.EmergencyAudioFileLocation);
                 var col = App.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
                 UserSettings? results = col.Find(x => x.Id == 1).FirstOrDefault();

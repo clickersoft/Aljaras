@@ -19,7 +19,7 @@ namespace Aljaras.MVVM.Model
         private bool repeatEmergency = true;
 
         [ObservableProperty]
-        private bool isKeyRegistered = false;
+        private bool setRegistryKey = false;
 
         [ObservableProperty]
         private bool isShutdownOnClose = false;

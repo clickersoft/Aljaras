@@ -11,10 +11,10 @@
     <DelaySign>False</DelaySign>
     <Description>Aljaras: School Bell System by Mustafa Al-Klieb</Description>
     <Copyright>Mustafa Al-Klieb </Copyright>
-    <PackageIcon></PackageIcon>
+    <PackageIcon>school-bell-and-alarm-vector.jpg</PackageIcon>
     <IncrementVersionOnBuild>1.yyyy.Mdd.Hmm</IncrementVersionOnBuild>
-    <Version>1.2022.917.2358</Version>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.2022.918.2359</Version>
+    <ApplicationManifest></ApplicationManifest>
   </PropertyGroup>
 
 	<Target Name="RemoveDuplicateAnalyzers" BeforeTargets="CoreCompile">
@@ -25,20 +25,21 @@
 			<Analyzer Include="@(FilteredAnalyzer)" />
 		</ItemGroup>
 	</Target>
-
-	<ItemGroup>
-	  <None Remove="app.manifest" />
-	  <None Remove="mustafa.jpg" />
-	</ItemGroup>
 	
   <ItemGroup>
-    <Content Include="app.manifest" />
     <Content Include="mustafa.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Aljaras.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+	
+  <ItemGroup>
+    <None Include="..\Assets\school-bell-and-alarm-vector.jpg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -82,6 +83,10 @@
     </None>
     <None Update="Guide\Slide7.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="mustafa.jpg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -86,4 +86,6 @@
 	<DeleteRegistryFailed>يوجد خطأ في حذف المفتاح من Registry</DeleteRegistryFailed>
 	<Copy>نسخ</Copy>
 	<Paste>لصق</Paste>
+	<RunasAdministrator>تشغيل كمسؤول</RunasAdministrator>
+	<RunasAdministratorMessage>تحتاج بعض الإعدادات إلى إذن المسؤول، هل تريد إعادة التشغيل كمسؤول؟</RunasAdministratorMessage>
 </AppLanguage>

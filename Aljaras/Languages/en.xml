@@ -86,4 +86,6 @@
 	<DeleteRegistryFailed>Delete registry key Failed</DeleteRegistryFailed>
 	<Copy>Copy</Copy>
 	<Paste>Paste</Paste>
+	<RunasAdministrator>Run as Administrator</RunasAdministrator>
+	<RunasAdministratorMessage>Some settings need administrator permission, Relaunch As Administrator?</RunasAdministratorMessage>
 </AppLanguage>

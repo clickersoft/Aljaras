@@ -1,8 +1,10 @@
 ﻿using Aljaras.MVVM.ViewModel;
 using LiteDB;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -14,7 +16,8 @@ namespace Aljaras
     public partial class App : Application
     {
         private readonly Forms.NotifyIcon _notifyIcon;
-        private static Mutex? _mutex = null;
+        // Create a new Mutex. The creating thread does not own the mutex.
+        private static Mutex mut = new();
         public static readonly string? AppName = Assembly.GetExecutingAssembly().GetName().Name;
         public static readonly string AppLocation = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string dbName = AppName + ".jrsdb";
@@ -23,23 +26,21 @@ namespace Aljaras
         public static readonly string dbConnectionString = string.Concat("Filename=", PCCurrentUserName + dbName, ";connection=shared");
         public static readonly LiteDatabase db = new(dbConnectionString);
 
-        public App()
-        {
-            _notifyIcon = new Forms.NotifyIcon();
-        }
+        public App() => _notifyIcon = new Forms.NotifyIcon();
 
         protected override void OnStartup(StartupEventArgs e)
         {
             const string appName = "0C41354D-1236-4842-97F2-0EC4E8ACE4BD";
-            bool alreadyPresent = false;
-
-            _mutex = new Mutex(true, appName, out alreadyPresent);
-
+            mut = new Mutex(true, appName, out bool alreadyPresent);
             if (!alreadyPresent)
             {
-                MessageBox.Show(GlobalViewModel.Instance.AppLang.AlreadyRunning);
+                //MessageBox.Show(GlobalViewModel.Instance.AppLang.AlreadyRunning);
                 //app is already running! Exiting the application
-                Current.Shutdown();
+                //Current.Shutdown();
+                Process currentProcess = Process.GetCurrentProcess();
+                Process[] processItems = Process.GetProcessesByName(currentProcess.ProcessName);
+                if (processItems.Length > 1)
+                    processItems.Where(p => p.Id != Environment.ProcessId).First().Kill();
             }
 
             if (File.Exists(AppLocation + AppName + ".ico"))

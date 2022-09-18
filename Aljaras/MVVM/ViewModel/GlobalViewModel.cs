@@ -25,7 +25,7 @@ namespace Aljaras.MVVM.ViewModel
         public event TimerEvent? TimerEvt;
         WaveInEvent wave = new();
         WaveOut waveOut = new();
-        BufferedWaveProvider provider;
+        BufferedWaveProvider? provider;
         #endregion
 
         #region Observable 
@@ -210,7 +210,7 @@ namespace Aljaras.MVVM.ViewModel
             }
         }
 
-        private void Wave_DataAvailable(object sender, WaveInEventArgs e) => provider.AddSamples(e.Buffer, 0, e.BytesRecorded);
+        private void Wave_DataAvailable(object sender, WaveInEventArgs e) => provider!.AddSamples(e.Buffer, 0, e.BytesRecorded);
 
         partial void OnGetUserSettingsChanged(UserSettings value) => AudioOperations.Repeat = value.RepeatEmergency;
 
@@ -266,7 +266,7 @@ namespace Aljaras.MVVM.ViewModel
                         if (_alr != null)
                         {
                             if (!AudioOperations.IsEmergency)
-                            StartAudio(_alr.AudioFileLocation);
+                                StartAudio(_alr.AudioFileLocation);
                             NextAlarm();
                         }
                     }
@@ -288,8 +288,8 @@ namespace Aljaras.MVVM.ViewModel
                     {
                         try
                         {
-                            StartUpManager.AddApplicationToAllUserStartup();
-                            GetUserSettings.IsKeyRegistered = true;
+                            StartUpManager.AddApplicationToCurrentUserStartup();
+                            GetUserSettings.SetRegistryKey = true;
                             col.Insert(GetUserSettings);
                         }
                         catch
@@ -405,7 +405,7 @@ namespace Aljaras.MVVM.ViewModel
                         if (result != null && result.Count > 0)
                         { 
                             foreach (Alarm _item in result)
-                            if ((bool)GetPropValue(_item, DateTime.Now.DayOfWeek.ToString().Substring(0, 3)))
+                            if ((bool)GetPropValue(_item, DateTime.Now.DayOfWeek.ToString()[..3]))
                             {
                                 _item.FullTime = ChangeDateOnly(_item.FullTime);
                                 AlarmList.Add(_item);
@@ -450,11 +450,11 @@ namespace Aljaras.MVVM.ViewModel
         {
             Task.Run(async () =>
             {
-                await Task.Delay(5000);
+                await Task.Delay(3000);
                 Application.Current.Dispatcher.Invoke(new Action(() =>
                 {
                     if (NotificationList != null && NotificationList.Count > 0)
-                        NotificationList.RemoveAt(0);
+                        NotificationList.Remove(value);
                 }));
             });
         }

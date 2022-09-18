@@ -260,5 +260,11 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private string _paste = "Paste";
+        
+        [ObservableProperty]
+        private string _runasAdministrator = "Run as Administrator";
+        
+        [ObservableProperty]
+        private string _runasAdministratorMessage = "Some settings need administrator permission, Relaunch As Administrator?";
     }
 }

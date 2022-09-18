@@ -127,7 +127,7 @@
                     Height="20"
                     HorizontalAlignment="Left"
                     Foreground="{StaticResource ForestGreenBrush}"
-                    IsChecked="{Binding UserSet.IsKeyRegistered}"
+                    IsChecked="{Binding UserSet.SetRegistryKey}"
                     Style="{DynamicResource SliderCheckBox}">
                     <TextBlock>
                         <Run Text="{Binding Global.AppLang.StartWithWindows}" />
