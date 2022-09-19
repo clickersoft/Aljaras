@@ -295,11 +295,14 @@ namespace Aljaras.MVVM.ViewModel
                             if (messageBoxResult == MessageBoxResult.Yes)
                                 StartUpManager.RelaunchAsAdministrator();
                         }
-                        try { StartUpManager.AddApplicationToAllUsersStartup(); }
-                        catch { NewNotificationMessage(MessageBackground.IndianRed, AppLang.RegistryFailed); }
-                        ShortcutManager.CreateDesktopShortcut(true);
-                        GetUserSettings.IsFirstTimeLaunch = false;
-                        col.Update(GetUserSettings);
+                        else
+                        {
+                            try { StartUpManager.AddApplicationToAllUsersStartup(); }
+                            catch { NewNotificationMessage(MessageBackground.IndianRed, AppLang.RegistryFailed); }
+                            ShortcutManager.CreateDesktopShortcut(true);
+                            GetUserSettings.IsFirstTimeLaunch = false;
+                            col.Update(GetUserSettings);
+                        }
                     }
                 }
                 if (File.Exists(App.AppLocation + "Languages\\" + GetUserSettings.CurrentLang + ".xml"))
