@@ -13,7 +13,7 @@
     <Copyright>Mustafa Al-Klieb </Copyright>
     <PackageIcon>school-bell-and-alarm-vector.jpg</PackageIcon>
     <IncrementVersionOnBuild>1.yyyy.Mdd.Hmm</IncrementVersionOnBuild>
-    <Version>1.2022.918.2359</Version>
+    <Version>1.2022.919.2204</Version>
     <ApplicationManifest></ApplicationManifest>
   </PropertyGroup>
 
@@ -25,6 +25,18 @@
 			<Analyzer Include="@(FilteredAnalyzer)" />
 		</ItemGroup>
 	</Target>
+
+	<ItemGroup>
+	  <COMReference Include="IWshRuntimeLibrary">
+	    <WrapperTool>tlbimp</WrapperTool>
+	    <VersionMinor>0</VersionMinor>
+	    <VersionMajor>1</VersionMajor>
+	    <Guid>f935dc20-1cf0-11d0-adb9-00c04fd58a0b</Guid>
+	    <Lcid>0</Lcid>
+	    <Isolated>false</Isolated>
+	    <EmbedInteropTypes>true</EmbedInteropTypes>
+	  </COMReference>
+	</ItemGroup>
 	
   <ItemGroup>
     <Content Include="mustafa.jpg">
@@ -63,6 +75,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Audio\الحصص نغمة المطار\انتهت الفسحة الاولى وشكر المشرفين.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Audio\الحصص نغمة المطار\انتهت الفسحة الثانية وشكر المشرفين.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Audio\الحصص نغمة المطار\بداية الفسحة الاولى وشكر المشرفين.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Audio\الحصص نغمة المطار\بداية الفسحة الثانية وشكر المشرفين.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Guide\Slide1.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

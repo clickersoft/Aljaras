@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -252,7 +253,7 @@ namespace Aljaras.MVVM.ViewModel
         {
             LoadMonitoringAlarmCollectionData();
             LoadDevices();
-            SetAppLang();
+            SetAppSettings();
             NextAlarm();
             NotificationList = new();
             Task.Run(async () =>
@@ -272,32 +273,34 @@ namespace Aljaras.MVVM.ViewModel
                     }
                     await Task.Delay(1000);
                 }
-            });
+            });            
         }
 
-        public void SetAppLang()
+        public void SetAppSettings()
         {
-            try { 
+            try
+            {
                 using (App.db)
                 {
                     var col = App.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
                     UserSettings? results = col.Find(x => x.Id == 1).FirstOrDefault();
                     if (results != null)
                         GetUserSettings = results;
-                    else 
+                    else col.Insert(GetUserSettings);
+                    if (GetUserSettings.IsFirstTimeLaunch)
                     {
-                        try
+                        if (!StartUpManager.IsUserAdministrator())
                         {
-                            StartUpManager.AddApplicationToCurrentUserStartup();
-                            GetUserSettings.SetRegistryKey = true;
-                            col.Insert(GetUserSettings);
+                            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show(AppLang.RunasAdministratorMessage, AppLang.RunasAdministrator, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                            if (messageBoxResult == MessageBoxResult.Yes)
+                                StartUpManager.RelaunchAsAdministrator();
                         }
-                        catch
-                        {
-                            col.Insert(GetUserSettings);
-                            NewNotificationMessage(MessageBackground.IndianRed , AppLang.RegistryFailed);
-                        }
-                    } 
+                        try { StartUpManager.AddApplicationToAllUsersStartup(); }
+                        catch { NewNotificationMessage(MessageBackground.IndianRed, AppLang.RegistryFailed); }
+                        ShortcutManager.CreateDesktopShortcut(true);
+                        GetUserSettings.IsFirstTimeLaunch = false;
+                        col.Update(GetUserSettings);
+                    }
                 }
                 if (File.Exists(App.AppLocation + "Languages\\" + GetUserSettings.CurrentLang + ".xml"))
                 {

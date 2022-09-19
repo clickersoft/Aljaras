@@ -23,5 +23,8 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private bool isShutdownOnClose = false;
+
+        [ObservableProperty]
+        private bool isFirstTimeLaunch = true;
     }
 }

@@ -153,7 +153,7 @@ namespace Aljaras.MVVM.ViewModel
                 else col.Insert(UserSet);
             }
             Global.GetUserSettings = UserSet;
-            Global.SetAppLang();
+            Global.SetAppSettings();
             Global.LoadMonitoringAlarmCollectionData();
             Global.NextAlarm();
             Global.NewNotificationMessage(MessageBackground.MediumSeaGreen, Global.AppLang.Done);
