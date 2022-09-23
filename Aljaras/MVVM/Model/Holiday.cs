@@ -25,25 +25,25 @@ namespace Aljaras.MVVM.Model
         partial void OnIsReminderActiveChanged(bool value) => ReminderVisibility = value ? GetVisibility.Visible.ToString() : GetVisibility.Hidden.ToString();
 
         [ObservableProperty]
-        private DateTime reminderDate = DateTime.Now;
+        private DateTime reminderDate = DateTime.Now.AddDays(7);
 
         [ObservableProperty]
         private string reminderHour = "01";
 
-        partial void OnReminderHourChanged(string value) => FullTime = DateTime.Parse(value + ":" + ReminderMinute + " " + ReminderDayTime);
+        partial void OnReminderHourChanged(string value) => ReminderDate = DateTime.Parse(value + ":" + ReminderMinute + " " + ReminderDayTime);
 
         [ObservableProperty]
         private string reminderMinute = "00";
 
-        partial void OnReminderMinuteChanged(string value) => FullTime = DateTime.Parse(ReminderHour + ":" + value + " " + ReminderDayTime);
+        partial void OnReminderMinuteChanged(string value) => ReminderDate = DateTime.Parse(ReminderHour + ":" + value + " " + ReminderDayTime);
 
         [ObservableProperty]
         private GetDayTime reminderDayTime = GetDayTime.AM;
 
-        partial void OnReminderDayTimeChanged(GetDayTime value) => FullTime = DateTime.Parse(ReminderHour + ":" + ReminderMinute + " " + value);
+        partial void OnReminderDayTimeChanged(GetDayTime value) => ReminderDate = DateTime.Parse(ReminderHour + ":" + ReminderMinute + " " + value);
 
-        [ObservableProperty]
-        private DateTime fullTime;
+        //[ObservableProperty]
+        //private DateTime fullTime;
 
         [ObservableProperty]
         private string reminderAudioFileLocation = string.Empty;

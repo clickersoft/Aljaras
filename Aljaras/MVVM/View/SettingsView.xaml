@@ -126,18 +126,10 @@
                 <CheckBox
                     Height="20"
                     HorizontalAlignment="Left"
+                    Content="{Binding Global.AppLang.StartWithWindows}"
                     Foreground="{StaticResource ForestGreenBrush}"
                     IsChecked="{Binding UserSet.SetRegistryKey}"
-                    Style="{DynamicResource SliderCheckBox}">
-                    <TextBlock>
-                        <Run Text="{Binding Global.AppLang.StartWithWindows}" />
-                        <Run
-                            BaselineAlignment="Baseline"
-                            FontSize="10"
-                            Foreground="{StaticResource IndianRedBrush}"
-                            Text="*run as administrator*" />
-                    </TextBlock>
-                </CheckBox>
+                    Style="{DynamicResource SliderCheckBox}" />
                 <CheckBox
                     Height="20"
                     Margin="0,10,0,0"

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <AppLanguage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<IsActive>false</IsActive>
-	<Apptitle>برنامج الجرس: نظام تنبيه مدرسي - النسخة</Apptitle>
+	<Apptitle>برنامج الجرس: نظام ادارة تنبيهات المدرسة - النسخة</Apptitle>
 	<FlowDirection>RightToLeft</FlowDirection>
 	<Menu>القائمة</Menu>
 	<Monitoring>المراقبة</Monitoring>
@@ -88,4 +88,5 @@
 	<Paste>لصق</Paste>
 	<RunasAdministrator>تشغيل كمسؤول</RunasAdministrator>
 	<RunasAdministratorMessage>تحتاج بعض الإعدادات إلى إذن المسؤول، هل تريد إعادة التشغيل كمسؤول؟</RunasAdministratorMessage>
+	<Reload>تحديث</Reload>
 </AppLanguage>

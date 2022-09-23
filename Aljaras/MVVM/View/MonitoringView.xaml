@@ -175,7 +175,7 @@
                         extensions:Extensions.Carrier="{StaticResource ReloadPathData}"
                         Background="{StaticResource MediumVioletRedBrush}"
                         Command="{Binding Global.ReloadDevicesCommand}"
-                        Content="Reload"
+                        Content="{Binding Global.AppLang.Reload}"
                         Foreground="{StaticResource MediumVioletRedBrush}"
                         Style="{DynamicResource ListRoundButtons}" />
                     <Path

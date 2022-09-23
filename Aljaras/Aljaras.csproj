@@ -13,7 +13,7 @@
     <Copyright>Mustafa Al-Klieb </Copyright>
     <PackageIcon>school-bell-and-alarm-vector.jpg</PackageIcon>
     <IncrementVersionOnBuild>1.yyyy.Mdd.Hmm</IncrementVersionOnBuild>
-    <Version>1.2022.919.2210</Version>
+    <Version>1.2022.923.2011</Version>
     <ApplicationManifest></ApplicationManifest>
   </PropertyGroup>
 

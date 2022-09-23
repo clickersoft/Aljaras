@@ -58,7 +58,7 @@ namespace Aljaras.MVVM.ViewModel
                 }
                 Global.NewNotificationMessage(MessageBackground.SeaGreen, Global.AppLang.Done);
             }
-            Global.LoadMonitoringAlarmCollectionData();            
+            Global.LoadUIInfo();
         }
 
         [RelayCommand]
@@ -82,7 +82,7 @@ namespace Aljaras.MVVM.ViewModel
                 File.Move(dbSourceFile, dbDestinationFile);
                 Global.NewNotificationMessage(MessageBackground.SeaGreen, Global.AppLang.Done);
             }
-            Global.LoadMonitoringAlarmCollectionData();
+            Global.LoadUIInfo();
         }
 
         [RelayCommand]
@@ -123,7 +123,7 @@ namespace Aljaras.MVVM.ViewModel
             string fileExists = string.Concat(App.AppLocation, App.PCCurrentUserName, App.AppName ,".jrsdb");
             if (File.Exists(fileExists))
                 File.Delete(fileExists);
-            Global.LoadMonitoringAlarmCollectionData();
+            Global.LoadUIInfo();
             Global.NewNotificationMessage(MessageBackground.SeaGreen, Global.AppLang.Done);
         }
 
@@ -153,9 +153,7 @@ namespace Aljaras.MVVM.ViewModel
                 else col.Insert(UserSet);
             }
             Global.GetUserSettings = UserSet;
-            Global.SetAppSettings();
-            Global.LoadMonitoringAlarmCollectionData();
-            Global.NextAlarm();
+            Global.LoadUIInfo();
             Global.NewNotificationMessage(MessageBackground.MediumSeaGreen, Global.AppLang.Done);
         }
 

@@ -31,7 +31,7 @@ namespace Aljaras.MVVM.ViewModel
 
         #region Observable 
         [ObservableProperty]
-        ObservableCollection<UserNotificationMessage> notificationList  = new();
+        ObservableCollection<UserNotificationMessage> notificationList = new();
 
         [ObservableProperty]
         UserNotificationMessage notificationMessage = new();
@@ -110,7 +110,7 @@ namespace Aljaras.MVVM.ViewModel
 
         [ObservableProperty]
         private WaveInCapabilities selectedMicDevice = new();
-        
+
         [ObservableProperty]
         private int indexOfMicDevice = 0;
 
@@ -131,12 +131,12 @@ namespace Aljaras.MVVM.ViewModel
 
         [ObservableProperty]
         private Random startRandom = new();
-        
+
         [ObservableProperty]
         private string activationMessage = string.Empty;
 
         [ObservableProperty]
-        string productActivated = LicenseKeyGenerator.IsProductActivated()? GetVisibility.Hidden.ToString() : GetVisibility.Visible.ToString(); 
+        string productActivated = LicenseKeyGenerator.IsProductActivated() ? GetVisibility.Hidden.ToString() : GetVisibility.Visible.ToString();
         #endregion
 
         #region RelayCommands
@@ -156,7 +156,7 @@ namespace Aljaras.MVVM.ViewModel
         {
             if (AudioOperations.IsEmergency || MicDevicesList == null || SpeakerDevicesList == null || !MicDevicesList.Any() || !SpeakerDevicesList.Any()) return;
             RecordingActionVisibility = GetVisibility.Visible.ToString();
-            if(File.Exists(App.AppLocation + "Audio\\Attention.mp3"))
+            if (File.Exists(App.AppLocation + "Audio\\Attention.mp3"))
                 _ = AudioOperations.PlayPauseAudioFile(AudioOperations.MoveAudioFileToLibrary(App.AppLocation + "Audio\\Attention.mp3"), false);
             RecordButtonEnabled = false;
             StopButtonEnabled = true;
@@ -183,11 +183,12 @@ namespace Aljaras.MVVM.ViewModel
         private void Emergency()
         {
             AudioOperations.IsEmergency = !AudioOperations.IsEmergency;
-            if (AudioOperations.IsEmergency) 
+            if (AudioOperations.IsEmergency)
             {
                 EmergencyActionVisibility = GetVisibility.Visible.ToString();
                 StopRecording();
-            } else EmergencyActionVisibility = GetVisibility.Hidden.ToString();
+            }
+            else EmergencyActionVisibility = GetVisibility.Hidden.ToString();
             if (!File.Exists(string.Concat(App.AppLocation, GetUserSettings.EmergencyAudioFileLocation)))
                 GetUserSettings.EmergencyAudioFileLocation = AudioOperations.MoveAudioFileToLibrary(App.AppLocation + "Audio\\Emerg.mp3");
             _ = AudioOperations.PlayPauseAudioFile(GetUserSettings.EmergencyAudioFileLocation, AudioOperations.IsEmergency);
@@ -215,8 +216,8 @@ namespace Aljaras.MVVM.ViewModel
 
         partial void OnGetUserSettingsChanged(UserSettings value) => AudioOperations.Repeat = value.RepeatEmergency;
 
-        partial void OnAppLangChanged(AppLanguage value) 
-        { 
+        partial void OnAppLangChanged(AppLanguage value)
+        {
             CurrentAlarm = value.NoMoreAlarms;
             CurrentAlarmTitle = value.NoMoreAlarms;
         }
@@ -251,10 +252,7 @@ namespace Aljaras.MVVM.ViewModel
 
         private GlobalViewModel()
         {
-            LoadMonitoringAlarmCollectionData();
-            LoadDevices();
-            SetAppSettings();
-            NextAlarm();
+            LoadUIInfo();
             NotificationList = new();
             Task.Run(async () =>
             {
@@ -268,18 +266,26 @@ namespace Aljaras.MVVM.ViewModel
                         {
                             if (!AudioOperations.IsEmergency)
                                 StartAudio(_alr.AudioFileLocation);
-                            NextAlarm();
+                            LoadMonitoringAlarmCollectionData();
                         }
                     }
                     await Task.Delay(1000);
                 }
-            });            
+            });
+        }
+
+        public void LoadUIInfo()
+        {
+            LoadDevices();
+            SetAppSettings();
+            LoadMonitoringAlarmCollectionData();
         }
 
         public void SetAppSettings()
         {
             try
             {
+                GetUserSettings = new();
                 using (App.db)
                 {
                     var col = App.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
@@ -321,8 +327,8 @@ namespace Aljaras.MVVM.ViewModel
 
         void StartAudio(string _afl)
         {
-            var fileLocation = new string[] { _afl, App.AppLocation + "Audio\\School.mp3"}.FirstOrDefault(s => !string.IsNullOrEmpty(s) && File.Exists(s)) ?? string.Empty;
-            if (string.IsNullOrEmpty(fileLocation)) 
+            var fileLocation = new string[] { _afl, App.AppLocation + "Audio\\School.mp3" }.FirstOrDefault(s => !string.IsNullOrEmpty(s) && File.Exists(s)) ?? string.Empty;
+            if (string.IsNullOrEmpty(fileLocation))
             {
                 NotificationMessage = new()
                 {
@@ -358,8 +364,8 @@ namespace Aljaras.MVVM.ViewModel
                     NextAlarm();
                 }
             }
-            else 
-            { 
+            else
+            {
                 CurrentAlarm = AppLang.NoMoreAlarms;
                 CurrentAlarmTitle = AppLang.NoMoreAlarms;
             }
@@ -375,58 +381,66 @@ namespace Aljaras.MVVM.ViewModel
 
         public void LoadMonitoringAlarmCollectionData()
         {
-            ScheduleList = new();
-            AlarmList = new();
-            HolidayList = new();
-            using (App.db)
+            bool isLoading = true;
+            while (isLoading)
             {
-                var holidayCollection = App.db.GetCollection<Holiday>(DbTables.Holidays.ToString());
-                HolidayList = holidayCollection.Find(h => h.HolidayDate > DateTime.Now && h.IsHolidayActive).OrderBy(x => x.HolidayDate).ToList();
-                if(HolidayList!= null && HolidayList.Count>0)
+                ScheduleList = new();
+                AlarmList = new();
+                HolidayList = new();
+                using (App.db)
                 {
-                    List<Holiday> _tmp = HolidayList.FindAll(h => h.IsReminderActive && h.ReminderDate.Date == DateTime.Now.Date);
-                    if (_tmp != null && _tmp.Count > 0)
-                        foreach (var item in _tmp)
-                        {
-                            Alarm _alr = new()
-                            {
-                                AlarmTitle = item.HolidayTitle,
-                                FullTime = item.FullTime,
-                                AudioFileLocation = item.ReminderAudioFileLocation
-                            };
-                            AlarmList.Add(_alr);                            
-                        }
-                }
-                if (HolidayList != null && HolidayList.Count > 0)
-                    IsNOHolidayMessageVisible = GetVisibility.Hidden.ToString();
-                else IsNOHolidayMessageVisible = GetVisibility.Visible.ToString();
-                var scheduleCollection = App.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
-                ScheduleList = scheduleCollection.Find(x => x.IsScheduleActive == true).ToList();
-                if (ScheduleList != null && ScheduleList.Count > 0)
-                {
-                    foreach (Schedule item in ScheduleList)
+                    var holidayCollection = App.db.GetCollection<Holiday>(DbTables.Holidays.ToString());
+                    HolidayList = holidayCollection.Find(h => h.HolidayDate >= DateTime.Now && h.IsHolidayActive).OrderBy(x => x.HolidayDate).ToList();
+                    if (HolidayList != null && HolidayList.Count > 0)
                     {
-                        var alarmCollection = App.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
-                        List<Alarm> result = alarmCollection.Find(x => x.ScheduleId.ToString().Contains(item.ScheduleId.ToString()) && x.IsAlarmActive == true).ToList();
-                        if (result != null && result.Count > 0)
-                        { 
-                            foreach (Alarm _item in result)
-                            if ((bool)GetPropValue(_item, DateTime.Now.DayOfWeek.ToString()[..3]))
+                        List<Holiday> _tmp = HolidayList.FindAll(h => h.IsReminderActive && h.ReminderDate >= DateTime.Now);
+                        if (_tmp != null && _tmp.Count > 0)
+                            foreach (var item in _tmp)
                             {
-                                _item.FullTime = ChangeDateOnly(_item.FullTime);
-                                AlarmList.Add(_item);
+                                Alarm _alr = new()
+                                {
+                                    AlarmTitle = item.HolidayTitle,
+                                    FullTime = item.ReminderDate,
+                                    AudioFileLocation = item.ReminderAudioFileLocation
+                                };
+                                AlarmList.Add(_alr);
                             }
-                            if(LicenseKeyGenerator.IsProductActivated())
-                            AlarmList = AlarmList.OrderBy(x => x.FullTime).ToList();
-                            else AlarmList = AlarmList.OrderBy(x => x.FullTime).Take(5).ToList();
-                            
-                        } 
                     }
-                    if (AlarmList != null && AlarmList.Count > 0)
+                    if (HolidayList != null && HolidayList.Count > 0)
+                        IsNOHolidayMessageVisible = GetVisibility.Hidden.ToString();
+                    else IsNOHolidayMessageVisible = GetVisibility.Visible.ToString();
+                    var scheduleCollection = App.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
+                    ScheduleList = scheduleCollection.Find(x => x.IsScheduleActive == true).ToList();
+                    if (ScheduleList != null && ScheduleList.Count > 0)
                     {
-                        IsNOAlarmMessageVisible = GetVisibility.Hidden.ToString();
-                        return;
+                        foreach (Schedule item in ScheduleList)
+                        {
+                            var alarmCollection = App.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
+                            List<Alarm> result = alarmCollection.Find(x => x.ScheduleId.ToString().Contains(item.ScheduleId.ToString()) && x.IsAlarmActive == true).ToList();
+                            if (result != null && result.Count > 0)
+                            {
+                                foreach (Alarm _item in result)
+                                    if ((bool)GetPropValue(_item, DateTime.Now.DayOfWeek.ToString()[..3]))
+                                    {
+                                        _item.FullTime = ChangeDateOnly(_item.FullTime);
+                                        AlarmList.Add(_item);
+                                    }
+                                if (LicenseKeyGenerator.IsProductActivated())
+                                    AlarmList = AlarmList.OrderBy(x => x.FullTime).ToList();
+                                else AlarmList = AlarmList.OrderBy(x => x.FullTime).Take(5).ToList();
+
+                            }
+                        }
+                        if (AlarmList != null && AlarmList.Count > 0)
+                        {
+                            IsNOAlarmMessageVisible = GetVisibility.Hidden.ToString();
+                            NextAlarm();
+                            isLoading = false;
+                            return;
+                        }
                     }
+                    NextAlarm();
+                    isLoading = false;
                 }
             }
             IsNOAlarmMessageVisible = GetVisibility.Visible.ToString();
@@ -475,6 +489,5 @@ namespace Aljaras.MVVM.ViewModel
             NotificationList.Add(NotificationMessage);
         }
         #endregion
-
     }
 }

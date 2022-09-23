@@ -24,7 +24,7 @@ namespace Aljaras
         public static readonly string dbName = AppName + ".jrsdb";
         public static readonly string dbBackupName = AppName + ".jrsbck";
         public static readonly string PCCurrentUserName = Environment.UserName;
-        public static readonly string dbConnectionString = string.Concat("Filename=", PCCurrentUserName + dbName, ";connection=shared");
+        public static readonly string dbConnectionString = string.Concat("Filename=", PCCurrentUserName + dbName, ";Connection=shared");
         public static readonly LiteDatabase db = new(dbConnectionString);
 
         public App() => _notifyIcon = new Forms.NotifyIcon();

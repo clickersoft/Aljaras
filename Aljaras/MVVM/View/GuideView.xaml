@@ -33,6 +33,7 @@
                             x:Name="Path"
                             Data="M0,0L19.7,16 0,32 10.10003,16z"
                             Fill="#202020"
+                            FlowDirection="{Binding Global.AppLang.FlowDirection}"
                             Stretch="Uniform" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -58,6 +59,7 @@
                             x:Name="Path"
                             Data="M19.700001,0L9.600031,16 19.700001,32 0,16z"
                             Fill="#202020"
+                            FlowDirection="{Binding Global.AppLang.FlowDirection}"
                             Stretch="Uniform" />
                     </Grid>
                     <ControlTemplate.Triggers>

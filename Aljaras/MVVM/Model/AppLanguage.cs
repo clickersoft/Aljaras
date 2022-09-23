@@ -7,7 +7,7 @@ namespace Aljaras.MVVM.Model
     public partial class AppLanguage : ObservableRecipient
     {
         [ObservableProperty]
-        private string _apptitle = "Aljaras: School Bell System Version";
+        private string _apptitle = "Aljaras: School Bell Management System - Version";
 
         [ObservableProperty]
         private string _flowDirection = "LeftToRight";
@@ -260,6 +260,9 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private string _paste = "Paste";
+        
+        [ObservableProperty]
+        private string _reload = "Reload";
         
         [ObservableProperty]
         private string _runasAdministrator = "Run as Administrator";

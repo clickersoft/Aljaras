@@ -36,6 +36,7 @@ namespace Aljaras.MVVM.ViewModel
         private void TimeNow()
         {
             DateTime _dt = DateTime.Now;
+            CurrentHoliday.ReminderDate = _dt;
             CurrentHoliday.ReminderHour = _dt.ToString("hh");
             CurrentHoliday.ReminderMinute = _dt.ToString("mm");
             CurrentHoliday.ReminderDayTime = (GetDayTime)Enum.Parse(typeof(GetDayTime), _dt.ToString("tt"));
@@ -52,7 +53,7 @@ namespace Aljaras.MVVM.ViewModel
                 holidayCol.Insert(obj);
             }
             LoadHolidayCollectionData();
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
             Global.NewNotificationMessage(MessageBackground.MediumSeaGreen , Global.AppLang.Done);
         }
 
@@ -87,7 +88,7 @@ namespace Aljaras.MVVM.ViewModel
                 holidayCol.Update(obj);
             }
             Global.NewNotificationMessage(MessageBackground.SeaGreen , Global.AppLang.Done);
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
         }
 
         [RelayCommand]
@@ -101,7 +102,7 @@ namespace Aljaras.MVVM.ViewModel
             }
             LoadHolidayCollectionData();
             CurrentHoliday = new();
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
         }
 
         [RelayCommand]
@@ -118,7 +119,7 @@ namespace Aljaras.MVVM.ViewModel
                 fileLocation = Global.AudioOperations.MoveAudioFileToLibrary(fileLocation);
                 using (App.db)
                 {
-                    CurrentHoliday.FullTime = ChangeDateOnly(CurrentHoliday.ReminderDate, DateTime.Parse(CurrentHoliday.ReminderHour + ":" + CurrentHoliday.ReminderMinute + " " + CurrentHoliday.ReminderDayTime));
+                    //CurrentHoliday.ReminderDate = ChangeDateOnly(CurrentHoliday.ReminderDate, DateTime.Parse(CurrentHoliday.ReminderHour + ":" + CurrentHoliday.ReminderMinute + " " + CurrentHoliday.ReminderDayTime));
                     CurrentHoliday.ReminderAudioFileLocation = fileLocation;
                     var col = App.db.GetCollection<Holiday>(DbTables.Holidays.ToString());
                     if (CurrentHoliday.HolidayId > 0)
@@ -126,7 +127,7 @@ namespace Aljaras.MVVM.ViewModel
                     else
                     {
                         CurrentHoliday.HolidayId = DateTime.Now.Ticks;
-                        CurrentHoliday.FullTime = ChangeDateOnly(CurrentHoliday.ReminderDate, DateTime.Parse(CurrentHoliday.ReminderHour + ":" + CurrentHoliday.ReminderMinute + " " + CurrentHoliday.ReminderDayTime));
+                        //CurrentHoliday.FullTime = ChangeDateOnly(CurrentHoliday.ReminderDate, DateTime.Parse(CurrentHoliday.ReminderHour + ":" + CurrentHoliday.ReminderMinute + " " + CurrentHoliday.ReminderDayTime));
                         col.Insert(CurrentHoliday);
                     }
                 }
@@ -135,7 +136,7 @@ namespace Aljaras.MVVM.ViewModel
             }
             else Global.NewNotificationMessage(MessageBackground.IndianRed, Global.AppLang.InvalidTitle);
             CurrentHoliday = new();
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
         }
         #endregion
 
@@ -153,12 +154,6 @@ namespace Aljaras.MVVM.ViewModel
             {
                 IsNOHolidayMessageVisible = GetVisibility.Visible.ToString();
             }
-        }
-
-        private void CallGlobal()
-        {
-            Global.LoadMonitoringAlarmCollectionData();
-            Global.NextAlarm();
         }
 
         public static DateTime ChangeDateOnly(DateTime _date, DateTime _time) => _date.Date + _time.TimeOfDay;

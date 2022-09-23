@@ -66,7 +66,7 @@ namespace Aljaras.MVVM.ViewModel
                 aLarmCol.Insert(_aResult);
             }
             LoadScheduleCollectionData();
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
             Global.NewNotificationMessage(MessageBackground.MediumSeaGreen , Global.AppLang.Done);
         }
 
@@ -88,7 +88,7 @@ namespace Aljaras.MVVM.ViewModel
                 aLarmCol.Insert(obj);
             }
             LoadAlarmCollectionData(CurrentSchedule.ScheduleId);
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
             Global.NewNotificationMessage(MessageBackground.SeaGreen, Global.AppLang.Done);
         }
 
@@ -149,7 +149,7 @@ namespace Aljaras.MVVM.ViewModel
                 return;
             }
             CurrentAlarm = new();
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
         }
 
         [RelayCommand]
@@ -195,7 +195,7 @@ namespace Aljaras.MVVM.ViewModel
             else Global.NewNotificationMessage(MessageBackground.IndianRed, Global.AppLang.InvalidTitle);
             LoadScheduleCollectionData();
             CurrentSchedule = new();
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
         }
 
         [RelayCommand]
@@ -216,7 +216,7 @@ namespace Aljaras.MVVM.ViewModel
             }
             LoadAlarmCollectionData(CurrentSchedule.ScheduleId);
             CurrentAlarm = new();
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
         }
 
         [RelayCommand]
@@ -240,7 +240,7 @@ namespace Aljaras.MVVM.ViewModel
             AlarmList = new();
             IsNOAlarmMessageVisible = GetVisibility.Visible.ToString();
             CurrentSchedule = new();
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
         }
 
         [RelayCommand]
@@ -252,7 +252,7 @@ namespace Aljaras.MVVM.ViewModel
                     scheduleCol.Update(obj);
             }            
             Global.NewNotificationMessage(MessageBackground.MediumSeaGreen, Global.AppLang.Done);
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
         }
 
         [RelayCommand]
@@ -264,7 +264,7 @@ namespace Aljaras.MVVM.ViewModel
                     alarmCol.Update(obj);
             }
             Global.NewNotificationMessage(MessageBackground.MediumSeaGreen, Global.AppLang.Done);
-            CallGlobal();
+            Global.LoadMonitoringAlarmCollectionData();
         }
         #endregion
 
@@ -286,11 +286,7 @@ namespace Aljaras.MVVM.ViewModel
                 CurrentAlarm = new();
         }
 
-        private void CallGlobal()
-        {
-            Global.LoadMonitoringAlarmCollectionData();
-            Global.NextAlarm();
-        }
+            
 
         private void LoadScheduleCollectionData()
         {

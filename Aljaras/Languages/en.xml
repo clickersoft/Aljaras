@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <AppLanguage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	<IsActive>false</IsActive>
-	<Apptitle>Aljaras: School Bell System - Version</Apptitle>
+	<Apptitle>Aljaras: School Bell Management System - Version</Apptitle>
 	<FlowDirection>LeftToRight</FlowDirection>
 	<Menu>Menu</Menu>
 	<Monitoring>Monitoring</Monitoring>
@@ -88,4 +88,5 @@
 	<Paste>Paste</Paste>
 	<RunasAdministrator>Run as Administrator</RunasAdministrator>
 	<RunasAdministratorMessage>Some settings need administrator permission, Relaunch As Administrator?</RunasAdministratorMessage>
+	<Reload>Reload</Reload>
 </AppLanguage>

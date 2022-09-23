@@ -79,7 +79,6 @@ namespace Aljaras.MVVM.ViewModel
         public void ShowMonitoringView()
         { 
             Global.LoadMonitoringAlarmCollectionData();
-            Global.NextAlarm();
             CurrentView = MonitoringVM;
         }
 
