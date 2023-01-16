@@ -1,4 +1,5 @@
-﻿using Aljaras.MVVM.Model;
+﻿using Aljaras.Core;
+using Aljaras.MVVM.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -124,12 +125,12 @@ namespace Aljaras.MVVM.ViewModel
             {
                 GetVersion = "not configured";
             }
-            if (!File.Exists(App.AppLocation + "Languages\\en.xml"))
+            if (!File.Exists(GlobalVariables.AppLocation + "Languages\\en.xml"))
             {
                 AppLanguage overview = new();
                 System.Xml.Serialization.XmlSerializer writer =
                 new System.Xml.Serialization.XmlSerializer(typeof(AppLanguage));
-                var path = App.AppLocation + "Languages";
+                var path = GlobalVariables.AppLocation + "Languages";
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
                 FileStream file = File.Create(path + "\\en.xml");

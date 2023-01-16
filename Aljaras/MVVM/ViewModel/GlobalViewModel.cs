@@ -155,8 +155,8 @@ namespace Aljaras.MVVM.ViewModel
         {
             if (AudioOperations.IsEmergency || MicDevicesList == null || SpeakerDevicesList == null || !MicDevicesList.Any() || !SpeakerDevicesList.Any()) return;
             RecordingActionVisibility = GetVisibility.Visible.ToString();
-            if (File.Exists(App.AppLocation + "Audio\\Attention.mp3"))
-                _ = AudioOperations.PlayPauseAudioFile(AudioOperations.MoveAudioFileToLibrary(App.AppLocation + "Audio\\Attention.mp3"), false);
+            if (File.Exists(GlobalVariables.AppLocation + "Audio\\Attention.mp3"))
+                _ = AudioOperations.PlayPauseAudioFile(AudioOperations.MoveAudioFileToLibrary(GlobalVariables.AppLocation + "Audio\\Attention.mp3"), false);
             RecordButtonEnabled = false;
             StopButtonEnabled = true;
             wave = new()
@@ -188,8 +188,8 @@ namespace Aljaras.MVVM.ViewModel
                 StopRecording();
             }
             else EmergencyActionVisibility = GetVisibility.Hidden.ToString();
-            if (!File.Exists(string.Concat(App.AppLocation, GetUserSettings.EmergencyAudioFileLocation)))
-                GetUserSettings.EmergencyAudioFileLocation = AudioOperations.MoveAudioFileToLibrary(App.AppLocation + "Audio\\Emerg.mp3");
+            if (!File.Exists(string.Concat(GlobalVariables.AppLocation, GetUserSettings.EmergencyAudioFileLocation)))
+                GetUserSettings.EmergencyAudioFileLocation = AudioOperations.MoveAudioFileToLibrary(GlobalVariables.AppLocation + "Audio\\Emerg.mp3");
             _ = AudioOperations.PlayPauseAudioFile(GetUserSettings.EmergencyAudioFileLocation, AudioOperations.IsEmergency);
         }
 
@@ -285,9 +285,9 @@ namespace Aljaras.MVVM.ViewModel
             try
             {
                 GetUserSettings = new();
-                using (App.db)
+                using (GlobalVariables.db)
                 {
-                    var col = App.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
+                    var col = GlobalVariables.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
                     UserSettings? results = col.Find(x => x.Id == 1).FirstOrDefault();
                     if (results != null)
                         GetUserSettings = results;
@@ -310,11 +310,11 @@ namespace Aljaras.MVVM.ViewModel
                         }
                     }
                 }
-                if (File.Exists(App.AppLocation + "Languages\\" + GetUserSettings.CurrentLang + ".xml"))
+                if (File.Exists(GlobalVariables.AppLocation + "Languages\\" + GetUserSettings.CurrentLang + ".xml"))
                 {
                     XmlSerializer reader = new(typeof(UserSettings));
                     reader = new XmlSerializer(typeof(AppLanguage));
-                    StreamReader file = new(App.AppLocation + "Languages\\" + GetUserSettings.CurrentLang + ".xml");
+                    StreamReader file = new(GlobalVariables.AppLocation + "Languages\\" + GetUserSettings.CurrentLang + ".xml");
                     AppLang = (AppLanguage)reader.Deserialize(file)!;
                     file.Close();
                 }
@@ -326,7 +326,7 @@ namespace Aljaras.MVVM.ViewModel
 
         void StartAudio(string _afl)
         {
-            var fileLocation = new string[] { _afl, App.AppLocation + "Audio\\School.mp3" }.FirstOrDefault(s => !string.IsNullOrEmpty(s) && File.Exists(s)) ?? string.Empty;
+            var fileLocation = new string[] { _afl, GlobalVariables.AppLocation + "Audio\\School.mp3" }.FirstOrDefault(s => !string.IsNullOrEmpty(s) && File.Exists(s)) ?? string.Empty;
             if (string.IsNullOrEmpty(fileLocation))
             {
                 NotificationMessage = new()
@@ -386,9 +386,9 @@ namespace Aljaras.MVVM.ViewModel
                 ScheduleList = new();
                 AlarmList = new();
                 HolidayList = new();
-                using (App.db)
+                using (GlobalVariables.db)
                 {
-                    var holidayCollection = App.db.GetCollection<Holiday>(DbTables.Holidays.ToString());
+                    var holidayCollection = GlobalVariables.db.GetCollection<Holiday>(DbTables.Holidays.ToString());
                     HolidayList = holidayCollection.Find(h => h.HolidayDate >= DateTime.Now && h.IsHolidayActive).OrderBy(x => x.HolidayDate).ToList();
                     if (HolidayList != null && HolidayList.Count > 0)
                     {
@@ -408,13 +408,13 @@ namespace Aljaras.MVVM.ViewModel
                     if (HolidayList != null && HolidayList.Count > 0)
                         IsNOHolidayMessageVisible = GetVisibility.Hidden.ToString();
                     else IsNOHolidayMessageVisible = GetVisibility.Visible.ToString();
-                    var scheduleCollection = App.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
+                    var scheduleCollection = GlobalVariables.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
                     ScheduleList = scheduleCollection.Find(x => x.IsScheduleActive == true).ToList();
                     if (ScheduleList != null && ScheduleList.Count > 0)
                     {
                         foreach (Schedule item in ScheduleList)
                         {
-                            var alarmCollection = App.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
+                            var alarmCollection = GlobalVariables.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
                             List<Alarm> result = alarmCollection.Find(x => x.ScheduleId.ToString().Contains(item.ScheduleId.ToString()) && x.IsAlarmActive == true).ToList();
                             if (result != null && result.Count > 0)
                             {

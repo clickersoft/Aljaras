@@ -33,7 +33,7 @@ namespace Aljaras.Core
 
         public async Task PlayPauseAudioFile(string fileLocation, bool emergency)
         {
-            fileLocation = string.Concat(App.AppLocation, fileLocation);
+            fileLocation = string.Concat(GlobalVariables.AppLocation, fileLocation);
             if (!File.Exists(fileLocation))
             {
                 Global.NewNotificationMessage(MessageBackground.IndianRed , Global.AppLang.NotCorrectAudio);
@@ -95,7 +95,7 @@ namespace Aljaras.Core
 
         public string MoveAudioFileToLibrary(string OriginalAudioFileLocation)
         {
-            string UserAudioLibraryPath = string.Concat(App.AppLocation, "Audio\\", App.PCCurrentUserName, "\\");
+            string UserAudioLibraryPath = string.Concat(GlobalVariables.AppLocation, "Audio\\", GlobalVariables.PCCurrentUserName, "\\");
             if (!Directory.Exists(UserAudioLibraryPath))
                 Directory.CreateDirectory(UserAudioLibraryPath);
             string DestinationAudioFilePath = string.Concat(UserAudioLibraryPath, Path.GetFileName(OriginalAudioFileLocation));
@@ -103,7 +103,7 @@ namespace Aljaras.Core
                 return "Audio File Not Found...";
             if (!File.Exists(DestinationAudioFilePath))
                 File.Copy(OriginalAudioFileLocation, DestinationAudioFilePath, true);
-            return string.Concat("Audio\\", App.PCCurrentUserName, "\\", Path.GetFileName(OriginalAudioFileLocation));
+            return string.Concat("Audio\\", GlobalVariables.PCCurrentUserName, "\\", Path.GetFileName(OriginalAudioFileLocation));
         }
         #endregion
     }

@@ -49,7 +49,7 @@ namespace Aljaras.MVVM.ViewModel
         #region Functions
         public GuideViewModel()
         {
-            string dir = App.AppLocation + "Guide";
+            string dir = GlobalVariables.AppLocation + "Guide";
             if (!Directory.Exists(dir)) return;
             DirectoryInfo GuideImagesDirectory = new(dir);
             foreach (FileInfo aFile in GuideImagesDirectory.GetFiles("*.png"))

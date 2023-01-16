@@ -10,7 +10,7 @@ namespace Aljaras.Core
     {
         public static bool IsProductActivated()
         {
-            string? keyFile = Directory.GetFiles(App.AppLocation, "*.key").FirstOrDefault();
+            string? keyFile = Directory.GetFiles(GlobalVariables.AppLocation, "*.key").FirstOrDefault();
             if (keyFile != null)
             {
                 string GeneratedKey = GenerateLicenseKey(Environment.MachineName);

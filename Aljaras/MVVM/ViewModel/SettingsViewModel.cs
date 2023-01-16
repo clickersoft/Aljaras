@@ -36,17 +36,17 @@ namespace Aljaras.MVVM.ViewModel
             {
                 if(Path.GetExtension(openFileDialog.FileName).ToLower() == ".jrsdb")
                 {
-                    string fileExists = string.Concat(App.AppLocation, App.PCCurrentUserName, App.dbName);
+                    string fileExists = string.Concat(GlobalVariables.AppLocation, GlobalVariables.PCCurrentUserName, GlobalVariables.dbName);
                     if (File.Exists(fileExists))
                         File.Delete(fileExists);
-                    File.Copy(openFileDialog.FileName, Path.Combine(App.AppLocation , App.PCCurrentUserName + App.dbName + ".jrsdb"));
+                    File.Copy(openFileDialog.FileName, Path.Combine(GlobalVariables.AppLocation , GlobalVariables.PCCurrentUserName + GlobalVariables.dbName + ".jrsdb"));
                 }
                 else
                 {
-                    string GetAudioLocation = Path.Combine(App.AppLocation, "Audio");
+                    string GetAudioLocation = Path.Combine(GlobalVariables.AppLocation, "Audio");
                     ZipFile.ExtractToDirectory(openFileDialog.FileName, GetAudioLocation,  true);
                     string? dbSourceFile = Directory.GetFiles(GetAudioLocation, "*.jrsdb").FirstOrDefault();
-                    string dbDestinationFile = App.AppLocation + App.PCCurrentUserName + "Aljaras.jrsdb";
+                    string dbDestinationFile = GlobalVariables.AppLocation + GlobalVariables.PCCurrentUserName + "Aljaras.jrsdb";
                     if(!File.Exists(dbSourceFile))
                     {
                         Global.NewNotificationMessage(MessageBackground.IndianRed , Global.AppLang.NoDataBase);
@@ -65,13 +65,13 @@ namespace Aljaras.MVVM.ViewModel
         private void LoadSample()
         {
             Global.AudioOperations.DisposeWave();
-            string SampleFile = string.Concat(App.AppLocation, "Sample.jrsbck");
+            string SampleFile = string.Concat(GlobalVariables.AppLocation, "Sample.jrsbck");
             if (File.Exists(SampleFile))
             { 
-                string GetAudioLocation = Path.Combine(App.AppLocation, "Audio");
+                string GetAudioLocation = Path.Combine(GlobalVariables.AppLocation, "Audio");
                 ZipFile.ExtractToDirectory(SampleFile, GetAudioLocation,  true);
                 string? dbSourceFile = Directory.GetFiles(GetAudioLocation, "*.jrsdb").FirstOrDefault();
-                string dbDestinationFile = App.AppLocation + App.PCCurrentUserName + App.AppName + ".jrsdb";
+                string dbDestinationFile = GlobalVariables.AppLocation + GlobalVariables.PCCurrentUserName + GlobalVariables.AppName + ".jrsdb";
                 if (!File.Exists(dbSourceFile))
                 {
                     Global.NewNotificationMessage(MessageBackground.IndianRed, Global.AppLang.NoDataBase);
@@ -90,9 +90,9 @@ namespace Aljaras.MVVM.ViewModel
         {
             FolderBrowserDialog folderBrowserDialog = new();
             if (folderBrowserDialog.ShowDialog() != DialogResult.OK) return;
-            string UserAudioLibrary = string.Concat(App.AppLocation, "Audio\\", App.PCCurrentUserName);
-            string dbfile = string.Concat(App.AppLocation, App.PCCurrentUserName, App.AppName, ".jrsdb");
-            string DestinationPath = Path.Combine(folderBrowserDialog.SelectedPath, string.Concat(App.PCCurrentUserName , App.AppName , ".jrsbck"));
+            string UserAudioLibrary = string.Concat(GlobalVariables.AppLocation, "Audio\\", GlobalVariables.PCCurrentUserName);
+            string dbfile = string.Concat(GlobalVariables.AppLocation, GlobalVariables.PCCurrentUserName, GlobalVariables.AppName, ".jrsdb");
+            string DestinationPath = Path.Combine(folderBrowserDialog.SelectedPath, string.Concat(GlobalVariables.PCCurrentUserName , GlobalVariables.AppName , ".jrsbck"));
             DestinationPath = MakeUnique(DestinationPath).ToString();
             if (Directory.Exists(UserAudioLibrary) && File.Exists(dbfile))
             {
@@ -120,7 +120,7 @@ namespace Aljaras.MVVM.ViewModel
             MessageBoxResult messageBoxResult = MessageBox.Show(Global.AppLang.DeleteNotification, Global.AppLang.Delete+ " " + Global.AppLang.Database, MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (messageBoxResult != MessageBoxResult.Yes)
                 return;
-            string fileExists = string.Concat(App.AppLocation, App.PCCurrentUserName, App.AppName ,".jrsdb");
+            string fileExists = string.Concat(GlobalVariables.AppLocation, GlobalVariables.PCCurrentUserName, GlobalVariables.AppName ,".jrsdb");
             if (File.Exists(fileExists))
                 File.Delete(fileExists);
             Global.LoadUIInfo();
@@ -138,7 +138,7 @@ namespace Aljaras.MVVM.ViewModel
                 else return;
             }
 
-            using (App.db)
+            using (GlobalVariables.db)
             {
                 if (UserSet.SetRegistryKey)
                     try { StartUpManager.AddApplicationToAllUsersStartup(); }
@@ -146,7 +146,7 @@ namespace Aljaras.MVVM.ViewModel
                 else try { StartUpManager.RemoveApplicationFromAllUsersStartup(); }
                     catch { Global.NewNotificationMessage(MessageBackground.IndianRed, Global.AppLang.DeleteRegistryFailed); }
                 UserSet.EmergencyAudioFileLocation = Global.AudioOperations.MoveAudioFileToLibrary(UserSet.EmergencyAudioFileLocation);
-                var col = App.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
+                var col = GlobalVariables.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
                 UserSettings? results = col.Find(x => x.Id == 1).FirstOrDefault();
                 if (results != null)
                     col.Update(UserSet);
@@ -168,7 +168,7 @@ namespace Aljaras.MVVM.ViewModel
         private void SelectEmergencyAudioFile()
         {
             OpenFileDialog openFileDialog = new();
-            string path = App.AppLocation + "Audio"; // this is the path that you are checking.
+            string path = GlobalVariables.AppLocation + "Audio"; // this is the path that you are checking.
             if (Directory.Exists(path))
             {
                 openFileDialog.InitialDirectory = path;
@@ -190,21 +190,21 @@ namespace Aljaras.MVVM.ViewModel
         #region Functions
         public SettingsViewModel()
         {
-            if (Directory.Exists(App.AppLocation + "Languages"))
+            if (Directory.Exists(GlobalVariables.AppLocation + "Languages"))
             {
-                FileInfo[] files = new DirectoryInfo(App.AppLocation + "Languages").GetFiles("*.xml");
+                FileInfo[] files = new DirectoryInfo(GlobalVariables.AppLocation + "Languages").GetFiles("*.xml");
                 foreach (FileInfo file in files)
                     _lang.Add(Path.GetFileNameWithoutExtension(file.Name));
             }
-            using (App.db)
+            using (GlobalVariables.db)
             {
-                var col = App.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
+                var col = GlobalVariables.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
                 var results = col.Find(x => x.Id == 1).FirstOrDefault();
                 if (results != null)
                     UserSet = results;
             }
-            if(!File.Exists(string.Concat(App.AppLocation, UserSet.EmergencyAudioFileLocation)))
-            UserSet.EmergencyAudioFileLocation = GlobalViewModel.Instance.AudioOperations.MoveAudioFileToLibrary(App.AppLocation + "Audio\\Emerg.mp3");
+            if(!File.Exists(string.Concat(GlobalVariables.AppLocation, UserSet.EmergencyAudioFileLocation)))
+            UserSet.EmergencyAudioFileLocation = GlobalViewModel.Instance.AudioOperations.MoveAudioFileToLibrary(GlobalVariables.AppLocation + "Audio\\Emerg.mp3");
         }
 
         public static FileInfo MakeUnique(string path)

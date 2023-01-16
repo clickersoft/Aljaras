@@ -1,4 +1,5 @@
-﻿using Aljaras.MVVM.ViewModel;
+﻿using Aljaras.Core;
+using Aljaras.MVVM.ViewModel;
 using LiteDB;
 using System;
 using System.Diagnostics;
@@ -18,13 +19,6 @@ namespace Aljaras
         private readonly Forms.NotifyIcon _notifyIcon;
         // Create a new Mutex. The creating thread does not own the mutex.
         private static Mutex mut = new();
-        public static readonly string? AppName = Assembly.GetExecutingAssembly().GetName().Name;
-        public static readonly string AppLocation = AppDomain.CurrentDomain.BaseDirectory;
-        public static readonly string dbName = AppName + ".jrsdb";
-        public static readonly string dbBackupName = AppName + ".jrsbck";
-        public static readonly string PCCurrentUserName = Environment.UserName;
-        public static readonly string dbConnectionString = string.Concat("Filename=", PCCurrentUserName + dbName, ";Connection=shared");
-        public static readonly LiteDatabase db = new(dbConnectionString);
 
         public App() => _notifyIcon = new Forms.NotifyIcon();
 
@@ -43,8 +37,8 @@ namespace Aljaras
                     processItems.Where(p => p.Id != Environment.ProcessId).First().Kill();
             }
 
-            if (File.Exists(AppLocation + AppName + ".ico"))
-                _notifyIcon.Icon = new Icon(AppLocation + AppName + ".ico");
+            if (File.Exists(GlobalVariables.AppLocation + GlobalVariables.AppName + ".ico"))
+                _notifyIcon.Icon = new Icon(GlobalVariables.AppLocation + GlobalVariables.AppName + ".ico");
             else
             {
                 Bitmap bmp = new(64, 64);

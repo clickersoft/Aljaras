@@ -12,18 +12,18 @@ namespace Aljaras.Core
         static readonly RegistryKey? CurrentUserKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         static readonly RegistryKey? LocalMachineKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
         static readonly RegistryKey? WOW6432NodeKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-        static readonly string AppLocationWithEXEExtension = !string.IsNullOrEmpty(App.AppName) ? Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, ".exe") : string.Empty;
+        static readonly string AppLocationWithEXEExtension = !string.IsNullOrEmpty(GlobalVariables.AppName) ? Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, ".exe") : string.Empty;
 
         public static void AddApplicationToCurrentUserStartup()
         {
-            if (CurrentUserKey != null && !string.IsNullOrEmpty(App.AppName))
-                CurrentUserKey.SetValue(App.AppName, AppLocationWithEXEExtension);
+            if (CurrentUserKey != null && !string.IsNullOrEmpty(GlobalVariables.AppName))
+                CurrentUserKey.SetValue(GlobalVariables.AppName, AppLocationWithEXEExtension);
         }
 
         public static void RemoveApplicationFromCurrentUserStartup()
         {
-            if (CurrentUserKey != null && !string.IsNullOrEmpty(App.AppName))
-                CurrentUserKey.DeleteValue(App.AppName, false);
+            if (CurrentUserKey != null && !string.IsNullOrEmpty(GlobalVariables.AppName))
+                CurrentUserKey.DeleteValue(GlobalVariables.AppName, false);
         }
 
         public static bool CheckCurrentUserKey()
@@ -35,14 +35,14 @@ namespace Aljaras.Core
 
         public static void AddApplicationToAllUsersStartup()
         {
-            if (LocalMachineKey != null && !string.IsNullOrEmpty(App.AppName))
-                LocalMachineKey.SetValue(App.AppName, AppLocationWithEXEExtension);
+            if (LocalMachineKey != null && !string.IsNullOrEmpty(GlobalVariables.AppName))
+                LocalMachineKey.SetValue(GlobalVariables.AppName, AppLocationWithEXEExtension);
         }
 
         public static void RemoveApplicationFromAllUsersStartup()
         {
-            if (LocalMachineKey != null && !string.IsNullOrEmpty(App.AppName))
-                LocalMachineKey.DeleteValue(App.AppName, false);
+            if (LocalMachineKey != null && !string.IsNullOrEmpty(GlobalVariables.AppName))
+                LocalMachineKey.DeleteValue(GlobalVariables.AppName, false);
         }
 
         public static bool CheckAllUsersKey()
@@ -54,16 +54,16 @@ namespace Aljaras.Core
 
         public static void AddApplicationToWOW6432Startup()
         {
-            if (Environment.Is64BitOperatingSystem && !string.IsNullOrEmpty(App.AppName))
-                if (WOW6432NodeKey != null && !string.IsNullOrEmpty(App.AppName))
-                    WOW6432NodeKey.SetValue(App.AppName, AppLocationWithEXEExtension);
+            if (Environment.Is64BitOperatingSystem && !string.IsNullOrEmpty(GlobalVariables.AppName))
+                if (WOW6432NodeKey != null && !string.IsNullOrEmpty(GlobalVariables.AppName))
+                    WOW6432NodeKey.SetValue(GlobalVariables.AppName, AppLocationWithEXEExtension);
         }
 
         public static void RemoveApplicationFromWOW6432Startup()
         {
-            if (Environment.Is64BitOperatingSystem && !string.IsNullOrEmpty(App.AppName))
-                if (WOW6432NodeKey != null && !string.IsNullOrEmpty(App.AppName))
-                    WOW6432NodeKey.DeleteValue(App.AppName, false);
+            if (Environment.Is64BitOperatingSystem && !string.IsNullOrEmpty(GlobalVariables.AppName))
+                if (WOW6432NodeKey != null && !string.IsNullOrEmpty(GlobalVariables.AppName))
+                    WOW6432NodeKey.DeleteValue(GlobalVariables.AppName, false);
         }
 
         public static bool CheckWOW6432Key()

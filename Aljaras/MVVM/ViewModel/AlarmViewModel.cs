@@ -49,10 +49,10 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void CloneSchedule(Schedule obj)
         {
-            using (App.db)
+            using (GlobalVariables.db)
             {
-                var scheduleCol = App.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
-                var aLarmCol = App.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
+                var scheduleCol = GlobalVariables.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
+                var aLarmCol = GlobalVariables.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
                 List<Alarm> _aResult = aLarmCol.Find(x => x.ScheduleId.ToString().Contains(obj.ScheduleId.ToString())).ToList();
                 obj.ScheduleId = DateTime.Now.Ticks;
                 obj.ScheduleTitle += Global.AppLang.Clone;
@@ -80,9 +80,9 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void CloneAlarm(Alarm obj)
         {
-            using (App.db)
+            using (GlobalVariables.db)
             {
-                var aLarmCol = App.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
+                var aLarmCol = GlobalVariables.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
                 obj.AlarmId = DateTime.Now.Ticks;
                 obj.AlarmTitle += Global.AppLang.Clone;
                 aLarmCol.Insert(obj);
@@ -118,17 +118,17 @@ namespace Aljaras.MVVM.ViewModel
             {
                 if (CurrentAlarm != null && !string.IsNullOrEmpty(CurrentAlarm.AlarmTitle) && !string.IsNullOrWhiteSpace(CurrentAlarm.AlarmTitle))
                 {
-                    var fileLocation = new string[] { CurrentAlarm.AudioFileLocation, App.AppLocation + "Audio\\School.mp3" }.FirstOrDefault(s => !string.IsNullOrEmpty(s) && File.Exists(s)) ?? string.Empty;
+                    var fileLocation = new string[] { CurrentAlarm.AudioFileLocation, GlobalVariables.AppLocation + "Audio\\School.mp3" }.FirstOrDefault(s => !string.IsNullOrEmpty(s) && File.Exists(s)) ?? string.Empty;
                     if (string.IsNullOrEmpty(fileLocation))
                     {
                         Global.NewNotificationMessage(MessageBackground.IndianRed, Global.AppLang.NotCorrectAudio);
                         return;
                     }
                     fileLocation = Global.AudioOperations.MoveAudioFileToLibrary(fileLocation);
-                    using (App.db)
+                    using (GlobalVariables.db)
                     {
                         CurrentAlarm.AudioFileLocation = fileLocation;
-                        var col = App.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
+                        var col = GlobalVariables.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
                         if (CurrentAlarm.AlarmId > 0)
                             col.Update(CurrentAlarm);
                         else
@@ -156,7 +156,7 @@ namespace Aljaras.MVVM.ViewModel
         private void SelectAudioFile()
         {
             OpenFileDialog openFileDialog = new();
-            string path = App.AppLocation + "Audio";
+            string path = GlobalVariables.AppLocation + "Audio";
             if (Directory.Exists(path))
                 openFileDialog.InitialDirectory = path;
             openFileDialog.Filter = "Audio File (*.mp3;*.wav)|*.mp3;*.wav;";
@@ -179,10 +179,10 @@ namespace Aljaras.MVVM.ViewModel
         {
             if (CurrentSchedule != null && !string.IsNullOrEmpty(CurrentSchedule.ScheduleTitle) && !string.IsNullOrWhiteSpace(CurrentSchedule.ScheduleTitle))
             {
-                using (App.db)
+                using (GlobalVariables.db)
                 {
                     Schedule _sch = CurrentSchedule;
-                    var col = App.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
+                    var col = GlobalVariables.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
                     if (CurrentSchedule.ScheduleId == 0)
                     {
                         _sch.ScheduleId = DateTime.Now.Ticks;
@@ -208,9 +208,9 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void DeleteAlarm(Alarm obj)
         {
-            using (App.db)
+            using (GlobalVariables.db)
             {
-                var col = App.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
+                var col = GlobalVariables.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
                 col.Delete(obj.AlarmId);
                 Global.NewNotificationMessage(MessageBackground.MediumSeaGreen, Global.AppLang.Done);
             }
@@ -225,14 +225,14 @@ namespace Aljaras.MVVM.ViewModel
             MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show(Global.AppLang.DeleteNotification, Global.AppLang.Delete +"\"" + obj.ScheduleTitle+"\"", MessageBoxButton.YesNo,MessageBoxImage.Warning);
             if (messageBoxResult != MessageBoxResult.Yes)
                 return;
-                using (App.db)
+                using (GlobalVariables.db)
                 {
-                    var aLarmCol = App.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
+                    var aLarmCol = GlobalVariables.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
                     List<Alarm> _aResult = aLarmCol.Find(x => x.ScheduleId.ToString().Contains(obj.ScheduleId.ToString())).ToList();
                     if (_aResult != null && _aResult.Count > 0)
                     foreach (var _item in _aResult)
                             aLarmCol.Delete(_item.AlarmId);
-                    var scheduleCol = App.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
+                    var scheduleCol = GlobalVariables.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
                         scheduleCol.Delete(obj.ScheduleId);
                 }
             Global.NewNotificationMessage(MessageBackground.MediumSeaGreen, Global.AppLang.Done);
@@ -246,9 +246,9 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void De_ActivateSchedule(Schedule obj)
         {
-            using (App.db)
+            using (GlobalVariables.db)
             {
-                var scheduleCol = App.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
+                var scheduleCol = GlobalVariables.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
                     scheduleCol.Update(obj);
             }            
             Global.NewNotificationMessage(MessageBackground.MediumSeaGreen, Global.AppLang.Done);
@@ -258,9 +258,9 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void De_ActivateAlarm(Alarm obj)
         {
-            using (App.db)
+            using (GlobalVariables.db)
             {
-                var alarmCol = App.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
+                var alarmCol = GlobalVariables.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
                     alarmCol.Update(obj);
             }
             Global.NewNotificationMessage(MessageBackground.MediumSeaGreen, Global.AppLang.Done);
@@ -290,9 +290,9 @@ namespace Aljaras.MVVM.ViewModel
 
         private void LoadScheduleCollectionData()
         {
-            using (App.db)
+            using (GlobalVariables.db)
             {
-                var col = App.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
+                var col = GlobalVariables.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
                 ScheduleList = col.Query().ToList();
             }
             if (ScheduleList != null && ScheduleList.Count > 0)
@@ -303,9 +303,9 @@ namespace Aljaras.MVVM.ViewModel
         private void LoadAlarmCollectionData(long _SId)
         {
             AlarmList = new();
-            using (App.db)
+            using (GlobalVariables.db)
             {
-                var col = App.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
+                var col = GlobalVariables.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
                 AlarmList = col.Find(x => x.ScheduleId.ToString().Contains(_SId.ToString())).ToList().OrderBy(x => x.FullTime.TimeOfDay).ToList();
             }
             if (AlarmList != null && AlarmList.Count > 0)

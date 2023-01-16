@@ -32,7 +32,7 @@ namespace Aljaras.MVVM.ViewModel
         {
             if (ActivationKey == LicenseKeyGenerator.GenerateLicenseKey(GeneratedKey))
             {
-                using (StreamWriter writetext = new(App.AppName + ".key"))
+                using (StreamWriter writetext = new(GlobalVariables.AppName + ".key"))
                 {
                     writetext.WriteLine(GeneratedKey);
                     writetext.WriteLine(ActivationKey);
@@ -48,7 +48,7 @@ namespace Aljaras.MVVM.ViewModel
 
         public ActivationViewModel()
         {
-            string? keyFile = Directory.GetFiles(App.AppLocation, "*.key").FirstOrDefault();
+            string? keyFile = Directory.GetFiles(GlobalVariables.AppLocation, "*.key").FirstOrDefault();
             if (!string.IsNullOrEmpty(keyFile))
             {
                 string? line = File.ReadLines(keyFile).ElementAtOrDefault(1);

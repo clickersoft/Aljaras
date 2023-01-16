@@ -19,7 +19,7 @@ namespace Aljaras.Core
         {
             try
             {
-                var desktopPathName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory), App.AppName + ".lnk");
+                var desktopPathName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory), GlobalVariables.AppName + ".lnk");
                 CreateShortcut(desktopPathName, Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, ".exe"), create);
                 return;
             }
