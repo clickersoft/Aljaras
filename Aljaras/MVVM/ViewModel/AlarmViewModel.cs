@@ -264,6 +264,18 @@ namespace Aljaras.MVVM.ViewModel
             Global.NewNotificationMessage(MessageBackground.MediumSeaGreen, Global.AppLang.Done);
             Global.LoadMonitoringAlarmCollectionData();
         }
+
+        [RelayCommand]
+        private void ToggleSuspendSchedule(Schedule obj)
+        {
+            // Suspend until tomorrow midnight, or resume immediately if already suspended.
+            obj.SuspendedUntil = obj.IsSuspended ? DateTime.MinValue : DateTime.Now.Date.AddDays(1);
+            var scheduleCol = GlobalVariables.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
+            scheduleCol.Update(obj);
+            LoadScheduleCollectionData();
+            Global.LoadMonitoringAlarmCollectionData();
+            Global.NewNotificationMessage(MessageBackground.MediumSeaGreen, Global.AppLang.Done);
+        }
         #endregion
 
         #region Functions

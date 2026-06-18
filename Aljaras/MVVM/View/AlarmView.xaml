@@ -167,14 +167,32 @@
                                     Foreground="{DynamicResource DarkBackgroundBrush}"
                                     IsChecked="{Binding IsScheduleActive}"
                                     Style="{DynamicResource SliderCheckBox}" />
-                                <TextBlock
+                                <StackPanel
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
-                                    Text="{Binding ScheduleTitle}" />
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="0,0,5,0"
+                                        Foreground="{StaticResource OrangeRedBrush}"
+                                        Text="⏸"
+                                        Visibility="{Binding SuspendedVisibility}" />
+                                    <TextBlock Text="{Binding ScheduleTitle}" />
+                                </StackPanel>
                                 <StackPanel
                                     Grid.Column="2"
                                     Margin="0,0,30,0"
                                     Orientation="Horizontal">
+                                    <Button
+                                        HorizontalAlignment="Center"
+                                        extensions:Extensions.Carrier="{StaticResource TimeNowPathData}"
+                                        Background="{StaticResource OrangeRedBrush}"
+                                        Command="{Binding ElementName=ScheduleListView, Path=DataContext.ToggleSuspendScheduleCommand}"
+                                        CommandParameter="{Binding}"
+                                        Style="{DynamicResource ListRoundButtons}" />
+                                    <Border
+                                        Margin="3"
+                                        BorderBrush="{StaticResource LightGrayBrush}"
+                                        BorderThickness="1,0,0,0" />
                                     <Button
                                         HorizontalAlignment="Center"
                                         extensions:Extensions.Carrier="{StaticResource EditPathData}"

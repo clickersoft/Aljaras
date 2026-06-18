@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Aljaras.Core;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace Aljaras.MVVM.Model
 {
@@ -12,5 +14,16 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private bool isScheduleActive = true;
+
+        /// <summary>
+        /// While this is in the future the schedule's alarms are skipped, then
+        /// it auto-resumes. Legacy rows deserialize to MinValue (not suspended).
+        /// </summary>
+        [ObservableProperty]
+        private DateTime suspendedUntil = DateTime.MinValue;
+
+        public bool IsSuspended => SuspendedUntil > DateTime.Now;
+
+        public string SuspendedVisibility => IsSuspended ? GetVisibility.Visible.ToString() : GetVisibility.Collapsed.ToString();
     }
 }

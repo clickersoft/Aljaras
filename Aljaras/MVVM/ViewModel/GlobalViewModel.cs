@@ -449,7 +449,7 @@ namespace Aljaras.MVVM.ViewModel
                         IsNOHolidayMessageVisible = GetVisibility.Hidden.ToString();
                     else IsNOHolidayMessageVisible = GetVisibility.Visible.ToString();
                     var scheduleCollection = GlobalVariables.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
-                    ScheduleList = scheduleCollection.Find(x => x.IsScheduleActive == true).ToList();
+                    ScheduleList = scheduleCollection.Find(x => x.IsScheduleActive == true).Where(s => !s.IsSuspended).ToList();
                     if (ScheduleList != null && ScheduleList.Count > 0)
                     {
                         foreach (Schedule item in ScheduleList)
