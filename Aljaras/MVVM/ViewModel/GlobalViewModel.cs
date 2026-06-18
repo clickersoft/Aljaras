@@ -266,7 +266,10 @@ namespace Aljaras.MVVM.ViewModel
                         {
                             if (!AudioOperations.IsEmergency)
                                 foreach (Alarm due in dueAlarms)
+                                {
+                                    Logger.Info($"Alarm fired: \"{due.AlarmTitle}\" scheduled {due.FullTime:HH:mm:ss}.");
                                     StartAudio(due.AudioFileLocation);
+                                }
                             LoadMonitoringAlarmCollectionData();
                         }
                     }
@@ -321,7 +324,7 @@ namespace Aljaras.MVVM.ViewModel
                     file.Close();
                 }
             }
-            catch { }
+            catch (Exception ex) { Logger.Error("SetAppSettings failed", ex); }
         }
 
         public static DateTime TrimMilliseconds(DateTime dt) => new(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second, 0, dt.Kind);
