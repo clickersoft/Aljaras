@@ -26,5 +26,11 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private bool isFirstTimeLaunch = true;
+
+        [ObservableProperty]
+        private bool autoBackup = false;
+
+        [ObservableProperty]
+        private DateTime lastBackupDate = DateTime.MinValue;
     }
 }

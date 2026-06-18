@@ -300,7 +300,27 @@ namespace Aljaras.MVVM.ViewModel
         {
             LoadDevices();
             SetAppSettings();
+            TryAutoBackup();
             LoadMonitoringAlarmCollectionData();
+        }
+
+        /// <summary>Runs at most one automatic backup per 24h when enabled.</summary>
+        private void TryAutoBackup()
+        {
+            if (!GetUserSettings.AutoBackup) return;
+            if ((DateTime.Now - GetUserSettings.LastBackupDate).TotalHours < 24) return;
+            UserSettings settings = GetUserSettings;
+            Task.Run(() =>
+            {
+                if (!BackupManager.CreateBackup()) return;
+                settings.LastBackupDate = DateTime.Now;
+                try
+                {
+                    var col = GlobalVariables.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
+                    col.Update(settings);
+                }
+                catch (Exception ex) { Logger.Error("Failed to persist LastBackupDate", ex); }
+            });
         }
 
         public void SetAppSettings()

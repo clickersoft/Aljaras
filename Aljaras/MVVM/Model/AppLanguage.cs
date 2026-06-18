@@ -263,5 +263,8 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private string _volume = "Volume";
+
+        [ObservableProperty]
+        private string _autoBackup = "Auto Backup";
     }
 }

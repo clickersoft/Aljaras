@@ -87,4 +87,5 @@
 	<Reload>تحديث</Reload>
 	<TestSound>تجربة الصوت</TestSound>
 	<Volume>مستوى الصوت</Volume>
+	<AutoBackup>نسخ احتياطي تلقائي</AutoBackup>
 </AppLanguage>

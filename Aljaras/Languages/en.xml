@@ -87,4 +87,5 @@
 	<Reload>Reload</Reload>
 	<TestSound>Test Sound</TestSound>
 	<Volume>Volume</Volume>
+	<AutoBackup>Auto Backup</AutoBackup>
 </AppLanguage>
