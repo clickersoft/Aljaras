@@ -130,12 +130,6 @@ namespace Aljaras.MVVM.ViewModel
 
         [ObservableProperty]
         private Random startRandom = new();
-
-        [ObservableProperty]
-        private string activationMessage = string.Empty;
-
-        [ObservableProperty]
-        string productActivated = LicenseKeyGenerator.IsProductActivated() ? GetVisibility.Hidden.ToString() : GetVisibility.Visible.ToString();
         #endregion
 
         #region RelayCommands
@@ -351,7 +345,6 @@ namespace Aljaras.MVVM.ViewModel
 
         public void NextAlarm()
         {
-            ActivationMessage = LicenseKeyGenerator.IsProductActivated() ? AppLang.Activated : AppLang.NotActivated;
             TimeLeft = TimeSpan.Zero;
             if (AlarmList != null && AlarmList.Count > 0)
             {
@@ -428,9 +421,7 @@ namespace Aljaras.MVVM.ViewModel
                                         _item.FullTime = ChangeDateOnly(_item.FullTime);
                                         AlarmList.Add(_item);
                                     }
-                                //if (LicenseKeyGenerator.IsProductActivated())
-                                    AlarmList = AlarmList.OrderBy(x => x.FullTime).ToList();
-                                //else AlarmList = AlarmList.OrderBy(x => x.FullTime).Take(5).ToList();
+                                AlarmList = AlarmList.OrderBy(x => x.FullTime).ToList();
 
                             }
                         }

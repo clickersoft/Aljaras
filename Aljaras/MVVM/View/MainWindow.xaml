@@ -74,8 +74,6 @@
                         Foreground="{StaticResource WhiteBrush}">
                         <Run Text="{Binding Global.AppLang.Apptitle}" />
                         <Run Text="{Binding GetVersion}" />
-                        <Run Text="-" />
-                        <Run Text="{Binding Global.ActivationMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </TextBlock>
                     <StackPanel
                         Grid.Column="2"
@@ -223,11 +221,6 @@
                         extensions:Extensions.Carrier="{StaticResource HelpPathData}"
                         Command="{Binding ShowAboutViewCommand}"
                         Content="{Binding Global.AppLang.Guide}" />
-                    <RadioButton
-                        extensions:Extensions.Carrier="M23.242747,2.7636242C22.718753,2.763999 22.194507,2.9639988 21.79601,3.3639984 20.996022,4.1629982 20.996022,5.4560013 21.79601,6.2599983 22.593982,7.0589981 23.887988,7.0579987 24.687976,6.262001L24.687976,6.2610016C25.49199,5.4550018 25.49199,4.1650009 24.687976,3.3610001 24.290484,2.9624996 23.766742,2.7632494 23.242747,2.7636242z M20.233022,0L20.236012,0C25.317004,0 29.433028,4.1199989 29.429,9.2019997 29.429,14.278999 25.309008,18.401001 20.231984,18.401001 19.186025,18.400002 18.179984,18.216999 17.239982,17.894001L15.907035,19.226002 13.098016,18.880001 13.665032,21.467003 10.743036,21.233002 11.143,23.992996 7.8829917,24.097 8.4509848,26.682999 5.4910248,26.488998 5.9880341,29.147003 3.1420275,32 1.0350337,27.487999 12.398003,16.125 11.684992,15.417999 0.58001708,26.523003 0,25.268997 11.991999,13.273998C11.387018,12.044998 11.033991,10.664001 11.033991,9.2019997 11.033991,4.1199989 15.150017,0.0019989014 20.233022,0z"
-                        Command="{Binding ShowActivationViewCommand}"
-                        Content="Activation"
-                        Visibility="{Binding Global.ProductActivated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </Border>
             <ContentPresenter Content="{Binding CurrentView}" />

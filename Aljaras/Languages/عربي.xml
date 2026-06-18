@@ -76,12 +76,8 @@
 	<AlreadyRunning>لا يمكن تشغيل عدة نوافذ للتطبيق! اذا كنت لا ترى النافذة ستجدها بجوار ساعة النظام </AlreadyRunning>
 	<Sample>عينة</Sample>
 	<AlarmTitle>عنوان المنبه</AlarmTitle>
-	<ActivationFailed>فشل التفعيل</ActivationFailed>
-	<ActivationFileCorrupted>ملف التفعيل تالف</ActivationFileCorrupted>
-	<NotActivated>البرنامج غير مفعل</NotActivated>
 	<Open>فتح</Open>
 	<Exit>اغلاق</Exit>
-	<Activated>البرنامج مفعل</Activated>
 	<RegistryFailed>يوجد خطأ في تسجيل البرنامج داخل Registry</RegistryFailed>
 	<DeleteRegistryFailed>يوجد خطأ في حذف المفتاح من Registry</DeleteRegistryFailed>
 	<Copy>نسخ</Copy>

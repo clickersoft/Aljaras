@@ -10,12 +10,10 @@ exam periods, morning assembly, emergencies) through the PC's speakers, runs
 in the background from the system tray, and supports both **Arabic** and
 **English** UIs. It is authored by Mustafa Al-Klieb.
 
-The solution contains two apps:
-
-| Project | Output | Purpose |
-|---|---|---|
-| `Aljaras` | `WinExe` | The main bell application (scheduler, audio, settings, tray icon). |
-| `AljarasActivation` | `WinExe` | A small standalone tool that turns a machine fingerprint into a license key. Used to activate copies of `Aljaras`. |
+The solution contains a single app, `Aljaras` (`WinExe`) — the bell
+application (scheduler, audio, settings, tray icon). It is **freeware**: there
+is no licensing/activation gate (the former machine-bound activation and its
+standalone key-generator tool were removed).
 
 ## Tech stack
 
@@ -50,7 +48,6 @@ Aljaras/                     Main application
   Guide/                     Onboarding slide images (Slide1..7.PNG) + source .pptx
   Images/                    App images (Avatar, icon assets)
   Properties/                Settings.settings / Settings.Designer.cs
-AljarasActivation/           License-key generator tool (mirrors the MVVM layout, much smaller)
 Assets/                      Shared package assets (app icon image)
 *.jrsdb                      Checked-in LiteDB databases (see "Data & persistence" caveat)
 ```
@@ -85,7 +82,7 @@ to its View via `DataTemplate DataType="{x:Type viewModel:XxxViewModel}"`.
 
 Existing screens: **Monitoring** (default/home — shows next alarm + countdown),
 **Alarm** (schedules & alarms), **Holidays**, **Settings**, **Guide**,
-**AboutMe**, **Activation**, plus a `SplashScreen`.
+**AboutMe**, plus a `SplashScreen`.
 
 ### GlobalViewModel — the shared singleton
 
@@ -116,8 +113,6 @@ always the file to edit.
   Note the convention of stringifying enums for XAML bindings (e.g. `GetVisibility.Visible.ToString()`).
 - `AudioFileOperations` — NAudio playback (play/pause/stop), emergency repeat
   loop, and copying selected audio files into the app's library folder.
-- `LicenseKeyGenerator` — MD5-based machine-bound license keys. `IsProductActivated()`
-  looks for a `*.key` file next to the exe and validates it against `Environment.MachineName`.
 - `StartUpManager` — admin elevation check + add app to all-users startup (registry).
 - `ShortcutManager` — desktop shortcut via `IWshRuntimeLibrary`.
 - `Extensions.cs` — assorted extension methods.
@@ -215,10 +210,9 @@ dotnet run --project Aljaras/Aljaras.csproj
 3. كل تعديل ينتهي بـ `Global.LoadMonitoringAlarmCollectionData()` + رسالة
    `Global.NewNotificationMessage(...)`.
 
-### التفعيل (تطبيقان)
-- `LicenseKeyGenerator` (مكرَّر في المشروعين): MD5 لاسم الجهاز → مفتاح مُنسّق.
-- `AljarasActivation` أداة مستقلة تولّد مفتاح التفعيل؛ والتحقق يكتب `Aljaras.key` بجوار الـ exe.
-- **حماية شكلية ضعيفة** (MD5، تتحقق من نفسها، والميزة التي كانت تقيّدها معطّلة) — ليست أمنية.
+### التفعيل/الترخيص
+- أُزيل منطق التفعيل بالكامل — التطبيق الآن **مجاني (Freeware)** بلا أي قيود ترخيص،
+  وحُذف مشروع `AljarasActivation` ومولّد المفاتيح وشاشة التفعيل.
 
 ### ⚠️ نقاط حذر / ديون تقنية (مرشّحة للإصلاح)
 1. **`using (GlobalVariables.db)` على كائن Singleton مشترك** يتخلّص منه (Dispose) بعد كل عملية —
