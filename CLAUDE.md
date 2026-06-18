@@ -180,3 +180,50 @@ dotnet run --project Aljaras/Aljaras.csproj
   Develop, commit, and push there; do **not** push to `master` without explicit permission.
 - Only open a pull request when explicitly asked.
 - Push with `git push -u origin <branch>`, retrying with backoff on network errors.
+
+---
+
+## شرح تفصيلي بالعربية (Deep dive)
+
+### دورة حياة التطبيق عند التشغيل
+- `App.OnStartup`: يمنع تشغيل أكثر من نسخة عبر `Mutex` مُسمّى — وعند وجود نسخة أخرى
+  فإن **النسخة الجديدة تقتل القديمة وتكمل** (الأحدث يفوز)، ثم يبني أيقونة علبة النظام.
+- ثم يُحمَّل `MainWindow` ومعه `MainViewModel`، الذي يضبط `CurrentView` على
+  `MonitoringViewModel` ويستدعي `GlobalViewModel.Instance` فيُشغّل الـ Singleton.
+- توجد معالجات استثناءات عامة (رسالة "هل تريد المتابعة؟") لكنها تبدو **غير مربوطة فعليًا**
+  بالحدث — أي قد تكون كودًا ميتًا. تحقّق قبل الاعتماد عليها.
+
+### محرك الجدولة (قلب التطبيق)
+- باني `GlobalViewModel` يُطلق حلقة خلفية دائمة (`Task.Run`) كل ١٠٠٠ مللي ثانية.
+- **مطابقة بدقة الثانية** (`TrimMilliseconds`) → إذا تأخّر التنفيذ يُفوَّت الجرس بصمت.
+- `LoadMonitoringAlarmCollectionData()` يقرأ الإجازات (+ تذكيراتها كمنبهات وهمية) ثم
+  الجداول النشطة ومنبهاتها، ويفلتر كل منبه حسب **يوم الأسبوع** عبر Reflection مطابقًا
+  أعلام `Sun`..`Sat`.
+- `NextAlarm()` يجد أول منبه قادم ويضبط العدّ التنازلي؛ وعند انتهاء اليوم **يرحّل كل
+  المنبهات يومًا** ويعيد الحساب. مؤقّت `DispatcherTimer` بـ ٤٠ مللي ثانية يحرّك العرض.
+
+### النظام الصوتي (NAudio)
+- التشغيل عبر `DirectSoundOut` + `BlockAlignReductionStream` (تفرّع mp3/wav).
+- **نمط المكتبة**: `MoveAudioFileToLibrary` ينسخ الملف إلى `Audio\<اسم المستخدم>\` ويخزّن
+  مسارًا **نسبيًا** في قاعدة البيانات (يجعل النُّسخ الاحتياطية قابلة للنقل).
+- **وضع الطوارئ** يكرّر صوت الطوارئ ويُسكت الأجراس المجدولة؛ و**البثّ المباشر** يمرّر
+  الميكروفون إلى السماعات (نظام نداء PA).
+
+### نمط CRUD الموحّد (للكيانات الجديدة)
+1. `Load…CollectionData()` يملأ القوائم ويضبط حالة "فارغ" (`IsNO…MessageVisible`).
+2. الحفظ: إذا المفتاح `> 0` → `Update`، وإلا مفتاح `DateTime.Now.Ticks` جديد → `Insert`.
+3. كل تعديل ينتهي بـ `Global.LoadMonitoringAlarmCollectionData()` + رسالة
+   `Global.NewNotificationMessage(...)`.
+
+### التفعيل (تطبيقان)
+- `LicenseKeyGenerator` (مكرَّر في المشروعين): MD5 لاسم الجهاز → مفتاح مُنسّق.
+- `AljarasActivation` أداة مستقلة تولّد مفتاح التفعيل؛ والتحقق يكتب `Aljaras.key` بجوار الـ exe.
+- **حماية شكلية ضعيفة** (MD5، تتحقق من نفسها، والميزة التي كانت تقيّدها معطّلة) — ليست أمنية.
+
+### ⚠️ نقاط حذر / ديون تقنية (مرشّحة للإصلاح)
+1. **`using (GlobalVariables.db)` على كائن Singleton مشترك** يتخلّص منه (Dispose) بعد كل عملية —
+   المشتبه الأول بمشاكل الانهيار في تاريخ الـ commits. افحصه قبل أي تعديل على التخزين.
+2. **المطابقة بدقة الثانية** قد تُفوّت جرسًا عند تأخّر التنفيذ.
+3. **مطابقة المفاتيح الأجنبية نصّيًا** عبر `.ToString().Contains(...)` مطابقة جزئية لا تساوي تام.
+4. حلقة `while(isLoading)` في `LoadMonitoringAlarmCollectionData` تخرج دائمًا من أول تكرار — بلا فائدة.
+5. خلط `System.Windows.Forms` و `System.Windows` — انتبه للاسم المستعار `MessageBox`.
