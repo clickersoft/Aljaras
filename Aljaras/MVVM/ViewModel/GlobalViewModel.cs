@@ -66,6 +66,9 @@ namespace Aljaras.MVVM.ViewModel
         private string currentAlarmTitle = string.Empty;
 
         [ObservableProperty]
+        private string nextAlarmAudio = string.Empty;
+
+        [ObservableProperty]
         int defaultHour = 0;
 
         [ObservableProperty]
@@ -189,6 +192,13 @@ namespace Aljaras.MVVM.ViewModel
 
         [RelayCommand]
         private void ReloadDevices() => LoadDevices();
+
+        [RelayCommand]
+        private void PreviewNextAlarm()
+        {
+            if (AudioOperations.IsEmergency || string.IsNullOrEmpty(NextAlarmAudio)) return;
+            _ = AudioOperations.PlayPauseAudioFile(NextAlarmAudio, false);
+        }
         #endregion
 
         #region Functions
@@ -358,6 +368,7 @@ namespace Aljaras.MVVM.ViewModel
                     DefaultMin = _Nextalarm.FullTime.Minute;
                     CurrentAlarm = _Nextalarm.FullTime.ToString("hh:mm tt");
                     CurrentAlarmTitle = _Nextalarm.AlarmTitle;
+                    NextAlarmAudio = _Nextalarm.AudioFileLocation;
                     TimeLeft = _Nextalarm.FullTime.Subtract(DateTime.Now);
                 }
                 else
@@ -371,6 +382,7 @@ namespace Aljaras.MVVM.ViewModel
             {
                 CurrentAlarm = AppLang.NoMoreAlarms;
                 CurrentAlarmTitle = AppLang.NoMoreAlarms;
+                NextAlarmAudio = string.Empty;
             }
             dispatcherTimer.Tick += DispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 40);

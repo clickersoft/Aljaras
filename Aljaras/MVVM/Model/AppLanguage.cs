@@ -257,5 +257,8 @@ namespace Aljaras.MVVM.Model
         
         [ObservableProperty]
         private string _runasAdministratorMessage = "Some settings need administrator permission, Relaunch As Administrator?";
+
+        [ObservableProperty]
+        private string _testSound = "Test Sound";
     }
 }

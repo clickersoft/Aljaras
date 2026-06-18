@@ -85,4 +85,5 @@
 	<RunasAdministrator>Run as Administrator</RunasAdministrator>
 	<RunasAdministratorMessage>Some settings need administrator permission, Relaunch As Administrator?</RunasAdministratorMessage>
 	<Reload>Reload</Reload>
+	<TestSound>Test Sound</TestSound>
 </AppLanguage>
