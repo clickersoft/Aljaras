@@ -138,7 +138,6 @@ namespace Aljaras.MVVM.ViewModel
                 else return;
             }
 
-            using (GlobalVariables.db)
             {
                 if (UserSet.SetRegistryKey)
                     try { StartUpManager.AddApplicationToAllUsersStartup(); }
@@ -196,7 +195,6 @@ namespace Aljaras.MVVM.ViewModel
                 foreach (FileInfo file in files)
                     _lang.Add(Path.GetFileNameWithoutExtension(file.Name));
             }
-            using (GlobalVariables.db)
             {
                 var col = GlobalVariables.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
                 var results = col.Find(x => x.Id == 1).FirstOrDefault();

@@ -66,6 +66,12 @@ namespace Aljaras.MVVM.ViewModel
         private string currentAlarmTitle = string.Empty;
 
         [ObservableProperty]
+        private string nextAlarmAudio = string.Empty;
+
+        [ObservableProperty]
+        private float nextAlarmVolume = 1f;
+
+        [ObservableProperty]
         int defaultHour = 0;
 
         [ObservableProperty]
@@ -130,12 +136,6 @@ namespace Aljaras.MVVM.ViewModel
 
         [ObservableProperty]
         private Random startRandom = new();
-
-        [ObservableProperty]
-        private string activationMessage = string.Empty;
-
-        [ObservableProperty]
-        string productActivated = LicenseKeyGenerator.IsProductActivated() ? GetVisibility.Hidden.ToString() : GetVisibility.Visible.ToString();
         #endregion
 
         #region RelayCommands
@@ -155,6 +155,7 @@ namespace Aljaras.MVVM.ViewModel
         {
             if (AudioOperations.IsEmergency || MicDevicesList == null || SpeakerDevicesList == null || !MicDevicesList.Any() || !SpeakerDevicesList.Any()) return;
             RecordingActionVisibility = GetVisibility.Visible.ToString();
+            AudioOperations.PlaybackVolume = 1f;
             if (File.Exists(GlobalVariables.AppLocation + "Audio\\Attention.mp3"))
                 _ = AudioOperations.PlayPauseAudioFile(AudioOperations.MoveAudioFileToLibrary(GlobalVariables.AppLocation + "Audio\\Attention.mp3"), false);
             RecordButtonEnabled = false;
@@ -190,11 +191,20 @@ namespace Aljaras.MVVM.ViewModel
             else EmergencyActionVisibility = GetVisibility.Hidden.ToString();
             if (!File.Exists(string.Concat(GlobalVariables.AppLocation, GetUserSettings.EmergencyAudioFileLocation)))
                 GetUserSettings.EmergencyAudioFileLocation = AudioOperations.MoveAudioFileToLibrary(GlobalVariables.AppLocation + "Audio\\Emerg.mp3");
+            AudioOperations.PlaybackVolume = 1f;
             _ = AudioOperations.PlayPauseAudioFile(GetUserSettings.EmergencyAudioFileLocation, AudioOperations.IsEmergency);
         }
 
         [RelayCommand]
         private void ReloadDevices() => LoadDevices();
+
+        [RelayCommand]
+        private void PreviewNextAlarm()
+        {
+            if (AudioOperations.IsEmergency || string.IsNullOrEmpty(NextAlarmAudio)) return;
+            AudioOperations.PlaybackVolume = NextAlarmVolume;
+            _ = AudioOperations.PlayPauseAudioFile(NextAlarmAudio, false);
+        }
         #endregion
 
         #region Functions
@@ -253,21 +263,34 @@ namespace Aljaras.MVVM.ViewModel
         {
             LoadUIInfo();
             NotificationList = new();
+            DateTime lastBeat = DateTime.Now;
             Task.Run(async () =>
             {
                 while (true)
                 {
-                    Application.Current.Dispatcher.Invoke(() => SystemTime = DateTime.Now.ToLongTimeString());
+                    DateTime now = DateTime.Now;
+                    Application.Current.Dispatcher.Invoke(() => SystemTime = now.ToLongTimeString());
                     if (AlarmList != null && AlarmList.Count > 0)
                     {
-                        Alarm? _alr = AlarmList.FirstOrDefault(x => TrimMilliseconds(x.FullTime) == TrimMilliseconds(DateTime.Now));
-                        if (_alr != null)
+                        // Fire every alarm whose time elapsed since the last beat, not only an
+                        // exact-second match, so a delayed tick can no longer skip a bell.
+                        List<Alarm> dueAlarms = AlarmList
+                            .Where(x => x.FullTime > lastBeat && x.FullTime <= now)
+                            .OrderBy(x => x.FullTime)
+                            .ToList();
+                        if (dueAlarms.Count > 0)
                         {
                             if (!AudioOperations.IsEmergency)
-                                StartAudio(_alr.AudioFileLocation);
+                                foreach (Alarm due in dueAlarms)
+                                {
+                                    Logger.Info($"Alarm fired: \"{due.AlarmTitle}\" scheduled {due.FullTime:HH:mm:ss}.");
+                                    AudioOperations.PlaybackVolume = due.VolumeFraction;
+                                    StartAudio(due.AudioFileLocation);
+                                }
                             LoadMonitoringAlarmCollectionData();
                         }
                     }
+                    lastBeat = now;
                     await Task.Delay(1000);
                 }
             });
@@ -277,7 +300,27 @@ namespace Aljaras.MVVM.ViewModel
         {
             LoadDevices();
             SetAppSettings();
+            TryAutoBackup();
             LoadMonitoringAlarmCollectionData();
+        }
+
+        /// <summary>Runs at most one automatic backup per 24h when enabled.</summary>
+        private void TryAutoBackup()
+        {
+            if (!GetUserSettings.AutoBackup) return;
+            if ((DateTime.Now - GetUserSettings.LastBackupDate).TotalHours < 24) return;
+            UserSettings settings = GetUserSettings;
+            Task.Run(() =>
+            {
+                if (!BackupManager.CreateBackup()) return;
+                settings.LastBackupDate = DateTime.Now;
+                try
+                {
+                    var col = GlobalVariables.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
+                    col.Update(settings);
+                }
+                catch (Exception ex) { Logger.Error("Failed to persist LastBackupDate", ex); }
+            });
         }
 
         public void SetAppSettings()
@@ -285,7 +328,6 @@ namespace Aljaras.MVVM.ViewModel
             try
             {
                 GetUserSettings = new();
-                using (GlobalVariables.db)
                 {
                     var col = GlobalVariables.db.GetCollection<UserSettings>(DbTables.UserSettings.ToString());
                     UserSettings? results = col.Find(x => x.Id == 1).FirstOrDefault();
@@ -319,7 +361,7 @@ namespace Aljaras.MVVM.ViewModel
                     file.Close();
                 }
             }
-            catch { }
+            catch (Exception ex) { Logger.Error("SetAppSettings failed", ex); }
         }
 
         public static DateTime TrimMilliseconds(DateTime dt) => new(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second, 0, dt.Kind);
@@ -343,7 +385,6 @@ namespace Aljaras.MVVM.ViewModel
 
         public void NextAlarm()
         {
-            ActivationMessage = LicenseKeyGenerator.IsProductActivated() ? AppLang.Activated : AppLang.NotActivated;
             TimeLeft = TimeSpan.Zero;
             if (AlarmList != null && AlarmList.Count > 0)
             {
@@ -354,6 +395,8 @@ namespace Aljaras.MVVM.ViewModel
                     DefaultMin = _Nextalarm.FullTime.Minute;
                     CurrentAlarm = _Nextalarm.FullTime.ToString("hh:mm tt");
                     CurrentAlarmTitle = _Nextalarm.AlarmTitle;
+                    NextAlarmAudio = _Nextalarm.AudioFileLocation;
+                    NextAlarmVolume = _Nextalarm.VolumeFraction;
                     TimeLeft = _Nextalarm.FullTime.Subtract(DateTime.Now);
                 }
                 else
@@ -367,6 +410,7 @@ namespace Aljaras.MVVM.ViewModel
             {
                 CurrentAlarm = AppLang.NoMoreAlarms;
                 CurrentAlarmTitle = AppLang.NoMoreAlarms;
+                NextAlarmAudio = string.Empty;
             }
             dispatcherTimer.Tick += DispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 40);
@@ -380,13 +424,9 @@ namespace Aljaras.MVVM.ViewModel
 
         public void LoadMonitoringAlarmCollectionData()
         {
-            bool isLoading = true;
-            while (isLoading)
-            {
-                ScheduleList = new();
-                AlarmList = new();
-                HolidayList = new();
-                using (GlobalVariables.db)
+            ScheduleList = new();
+            AlarmList = new();
+            HolidayList = new();
                 {
                     var holidayCollection = GlobalVariables.db.GetCollection<Holiday>(DbTables.Holidays.ToString());
                     HolidayList = holidayCollection.Find(h => h.HolidayDate >= DateTime.Now && h.IsHolidayActive).OrderBy(x => x.HolidayDate).ToList();
@@ -409,13 +449,13 @@ namespace Aljaras.MVVM.ViewModel
                         IsNOHolidayMessageVisible = GetVisibility.Hidden.ToString();
                     else IsNOHolidayMessageVisible = GetVisibility.Visible.ToString();
                     var scheduleCollection = GlobalVariables.db.GetCollection<Schedule>(DbTables.Schedules.ToString());
-                    ScheduleList = scheduleCollection.Find(x => x.IsScheduleActive == true).ToList();
+                    ScheduleList = scheduleCollection.Find(x => x.IsScheduleActive == true).Where(s => !s.IsSuspended && s.IsWithinDateRange).ToList();
                     if (ScheduleList != null && ScheduleList.Count > 0)
                     {
                         foreach (Schedule item in ScheduleList)
                         {
                             var alarmCollection = GlobalVariables.db.GetCollection<Alarm>(DbTables.Alarms.ToString());
-                            List<Alarm> result = alarmCollection.Find(x => x.ScheduleId.ToString().Contains(item.ScheduleId.ToString()) && x.IsAlarmActive == true).ToList();
+                            List<Alarm> result = alarmCollection.Find(x => x.ScheduleId == item.ScheduleId && x.IsAlarmActive == true).ToList();
                             if (result != null && result.Count > 0)
                             {
                                 foreach (Alarm _item in result)
@@ -424,9 +464,7 @@ namespace Aljaras.MVVM.ViewModel
                                         _item.FullTime = ChangeDateOnly(_item.FullTime);
                                         AlarmList.Add(_item);
                                     }
-                                //if (LicenseKeyGenerator.IsProductActivated())
-                                    AlarmList = AlarmList.OrderBy(x => x.FullTime).ToList();
-                                //else AlarmList = AlarmList.OrderBy(x => x.FullTime).Take(5).ToList();
+                                AlarmList = AlarmList.OrderBy(x => x.FullTime).ToList();
 
                             }
                         }
@@ -434,14 +472,11 @@ namespace Aljaras.MVVM.ViewModel
                         {
                             IsNOAlarmMessageVisible = GetVisibility.Hidden.ToString();
                             NextAlarm();
-                            isLoading = false;
                             return;
                         }
                     }
                     NextAlarm();
-                    isLoading = false;
                 }
-            }
             IsNOAlarmMessageVisible = GetVisibility.Visible.ToString();
         }
 

@@ -230,25 +230,13 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private string _alarmTitle = "Alarm Title";
-        
-        [ObservableProperty]
-        private string _activationFailed = "Activation Failed";
-        
-        [ObservableProperty]
-        private string _activationFileCorrupted = "Activation File Corrupted";
-        
-        [ObservableProperty]
-        private string _notActivated = "Not Activated";
 
         [ObservableProperty]
         private string _open = "Open";
 
         [ObservableProperty]
         private string _exit = "Exit";
-        
-        [ObservableProperty]
-        private string _activated = "Activated";
-        
+
         [ObservableProperty]
         private string _registryFailed = "Setting up registry key Failed";
 
@@ -269,5 +257,23 @@ namespace Aljaras.MVVM.Model
         
         [ObservableProperty]
         private string _runasAdministratorMessage = "Some settings need administrator permission, Relaunch As Administrator?";
+
+        [ObservableProperty]
+        private string _testSound = "Test Sound";
+
+        [ObservableProperty]
+        private string _volume = "Volume";
+
+        [ObservableProperty]
+        private string _autoBackup = "Auto Backup";
+
+        [ObservableProperty]
+        private string _dateRange = "Date Range";
+
+        [ObservableProperty]
+        private string _from = "From";
+
+        [ObservableProperty]
+        private string _to = "To";
     }
 }

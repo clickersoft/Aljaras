@@ -178,6 +178,15 @@
                         Content="{Binding Global.AppLang.Reload}"
                         Foreground="{StaticResource MediumVioletRedBrush}"
                         Style="{DynamicResource ListRoundButtons}" />
+                    <Button
+                        Margin="0,0,20,0"
+                        VerticalAlignment="Center"
+                        extensions:Extensions.Carrier="{StaticResource AlarmBellPathData}"
+                        Background="{StaticResource DodgerBlueBrush}"
+                        Command="{Binding Global.PreviewNextAlarmCommand}"
+                        Content="{Binding Global.AppLang.TestSound}"
+                        Foreground="{StaticResource DodgerBlueBrush}"
+                        Style="{DynamicResource ListRoundButtons}" />
                     <Path
                         Height="10"
                         Margin="0,0,-25,0"

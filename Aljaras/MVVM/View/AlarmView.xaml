@@ -36,6 +36,10 @@
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
                     <TextBlock Margin="10,0,0,0" VerticalAlignment="Center">
                         <Run Text="{Binding Global.AppLang.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <Run Text=":" />
@@ -71,6 +75,33 @@
                             Content="{Binding Global.AppLang.Save, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Foreground="{StaticResource SteelBlueBrush}"
                             Style="{DynamicResource ListRoundButtons}" />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        Margin="10,8,0,0"
+                        Orientation="Horizontal">
+                        <CheckBox
+                            VerticalAlignment="Center"
+                            Content="{Binding Global.AppLang.DateRange}"
+                            IsChecked="{Binding CurrentSchedule.UseDateRange}"
+                            Style="{DynamicResource SliderCheckBox}" />
+                        <TextBlock
+                            Margin="10,0,4,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding Global.AppLang.From}" />
+                        <DatePicker
+                            VerticalAlignment="Center"
+                            IsEnabled="{Binding CurrentSchedule.UseDateRange}"
+                            SelectedDate="{Binding CurrentSchedule.StartDate}" />
+                        <TextBlock
+                            Margin="10,0,4,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding Global.AppLang.To}" />
+                        <DatePicker
+                            VerticalAlignment="Center"
+                            IsEnabled="{Binding CurrentSchedule.UseDateRange}"
+                            SelectedDate="{Binding CurrentSchedule.EndDate}" />
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
@@ -167,14 +198,32 @@
                                     Foreground="{DynamicResource DarkBackgroundBrush}"
                                     IsChecked="{Binding IsScheduleActive}"
                                     Style="{DynamicResource SliderCheckBox}" />
-                                <TextBlock
+                                <StackPanel
                                     Grid.Column="1"
                                     VerticalAlignment="Center"
-                                    Text="{Binding ScheduleTitle}" />
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="0,0,5,0"
+                                        Foreground="{StaticResource OrangeRedBrush}"
+                                        Text="⏸"
+                                        Visibility="{Binding SuspendedVisibility}" />
+                                    <TextBlock Text="{Binding ScheduleTitle}" />
+                                </StackPanel>
                                 <StackPanel
                                     Grid.Column="2"
                                     Margin="0,0,30,0"
                                     Orientation="Horizontal">
+                                    <Button
+                                        HorizontalAlignment="Center"
+                                        extensions:Extensions.Carrier="{StaticResource TimeNowPathData}"
+                                        Background="{StaticResource OrangeRedBrush}"
+                                        Command="{Binding ElementName=ScheduleListView, Path=DataContext.ToggleSuspendScheduleCommand}"
+                                        CommandParameter="{Binding}"
+                                        Style="{DynamicResource ListRoundButtons}" />
+                                    <Border
+                                        Margin="3"
+                                        BorderBrush="{StaticResource LightGrayBrush}"
+                                        BorderThickness="1,0,0,0" />
                                     <Button
                                         HorizontalAlignment="Center"
                                         extensions:Extensions.Carrier="{StaticResource EditPathData}"
@@ -405,6 +454,10 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
                             <TextBox
                                 Grid.ColumnSpan="3"
                                 Height="30"
@@ -433,6 +486,23 @@
                                 FontWeight="Bold"
                                 Foreground="{StaticResource MediumVioletRedBrush}"
                                 Style="{DynamicResource RoundButtons}" />
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.ColumnSpan="3"
+                                Margin="15,8,0,0"
+                                Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Global.AppLang.Volume}" />
+                                <Slider
+                                    Width="200"
+                                    Margin="10,0"
+                                    VerticalAlignment="Center"
+                                    Maximum="100"
+                                    Minimum="0"
+                                    TickFrequency="1"
+                                    Value="{Binding CurrentAlarm.Volume}" />
+                                <TextBlock VerticalAlignment="Center" Text="{Binding CurrentAlarm.Volume}" />
+                                <TextBlock VerticalAlignment="Center" Text="%" />
+                            </StackPanel>
                         </Grid>
                     </GroupBox>
                 </Grid>
