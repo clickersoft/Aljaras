@@ -115,6 +115,10 @@ always the file to edit.
   loop, and copying selected audio files into the app's library folder.
 - `StartUpManager` — admin elevation check + add app to all-users startup (registry).
 - `ShortcutManager` — desktop shortcut via `IWshRuntimeLibrary`.
+- `Logger` — thread-safe daily file log (`Logs\Aljaras-<date>.log`); never throws.
+  Records fired alarms, startup, auto-backups, and unhandled exceptions.
+- `BackupManager` — writes self-contained `.jrsbck` backups (audio + DB) to a
+  `Backups\` folder, keeping the newest 14. Driven by the Auto-Backup setting.
 - `Extensions.cs` — assorted extension methods.
 
 ### Data & persistence (LiteDB)
@@ -136,6 +140,19 @@ which file loads. When adding a user-facing string, add a property to
 `AppLanguage` **and** entries in both XML files, then reference it as
 `Global.AppLang.YourString` (never hard-code UI text). `MainViewModel`
 regenerates `en.xml` from the `AppLanguage` defaults if it's missing.
+
+## Notable features (beyond the basics)
+
+- **Per-alarm volume** — `Alarm.Volume` (0–100); applied via `WaveChannel32` in
+  `AudioFileOperations`. `VolumeFraction` treats legacy `0` as full volume.
+- **Test Sound** — Monitoring button previews the next alarm's audio on demand.
+- **Suspend for today** — `Schedule.SuspendedUntil`; the scheduler skips a
+  schedule until it auto-resumes (toggle + pause marker in the schedule list).
+- **Date-range / term scheduling** — `Schedule.UseDateRange` + `StartDate`/`EndDate`;
+  the schedule only runs inside the range.
+- **Auto-backup** + **file logging** — see `BackupManager` / `Logger` above.
+- New persisted fields were added in a back-compatible way (legacy LiteDB rows
+  deserialize to sensible defaults). When adding model fields, do the same.
 
 ## Conventions to follow
 
