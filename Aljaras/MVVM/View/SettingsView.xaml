@@ -138,6 +138,14 @@
                     Foreground="{StaticResource ForestGreenBrush}"
                     IsChecked="{Binding UserSet.IsShutdownOnClose}"
                     Style="{DynamicResource SliderCheckBox}" />
+                <CheckBox
+                    Height="20"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Left"
+                    Content="{Binding Global.AppLang.AutoBackup}"
+                    Foreground="{StaticResource ForestGreenBrush}"
+                    IsChecked="{Binding UserSet.AutoBackup}"
+                    Style="{DynamicResource SliderCheckBox}" />
             </StackPanel>
         </Border>
         <Border

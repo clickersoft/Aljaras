@@ -26,6 +26,10 @@ namespace Aljaras.Core
 
         [ObservableProperty]
         private string tmpAudio = string.Empty;
+
+        /// <summary>Playback volume (0..1) applied to the next started clip.</summary>
+        [ObservableProperty]
+        private float playbackVolume = 1f;
         #endregion
 
         #region Functions
@@ -66,13 +70,15 @@ namespace Aljaras.Core
 
         private void StartAudio(string fileLocation)
         {
-            WaveStream pcm;
+            WaveStream reader;
             if (fileLocation.ToLower().EndsWith(".mp3"))
-                pcm = WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(fileLocation));
+                reader = new Mp3FileReader(fileLocation);
             else if (fileLocation.ToLower().EndsWith(".wav"))
-                pcm = new WaveChannel32(new WaveFileReader(fileLocation));
+                reader = new WaveFileReader(fileLocation);
             else return;
-            stream = new BlockAlignReductionStream(pcm);
+            // WaveChannel32 lets us scale amplitude per clip (0..1).
+            WaveChannel32 channel = new(reader) { Volume = Math.Clamp(PlaybackVolume, 0f, 1f) };
+            stream = new BlockAlignReductionStream(channel);
             Output = new DirectSoundOut();
             Output.Init(stream);
             Output.Play();

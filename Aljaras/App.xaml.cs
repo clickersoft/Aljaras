@@ -24,6 +24,8 @@ namespace Aljaras
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            DispatcherUnhandledException += AppUI_DispatcherUnhandledException!;
+            Logger.Info($"Application starting (PID {Environment.ProcessId}).");
             const string appName = "0C41354D-1236-4842-97F2-0EC4E8ACE4BD";
             mut = new Mutex(true, appName, out bool alreadyPresent);
             if (!alreadyPresent)
@@ -93,7 +95,7 @@ namespace Aljaras
                 return;
             }
             string errorMessage = string.Format("An application error occurred. If this error occurs again there seems to be a serious bug in the application, and you better close it.\n\nError:{0}\n\nDo you want to continue?\n(if you click Yes you will continue with your work, if you click No the application will close)", e.Exception.Message);
-            //insert code to log exception here
+            Logger.Error("Unhandled UI-thread exception", e.Exception);
             if (MessageBox.Show(errorMessage, "Application User Interface Error", MessageBoxButton.YesNoCancel, MessageBoxImage.Error) == MessageBoxResult.No)
             {
                 if (MessageBox.Show("WARNING: The application will close. Any changes will not be saved!\nDo you really want to close it?", "Close the application!", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes)
@@ -112,7 +114,7 @@ namespace Aljaras
         void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             string errorMessage = string.Format("An application error occurred. If this error occurs again there seems to be a serious bug in the application, and you better close it.\n\nError:{0}\n\nDo you want to continue?\n(if you click Yes you will continue with your work, if you click No the application will close)", e.Exception.Message);
-            //insert code to log exception here
+            Logger.Error("Unhandled exception", e.Exception);
             if (MessageBox.Show(errorMessage, "Application UnhandledException Error", MessageBoxButton.YesNoCancel, MessageBoxImage.Error) == MessageBoxResult.No)
             {
                 if (MessageBox.Show("WARNING: The application will close. Any changes will not be saved!\nDo you really want to close it?", "Close the application!", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning) == MessageBoxResult.Yes)

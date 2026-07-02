@@ -59,5 +59,15 @@ namespace Aljaras.MVVM.Model
 
         [ObservableProperty]
         private bool isAlarmActive = true;
+
+        [ObservableProperty]
+        private int volume = 100;
+
+        /// <summary>
+        /// Playback volume as a 0..1 fraction. Alarms saved before this field
+        /// existed deserialize as 0; treat that (and any non-positive value) as
+        /// full volume so legacy alarms keep ringing at 100%.
+        /// </summary>
+        public float VolumeFraction => Volume <= 0 ? 1f : Math.Min(Volume, 100) / 100f;
     }
 }

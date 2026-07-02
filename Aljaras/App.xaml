@@ -35,9 +35,6 @@
             <DataTemplate DataType="{x:Type viewModel:AboutMeViewModel}">
                 <view:AboutMeView />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModel:ActivationViewModel}">
-                <view:ActivationView />
-            </DataTemplate>
             <!--#endregion-->
         </ResourceDictionary>
     </Application.Resources>

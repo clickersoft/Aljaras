@@ -45,7 +45,6 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void CloneHoliday(Holiday obj)
         {
-            using (GlobalVariables.db)
             {
                 var holidayCol = GlobalVariables.db.GetCollection<Holiday>(DbTables.Holidays.ToString());
                 obj.HolidayId = DateTime.Now.Ticks;
@@ -82,7 +81,6 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void De_ActivateHoliday(Holiday obj)
         {
-            using (GlobalVariables.db)
             {
                 var holidayCol = GlobalVariables.db.GetCollection<Holiday>(DbTables.Holidays.ToString());
                 holidayCol.Update(obj);
@@ -94,7 +92,6 @@ namespace Aljaras.MVVM.ViewModel
         [RelayCommand]
         private void DeleteHoliday(Holiday obj)
         {
-            using (GlobalVariables.db)
             {
                 var col = GlobalVariables.db.GetCollection<Holiday>(DbTables.Holidays.ToString());
                 col.Delete(obj.HolidayId);
@@ -117,7 +114,6 @@ namespace Aljaras.MVVM.ViewModel
                     return;
                 }
                 fileLocation = Global.AudioOperations.MoveAudioFileToLibrary(fileLocation);
-                using (GlobalVariables.db)
                 {
                     //CurrentHoliday.ReminderDate = ChangeDateOnly(CurrentHoliday.ReminderDate, DateTime.Parse(CurrentHoliday.ReminderHour + ":" + CurrentHoliday.ReminderMinute + " " + CurrentHoliday.ReminderDayTime));
                     CurrentHoliday.ReminderAudioFileLocation = fileLocation;
@@ -143,7 +139,6 @@ namespace Aljaras.MVVM.ViewModel
         #region Functions
         private void LoadHolidayCollectionData()
         {
-            using (GlobalVariables.db)
             {
                 var col = GlobalVariables.db.GetCollection<Holiday>(DbTables.Holidays.ToString());
                 HolidayList = col.Query().OrderBy(h => h.HolidayDate).ToList();

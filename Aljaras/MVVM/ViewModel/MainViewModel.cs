@@ -22,14 +22,7 @@ namespace Aljaras.MVVM.ViewModel
 
         #region RelayCommands
         [RelayCommand]
-        void ShowActivationView()
-        {
-            ActivationViewModel ActivationVM = new();
-            CurrentView = ActivationVM;
-        }
-
-        [RelayCommand]
-        void ShowHolidaysView() 
+        void ShowHolidaysView()
         {
             HolidaysViewModel HolidaysVM = new();
             CurrentView = HolidaysVM; 

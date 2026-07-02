@@ -76,12 +76,8 @@
 	<AlreadyRunning>App is already running! if you don't see app window, its in the Tray near system clock.</AlreadyRunning>
 	<Sample>Sample</Sample>
 	<AlarmTitle>Alarm Title</AlarmTitle>
-	<ActivationFailed>Activation Failed</ActivationFailed>
-	<ActivationFileCorrupted>Activation File Corrupted</ActivationFileCorrupted>
-	<NotActivated>Not Activated</NotActivated>
 	<Open>Open</Open>
 	<Exit>Exit</Exit>
-	<Activated>Activated</Activated>
 	<RegistryFailed>Setting up registry key Failed</RegistryFailed>
 	<DeleteRegistryFailed>Delete registry key Failed</DeleteRegistryFailed>
 	<Copy>Copy</Copy>
@@ -89,4 +85,10 @@
 	<RunasAdministrator>Run as Administrator</RunasAdministrator>
 	<RunasAdministratorMessage>Some settings need administrator permission, Relaunch As Administrator?</RunasAdministratorMessage>
 	<Reload>Reload</Reload>
+	<TestSound>Test Sound</TestSound>
+	<Volume>Volume</Volume>
+	<AutoBackup>Auto Backup</AutoBackup>
+	<DateRange>Date Range</DateRange>
+	<From>From</From>
+	<To>To</To>
 </AppLanguage>
