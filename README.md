@@ -8,9 +8,6 @@ system tray, and has a fully **bilingual UI — Arabic and English**.
 > الجرس: برنامج جرس مدرسي لويندوز يشغّل تنبيهات صوتية مجدولة (بداية/نهاية الحصص،
 > الفسحة، الاختبارات، طابور الصباح، الطوارئ) ويعمل في الخلفية، بواجهة عربية/إنجليزية.
 
-Authored by **Mustafa Al-Klieb**. Free to use (freeware — no activation/licensing).
-
----
 
 ## ✨ Features
 
@@ -147,4 +144,4 @@ See [`CLAUDE.md`](CLAUDE.md) for architecture and contributor notes.
 
 ## 📄 License
 
-Freeware — free to use and distribute. © Mustafa Al-Klieb.
+Freeware — free to use and distribute. © Open Source.
