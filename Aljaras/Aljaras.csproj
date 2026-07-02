@@ -9,11 +9,11 @@
     <StartupObject>Aljaras.App</StartupObject>
     <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
-    <Description>Aljaras: School Bell System by Mustafa Al-Klieb</Description>
-    <Copyright>Mustafa Al-Klieb </Copyright>
+    <Description>Aljaras: School Bell System</Description>
+    <Copyright>Free / Open Source</Copyright>
     <PackageIcon>school-bell-and-alarm-vector.jpg</PackageIcon>
     <IncrementVersionOnBuild>1.yyyy.Mdd.Hmm</IncrementVersionOnBuild>
-    <Version>1.2025.1123.0242</Version>
+    <Version>1.2026.0702.0830</Version>
     <ApplicationManifest></ApplicationManifest>
   </PropertyGroup>
 
@@ -25,13 +25,6 @@
 			<Analyzer Include="@(FilteredAnalyzer)" />
 		</ItemGroup>
 	</Target>
-
-	<ItemGroup>
-	  <None Remove="1.jpg" />
-	  <None Remove="2.jpg" />
-	  <None Remove="Avatar.png" />
-	  <None Remove="Images\crpton.jpg" />
-	</ItemGroup>
 
 	<ItemGroup>
 	  <COMReference Include="IWshRuntimeLibrary">
@@ -52,22 +45,20 @@
     <Content Include="Aljaras.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\crpton.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 	
   <ItemGroup>
-    <None Include="..\Assets\school-bell-and-alarm-vector.jpg" Link="Images\school-bell-and-alarm-vector.jpg">
+    <Resource Include="..\Assets\school-bell-and-alarm-vector.jpg" Link="Images\school-bell-and-alarm-vector.jpg">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
-    </None>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="LiteDB" Version="5.0.21" />
-    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NAudio" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>

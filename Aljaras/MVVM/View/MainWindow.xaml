@@ -160,7 +160,7 @@
                         Style="{StaticResource CopyrightButton}"
                         Visibility="Visible">
                         <TextBlock Margin="3,0">
-                            <Run Text="© Crpton, All rights reserved." />
+                            <Run Text="© Free, Open Source." />
                         </TextBlock>
                     </Button>
                 </StackPanel>

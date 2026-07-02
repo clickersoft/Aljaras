@@ -55,7 +55,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Cursor=""
-                Source="/Images/crpton.jpg" />
+                Source="/Images/school-bell-and-alarm-vector.jpg" />
             <RichTextBox
                 Grid.Column="1"
                 Margin="10"
@@ -63,82 +63,7 @@
                 IsReadOnly="True"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
                 ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <FlowDocument>
-                    <!--<Paragraph FontWeight="Bold">
-                        Hello I'm Mustafa AlKlieb
-                    </Paragraph>
-                    <Paragraph TextAlignment="Justify">
-                        I am a developer with some commercial experience. Ability to think through a problem coupled with the confidence to make ideas. A proven ability to maintain and enhance company software with the aim of improving operational functionality in line with business requirement.
-                    </Paragraph>
-                    <Paragraph>
-                        <Bold>Experience</Bold>
-                    </Paragraph>
-                    <List MarkerOffset="10" MarkerStyle="Disc">
-                        <ListItem>
-                            <Paragraph>
-                                <Run Text="Palestinian Ministry of Education - Teacher ~ 2019 +" />
-                            </Paragraph>
-                        </ListItem>
-                        <ListItem>
-                            <Paragraph>
-                                <Run Text="Clickersoft Company - developer(.Net-C#, Swift, Web Tech's...etc )/Designer/Technician  ~ 2013 to 2018" />
-                            </Paragraph>
-                        </ListItem>
-                        <ListItem>
-                            <Paragraph>
-                                <Run Text="Dandis Bookshop - Technician/VOIP(FreePBX) ~ 2016 to 2018" />
-                            </Paragraph>
-                        </ListItem>
-                        <ListItem>
-                            <Paragraph>
-                                <Run Text="Palestine  Ahliya  University - Diploma Instructor ~ 2013" />
-                            </Paragraph>
-                        </ListItem>
-                    </List>
-                    <Paragraph>
-                        <Bold>Contact</Bold>
-                    </Paragraph>
-                    <List MarkerOffset="10" MarkerStyle="Disc">
-                        <ListItem>
-                            <Paragraph>
-                                <Path
-                                    Width="20"
-                                    Data="{StaticResource GmailPathData}"
-                                    Fill="{StaticResource IndianRedBrush}"
-                                    Stretch="Uniform" />
-                                <Run Text="Gmail:" />
-                                <Hyperlink>
-                                    <Run Text="g.musmiwhb@gmail.com" />
-                                </Hyperlink>
-                            </Paragraph>
-                        </ListItem>
-                        <ListItem>
-                            <Paragraph>
-                                <Path
-                                    Width="20"
-                                    Data="{StaticResource FacebookPathData}"
-                                    Fill="{StaticResource SteelBlueBrush}"
-                                    Stretch="Uniform" />
-                                <Run Text="Facebook:" />
-                                <Hyperlink>
-                                    <Run Text="https://www.facebook.com/mustafa.alklieb.9/" />
-                                </Hyperlink>
-                            </Paragraph>
-                        </ListItem>
-                        <ListItem>
-                            <Paragraph>
-                                <Path
-                                    Width="20"
-                                    Data="{StaticResource WhatsAppPathData}"
-                                    Fill="{StaticResource ForestGreenBrush}"
-                                    Stretch="Uniform" />
-                                <Run Text="WhatsApp:" />
-                                <Hyperlink>
-                                    <Run Text="+972597454045" />
-                                </Hyperlink>
-                            </Paragraph>
-                        </ListItem>
-                    </List>-->
+                <FlowDocument>                  
                     <Paragraph FlowDirection="RightToLeft" TextAlignment="Justify">
                         أقدم إليكم برنامج الجرس المدرسي لتنظيم الحصص المدرسية وفقاً لبرنامج الفصل الدراسي الخاص بالمدرسة ويركز البرنامج على السهولة والمرونة في الاستخدام.
                     </Paragraph>
