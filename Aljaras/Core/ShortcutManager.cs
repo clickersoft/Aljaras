@@ -1,8 +1,7 @@
-﻿using IWshRuntimeLibrary;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
-using File = System.IO.File;
+using ShellLink; // Swapped from IWshRuntimeLibrary
 
 namespace Aljaras.Core
 {
@@ -11,10 +10,7 @@ namespace Aljaras.Core
         /// <summary>
         /// Creates or deletes a desktop shortcut.
         /// </summary>
-        /// <param name="appname">The appname.</param>
-        /// <param name="appPathFull">The full app Path or URL.</param>
         /// <param name="create">True to create a shortcut or False to remove the shortcut.</param>
-        /// <returns>The .lnk full file name.</returns>
         public static void CreateDesktopShortcut(bool create)
         {
             try
@@ -23,8 +19,9 @@ namespace Aljaras.Core
                 CreateShortcut(desktopPathName, Path.ChangeExtension(Assembly.GetExecutingAssembly().Location, ".exe"), create);
                 return;
             }
-            catch 
+            catch
             {
+                // Consider logging the exception here if needed
             }
             return;
         }
@@ -41,30 +38,31 @@ namespace Aljaras.Core
         {
             if (create)
             {
-                WshShell myShell = new WshShell();
-                IWshShortcut? myShortcut = myShell.CreateShortcut(shortcutPathName) as IWshShortcut;
-                myShortcut!.TargetPath = shortcutTarget;
+                Shortcut shortcut;
 
-                if (shortcutTarget.StartsWith("http"))
+                // Handle Web URL vs Executable conditions
+                if (shortcutTarget.StartsWith("http", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (File.Exists("MyIcon.ico"))
-                    {
-                        myShortcut.IconLocation = "MyIcon.ico";
-                    }
+                    string iconPath = File.Exists("MyIcon.ico") ? "MyIcon.ico" : "";
+
+                    // CreateShortcut overload: (targetPath, arguments, iconPath, iconIndex)
+                    shortcut = Shortcut.CreateShortcut(shortcutTarget, arguments, iconPath, 0);
                 }
                 else
                 {
-                    // Not an URL, but an .exe or other file
-                    myShortcut.IconLocation = shortcutTarget + ",0";
-                    myShortcut.WorkingDirectory = Directory.GetParent(shortcutTarget)!.ToString();
+                    // Not a URL: Retrieve the parent directory
+                    string workDir = Directory.GetParent(shortcutTarget)?.FullName ?? "";
+
+                    // CreateShortcut overload: (targetPath, arguments, workingDir, iconPath, iconIndex)
+                    shortcut = Shortcut.CreateShortcut(shortcutTarget, arguments, workDir, shortcutTarget, 0);
                 }
 
-                myShortcut.Arguments = arguments;
-                myShortcut.Save();
+                // Save the shortcut structure directly to the file system
+                shortcut.WriteToFile(shortcutPathName);
             }
             else
             {
-                // Delete the shortcut
+                // Delete the shortcut safely
                 if (File.Exists(shortcutPathName))
                 {
                     File.SetAttributes(shortcutPathName, FileAttributes.Normal);
