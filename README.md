@@ -9,6 +9,10 @@ system tray, and has a fully **bilingual UI — Arabic and English**.
 > الفسحة، الاختبارات، طابور الصباح، الطوارئ) ويعمل في الخلفية، بواجهة عربية/إنجليزية.
 
 
+
+<img width="799" height="447" alt="image" src="https://github.com/user-attachments/assets/46004c74-24ad-4db1-b21e-8315fbabfe80" />
+
+
 ## ✨ Features
 
 - **Schedules & alarms** — group timed announcements into schedules, with
