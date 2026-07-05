@@ -147,5 +147,4 @@ See [`CLAUDE.md`](CLAUDE.md) for architecture and contributor notes.
 ---
 
 ## 📄 License
-
-Freeware — free to use and distribute. © Open Source.
+GNU GPL v3
